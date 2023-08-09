@@ -1,0 +1,17 @@
+= ERD
+include::partial$uris.adoc[]
+
+{uri-erd}[erd] is a utility takes a plain text description of entities, their attributes and the relationships between entities and produces a visual diagram modeling the description.
+
+== Supported Image Formats
+
+- PNG (default)
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name           |Default value   |Description
+|erd           |erd            |The path to the `erd` executable
+|===

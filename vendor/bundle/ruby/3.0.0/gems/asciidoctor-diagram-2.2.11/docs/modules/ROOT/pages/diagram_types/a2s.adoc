@@ -1,0 +1,47 @@
+= ASCIIToSVG
+include::partial$uris.adoc[]
+
+{uri-a2s}[ASCIIToSVG] is a pretty simple Go library (with an accompanying CLI tool) that parses ASCII art diagrams, attempting to convert them to an aesthetically pleasing SVG output.
+
+== Example
+
+----
+[a2s, format="svg"]
+....
+.-------------------------.
+|                         |
+| .---.-. .-----. .-----. |
+| | .-. | +-->  | |  <--| |
+| | '-' | |  <--| +-->  | |
+| '---'-' '-----' '-----' |
+|  ascii     2      svg   |
+|                         |
+'-------------------------'
+....
+----
+
+image::a2s.svg[]
+
+== Installation
+
+- Install the https://go.dev[Go] runtime
+- Run `go install github.com/asciitosvg/asciitosvg@latest`
+
+== Supported Image Formats
+
+- SVG (default)
+- TXT
+
+== Attributes
+
+include::partial$/shared-attrs.adoc[]
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name         |Default value   |Description
+|a2s          |a2s             |The path to the `a2s` executable
+|fontfamily   |unspecified     |The font family to use in the generated SVG image
+|noblur       |unspecified     |Disable drop-shadow blurring
+|===

@@ -1,0 +1,16 @@
+= Pikchr
+include::partial$uris.adoc[]
+
+{uri-pikchr}[Pikchr] (pronounced "picture") is a PIC-like markup language for diagrams in technical documentation.
+
+== Supported Image Formats
+
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name         |Default value   |Description
+|pikchr       |pikchr          |The path to the `pikchr` binary
+|===

@@ -1,0 +1,18 @@
+= SeqDiag
+include::partial$uris.adoc[]
+
+{uri-seqdiag}[SeqDiag] seqdiag generates sequence-diagram images from .diag files (similar to graphviz’s DOT files).
+
+== Supported Image Formats
+
+- PDF
+- PNG (default)
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name         |Default value   |Description
+|seqdiag      |seqdiag         |The path to the `seqdiag` binary
+|===

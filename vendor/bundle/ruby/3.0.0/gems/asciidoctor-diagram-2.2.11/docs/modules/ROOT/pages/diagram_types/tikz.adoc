@@ -1,0 +1,21 @@
+= TikZ
+include::partial$uris.adoc[]
+
+{uri-tikz}[TikZ] is a graphics drawing environment for TeX.
+
+TikZ requires a TeX distribution that supports the {uri-tikz}[TikZ] package.
+
+== Supported Image Formats
+
+- PDF
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name          |Default value   |Description
+|pdflatex      |pdflatex        |The path to the `pdflatex` executable
+|pdf2svg       |pdf2svg         |The path to the `pdf2svg` executable
+|preamble      |unspecified     |Code definitions to pass to TikZ.
+|===

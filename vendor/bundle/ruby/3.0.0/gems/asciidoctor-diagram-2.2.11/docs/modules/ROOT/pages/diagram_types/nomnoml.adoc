@@ -1,0 +1,16 @@
+= Nomnoml
+include::partial$uris.adoc[]
+
+{uri-nomnoml}[Nomnoml] is a tool for drawing UML diagrams based on a simple syntax.
+
+== Supported Image Formats
+
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name         |Default value   |Description
+|nomnoml      |nomnoml         |The path to the `nomnoml` binary
+|===

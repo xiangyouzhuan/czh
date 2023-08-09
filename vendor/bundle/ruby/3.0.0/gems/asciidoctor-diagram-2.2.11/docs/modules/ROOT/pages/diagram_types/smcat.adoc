@@ -1,0 +1,18 @@
+= State Machine Cat
+include::partial$uris.adoc[]
+
+{uri-smcat}[State Machine Cat] is syntax and tool that converts plain text descriptions of state machines into state diagrams.
+
+== Supported Image Formats
+
+- SVG
+
+== State Machine Cat Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name          |Default value   |Description
+|smcat         |smcat           |The path to the `smcat` binary
+|direction     |unspecified     |The direction of the state machine diagram. One of `top-down`, `bottom-top`, `left-right` or `right-left`.
+|engine        |unspecified     |The layout engine to use. One of `dot`, `circo`, `fdp`, `neato`, `osage`, or `twopi`
+|===

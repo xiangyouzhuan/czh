@@ -1,0 +1,29 @@
+= Structurizr
+include::partial$uris.adoc[]
+
+{uri-structurizr}[Structurizr] builds upon "diagrams as code", allowing you to create multiple software architecture diagrams from a single model.
+There are a number of tools for creating Structurizr compatible workspaces, with the Structurizr DSL being the recommended option for most teams.
+
+The Structurizr extension allows individual views from a Structurizr DSL workspace to be included in Asciidoc documents.
+This is the inverse use case of https://structurizr.com/help/documentation[Structurizr's documentation] support which lets you embed Asciidoc in the Structurizr DSL.
+
+This extension uses the https://structurizr.com/help/cli[Structurizr CLI] tool to convert Structurizr DSL files into the input for a renderer.
+The chosen renderer is then used to generate the final image.
+
+The installation location of Structurizr CLI needs to be passed to asciidoctor-diagram using the `DIAGRAM_STRUCTURIZRCLI_HOME`.
+When running Asciidoctor with JRuby or when using AsciidoctorJ the installation location can also be specified using the `diagram.structurizrcli.home` Java system property.
+In both cases it should be set to the absolute directory containing the extracted Structurizr CLI archive.
+
+== Supported Image Formats
+
+- PNG
+- SVG
+
+== Attributes
+
+[cols=">,<,<",options="header"]
+|===
+|Name          |Default value   |Description
+|renderer      |plantuml-c4     |The rendering backend to use. One of `d2`, `graphviz`, `mermaid`, `plantuml`, or `plantuml-c4`
+|view          |unspecified     |The key of the view to render
+|===
