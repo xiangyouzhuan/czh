@@ -759,8 +759,8 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_Docker_chapter">1. Ceph</a>
 <ul class="sectlevel2">
 <li><a href="#_搭建ceph_cluster">1.1. 搭建Ceph Cluster</a></li>
-<li><a href="#_部署cephfs">1.2. 部署CephFS</a></li>
-<li><a href="#_部署cephrwg">1.3. 部署CephRWG</a>
+<li><a href="#_部署cephfs">1.2. 部署cephFS</a></li>
+<li><a href="#_ceph对象存储网关服务rgw_rados_gateway">1.3. Ceph对象存储网关服务(RGW-RADOS Gateway)</a>
 <ul class="sectlevel3">
 <li><a href="#_打标签">1.3.1. 打标签</a></li>
 <li><a href="#_使用s3">1.3.2. 使用S3</a></li>
@@ -911,7 +911,7 @@ cephadm shell -- ceph orch daemon add osd ceph3:/dev/vdb</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署cephfs">1.2. 部署CephFS</h3>
+<h3 id="_部署cephfs">1.2. 部署cephFS</h3>
 <div class="paragraph">
 <p>参照官网链接
 <a href="https://docs.ceph.com/en/latest/cephadm/services/mds/#orchestrator-cli-cephfs" class="bare">https://docs.ceph.com/en/latest/cephadm/services/mds/#orchestrator-cli-cephfs</a>
@@ -973,7 +973,7 @@ mount -t ceph 192.168.122.60:6789,192.168.122.61:6789,192.168.122.62:6789:/ /mnt
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署cephrwg">1.3. 部署CephRWG</h3>
+<h3 id="_ceph对象存储网关服务rgw_rados_gateway">1.3. Ceph对象存储网关服务(RGW-RADOS Gateway)</h3>
 <div class="paragraph">
 <p>安装ceph-radosgw</p>
 </div>
