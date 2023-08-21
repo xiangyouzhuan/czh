@@ -769,6 +769,70 @@ p { margin-bottom: 1.25rem; }
 </li>
 </ul>
 </li>
+<li><a href="#_git">2. Git</a>
+<ul class="sectlevel2">
+<li><a href="#_在服务器上搭建git">2.1. 在服务器上搭建Git</a>
+<ul class="sectlevel3">
+<li><a href="#_从已有仓库克隆">2.1.1. 从已有仓库克隆</a></li>
+<li><a href="#_创建dir初始化为空仓库">2.1.2. 创建dir,初始化为空仓库</a></li>
+<li><a href="#_用户clonepush">2.1.3. 用户clone/push</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_gitlab">3. GitLab</a>
+<ul class="sectlevel2">
+<li><a href="#_新增gitlab_yum仓库">3.1. 新增GitLab Yum仓库</a>
+<ul class="sectlevel3">
+<li><a href="#_添加yum仓库">3.1.1. 添加Yum仓库</a></li>
+<li><a href="#_列出gitlab的仓库列表">3.1.2. 列出GitLab的仓库列表</a></li>
+<li><a href="#_查看可用的gitlab软件包">3.1.3. 查看可用的GitLab软件包</a></li>
+<li><a href="#_默认禁用gitlab仓库">3.1.4. 默认禁用GitLab仓库</a></li>
+</ul>
+</li>
+<li><a href="#_安装gitlab软件包">3.2. 安装GitLab软件包</a>
+<ul class="sectlevel3">
+<li><a href="#_安装gitlab依赖">3.2.1. 安装GitLab依赖</a></li>
+<li><a href="#_预设gitlab运行参数">3.2.2. 预设GitLab运行参数</a></li>
+<li><a href="#_手动安装gitlab">3.2.3. 手动安装GitLab</a></li>
+</ul>
+</li>
+<li><a href="#_查看gitlab服务状态">3.3. 查看GitLab服务状态</a>
+<ul class="sectlevel3">
+<li><a href="#_查看gitlab的系统服务状态">3.3.1. 查看GitLab的系统服务状态</a></li>
+<li><a href="#_查看gitlab的所有组件状态">3.3.2. 查看GitLab的所有组件状态</a></li>
+<li><a href="#_查看gitlab默认http端口">3.3.3. 查看GitLab默认HTTP端口</a></li>
+</ul>
+</li>
+<li><a href="#_为gitlab新增防火墙规则">3.4. 为GitLab新增防火墙规则</a></li>
+</ul>
+</li>
+<li><a href="#_jenkins">4. Jenkins</a>
+<ul class="sectlevel2">
+<li><a href="#_新增jenkins_yum仓库">4.1. 新增Jenkins Yum仓库</a>
+<ul class="sectlevel3">
+<li><a href="#_下载仓库文件">4.1.1. 下载仓库文件</a></li>
+<li><a href="#_导入仓库密钥">4.1.2. 导入仓库密钥</a></li>
+<li><a href="#_默认禁用jenkins仓库">4.1.3. 默认禁用Jenkins仓库</a></li>
+</ul>
+</li>
+<li><a href="#_安装jenkins软件包">4.2. 安装Jenkins软件包</a>
+<ul class="sectlevel3">
+<li><a href="#_安装依赖">4.2.1. 安装依赖</a></li>
+<li><a href="#_安装jenkins">4.2.2. 安装Jenkins</a></li>
+</ul>
+</li>
+<li><a href="#_配置jenkins服务">4.3. 配置Jenkins服务</a>
+<ul class="sectlevel3">
+<li><a href="#_开机启动jenkins">4.3.1. 开机启动Jenkins</a></li>
+<li><a href="#_设置jenkins启动参数">4.3.2. 设置Jenkins启动参数</a></li>
+</ul>
+</li>
+<li><a href="#_为jenkins新增防火墙规则">4.4. 为Jenkins新增防火墙规则</a></li>
+<li><a href="#_启动jenkins">4.5. 启动Jenkins</a></li>
+<li><a href="#_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -791,22 +855,10 @@ p { margin-bottom: 1.25rem; }
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install -y epel-release
 dnf install -y systemd-timesyncd
-systemctl enable systemd-timesyncd --now</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -Uvh https://download.ceph.com/rpm-18.1.3/el9/noarch/ceph-release-1-1.el9.noarch.rpm</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install -y cephadm podman</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install -y centos-release-ceph-pacific</code></pre>
+systemctl enable systemd-timesyncd --now
+rpm -Uvh https://download.ceph.com/rpm-18.1.3/el9/noarch/ceph-release-1-1.el9.noarch.rpm
+dnf install -y cephadm podman
+dnf install -y centos-release-ceph-pacific</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -817,14 +869,27 @@ systemctl enable systemd-timesyncd --now</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cephadm bootstrap --mon-ip 192.168.122.60</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><a href="https://192.168.122.60:8443/" class="bare">https://192.168.122.60:8443/</a></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+终端输出如下内容,注意保存Password
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">https://192.168.122.60:8443/
+User: admin
+Password: 65eoa3cblm</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>User: admin</p>
-</div>
-<div class="paragraph">
-<p>Password: 65eoa3cblm</p>
+<p>然后继续执行如下命令</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -948,8 +1013,17 @@ ceph orch apply mds geek_cephfs --placement=3</code></pre>
     pgs:     49 active+clean</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>使用cat /etc/ceph/ceph.client.admin.keyring查看key，用于挂载cephFS</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+使用cat /etc/ceph/ceph.client.admin.keyring查看key，用于挂载cephFS
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1110,10 +1184,919 @@ swift -A http://192.168.122.106:8000/auth/1.0 -U czhswift:swift -K AquvhRPHOom3S
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_git">2. Git</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_在服务器上搭建git">2.1. 在服务器上搭建Git</h3>
+<div class="paragraph">
+<p>在开始架设 Git 服务器前，需要把现有仓库导出为裸仓库——即一个不包含当前工作目录的仓库。 这通常是很简单的。 为了通过克隆你的仓库来创建一个新的裸仓库，你需要在克隆命令后加上 --bare 选项。 按照惯例，裸仓库的目录名以 .git 结尾，就像这样：
+通常有两种办法：</p>
+</div>
+<div class="paragraph">
+<p>从已有仓库克隆，或者创建dir,初始化为空仓库</p>
+</div>
+<div class="sect3">
+<h4 id="_从已有仓库克隆">2.1.1. 从已有仓库克隆</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ git clone --bare my_project my_project.git
+Cloning into bare repository 'my_project.git'...
+done.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_创建dir初始化为空仓库">2.1.2. 创建dir,初始化为空仓库</h4>
+<div class="paragraph">
+<p>在某一个路径下，创建一个目录</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir my_project.git
+进入该目录
+[source, bash]
+cd my_project.git
+初始化这个目录，使其成为一个空仓库
+[source, bash]
+git init --bare --shared</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_用户clonepush">2.1.3. 用户clone/push</h4>
+<div class="paragraph">
+<p>on John&#8217;s computer</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd myproject
+$ git init
+$ git add .
+$ git commit -m 'initial commit'
+$ git remote add origin git@gitserver:/srv/git/project.git
+$ git push origin master</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>此时，其他开发者可以克隆此仓库，并推回各自的改动，步骤很简单：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ git clone git@gitserver:/srv/git/project.git
+$ cd project
+$ vim README
+$ git commit -am 'fix for the README file'
+$ git push origin master</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gitlab">3. GitLab</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_新增gitlab_yum仓库">3.1. 新增GitLab Yum仓库</h3>
+<div class="sect3">
+<h4 id="_添加yum仓库">3.1.1. 添加Yum仓库</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_列出gitlab的仓库列表">3.1.2. 列出GitLab的仓库列表</h4>
+<div class="paragraph">
+<p>执行一下命令</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum repolist all | grep gitlab</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>gitlab_gitlab-ce/x86_64             gitlab_gitlab-ce        enabled:         853
+!gitlab_gitlab-ce-source            gitlab_gitlab-ce-source disabled</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_查看可用的gitlab软件包">3.1.3. 查看可用的GitLab软件包</h4>
+<div class="paragraph">
+<p>列出软件包列表</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum repo-pkgs gitlab_gitlab-ce list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.bfsu.edu.cn
+ * extras: mirrors.bfsu.edu.cn
+ * updates: mirrors.cqu.edu.cn
+Available Packages
+gitlab-ce.x86_64                                 15.7.3-ce.0.el7                                 gitlab_gitlab-ce</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>查看软件包描述</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum --disablerepo=\* --enablerepo=gitlab_gitlab-ce info gitlab-ce</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.bfsu.edu.cn
+ * extras: mirrors.bfsu.edu.cn
+ * updates: mirrors.cqu.edu.cn
+Available Packages
+Name        : gitlab-ce
+Arch        : x86_64
+Version     : 15.7.3
+Release     : ce.0.el7
+Size        : 1.1 G
+Repo        : gitlab_gitlab-ce/x86_64
+Summary     : GitLab Community Edition (including NGINX, Postgres, Redis)
+URL         : https://about.gitlab.com/
+License     : MIT
+Description : GitLab Community Edition (including NGINX, Postgres, Redis)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>GitLab的软件包比较大，安装过程时间较长</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_默认禁用gitlab仓库">3.1.4. 默认禁用GitLab仓库</h4>
+<div class="paragraph">
+<p>按需单独启用GitLab仓库
+GitLab仓库（服务器位于国外）经常无法访问或者速度慢，影响Yum使用，默认禁用之</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum-config-manager --disable gitlab_gitlab-ce | egrep '(\[gitlab_gitlab-ce\])|enabled'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#[gitlab_gitlab-ce]
+
+#enabled = 0 或 False</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装gitlab软件包">3.2. 安装GitLab软件包</h3>
+<div class="sect3">
+<h4 id="_安装gitlab依赖">3.2.1. 安装GitLab依赖</h4>
+<div class="paragraph">
+<p>运行 gitlab-ctl 命令时，会出现警告：</p>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ffi-libarchive could not be loaded, libarchive is probably not installed on system, archive_file will not be available</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>安装 libarchive 包，消除警告：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y libarchive</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_预设gitlab运行参数">3.2.2. 预设GitLab运行参数</h4>
+<div class="paragraph">
+<p>预设GitLab访问URL</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">EXTERNAL_URL="http://gitlab.sjx.com:8181"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>预设GitLab默认密码</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GITLAB_ROOT_PASSWORD=$(pwgen -s 20|head -n 1)
+echo -e "GitLab默认用户：root\nGitLab默认密码：${GITLAB_ROOT_PASSWORD}"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>GitLab默认用户：root
+GitLab默认密码：QJQCM3fAFXKYpYUeSL5e</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>预设GitLab访问域名</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">egrep '^127.0.0.1 gitlab.sjx.com$' /etc/hosts &gt; /dev/null || echo '127.0.0.1 gitlab.sjx.com' &gt;&gt; /etc/hosts</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>127.0.0.1 gitlab.sjx.com 只为安装，无其它实质作用
+域名 gitlab.sjx.com 必须能解析出IP地址，EXTERNAL_URL参数才有效
+这样安装后，不再需要手动修改 /etc/gitlab/gitlab.rb 文件中的 external_url 参数</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_手动安装gitlab">3.2.3. 手动安装GitLab</h4>
+<div class="paragraph">
+<p>打印GitLab软件包URL</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GITLAB_RPM_URL=$(yumdownloader --disablerepo=\* --enablerepo=gitlab_gitlab-ce --urls gitlab-ce | egrep '^https://.+\.rpm$')
+GITLAB_RPM_FILE=/tmp/$(basename ${GITLAB_RPM_URL})
+
+echo -e "GitLab软件包文件：\n\t${GITLAB_RPM_FILE}\n GitLab软件包URL：\n\t${GITLAB_RPM_URL}"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>GitLab软件包文件：
+	/tmp/gitlab-ce-15.7.3-ce.0.el7.x86_64.rpm
+ GitLab软件包URL：
+	https://packages.gitlab.com/gitlab/gitlab-ce/el/7/x86_64/gitlab-ce-15.7.3-ce.0.el7.x86_64.rpm</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>下载软件包</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget -c ${GITLAB_RPM_URL} -O ${GITLAB_RPM_FILE}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+wget 因为带了 -c 参数，下载速度慢时，可以中断下载，多次重新运行上面的命令
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>安装GitLab</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">EXTERNAL_URL=${EXTERNAL_URL} GITLAB_ROOT_PASSWORD=${GITLAB_ROOT_PASSWORD} yum install -y ${GITLAB_RPM_FILE}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+GitLab安装成功后，请手动删除下载的文件：rm -f /tmp/gitlab-ce*.rpm
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>（安装时，终端输出类似 网络安装GitLab）</p>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Loaded plugins: fastestmirror
+Examining /tmp/gitlab-ce-15.6.3-ce.0.el7.x86_64.rpm: gitlab-ce-15.6.3-ce.0.el7.x86_64
+Marking /tmp/gitlab-ce-15.6.3-ce.0.el7.x86_64.rpm to be installed
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package gitlab-ce.x86_64 0:15.6.3-ce.0.el7 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+==============================================================================================
+ Package        Arch        Version              Repository                               Size
+==============================================================================================
+Installing:
+ gitlab-ce      x86_64      15.6.3-ce.0.el7      /gitlab-ce-15.6.3-ce.0.el7.x86_64      2.4 G
+
+Transaction Summary
+==============================================================================================
+Install  1 Package
+
+Total size: 2.4 G
+Installed size: 2.4 G
+...内容同上...
+...内容同上...
+...内容同上...</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_查看gitlab服务状态">3.3. 查看GitLab服务状态</h3>
+<div class="sect3">
+<h4 id="_查看gitlab的系统服务状态">3.3.1. 查看GitLab的系统服务状态</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status gitlab-runsvdir</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>● gitlab-runsvdir.service - GitLab Runit supervision process
+   Loaded: loaded (/usr/lib/systemd/system/gitlab-runsvdir.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sat 2023-01-14 00:30:42 CST; 11h ago
+ Main PID: 10912 (runsvdir)
+   CGroup: /system.slice/gitlab-runsvdir.service
+           ├─10912 runsvdir -P /opt/gitlab/service log: .............................................
+           ├─10914 runsv logrotate
+           ├─10924 svlogd -tt /var/log/gitlab/logrotate
+           ├─10930 runsv redis
+           ├─10932 /opt/gitlab/embedded/bin/redis-server unixsocket:/var/opt/gitlab/redis/redis.socket
+           ├─10940 svlogd -tt /var/log/gitlab/redis
+           ├─10950 runsv gitaly
+           ├─10975 svlogd /var/log/gitlab/gitaly
+           ├─11079 runsv postgresql
+...省略的内容...
+...省略的内容...
+...省略的内容...
+Jan 14 00:30:42 lan_server systemd[1]: Started GitLab Runit supervision process.</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_查看gitlab的所有组件状态">3.3.2. 查看GitLab的所有组件状态</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitlab-ctl status</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>run: alertmanager: (pid 11869) 39866s; run: log: (pid 11659) 39907s
+run: gitaly: (pid 11728) 39876s; run: log: (pid 10975) 40076s
+run: gitlab-exporter: (pid 11845) 39868s; run: log: (pid 11451) 39925s
+run: gitlab-kas: (pid 11817) 39870s; run: log: (pid 11225) 40017s
+run: gitlab-workhorse: (pid 11829) 39869s; run: log: (pid 11371) 39942s
+run: logrotate: (pid 25010) 488s; run: log: (pid 10924) 40088s
+run: nginx: (pid 11399) 39940s; run: log: (pid 11415) 39938s
+run: node-exporter: (pid 11839) 39869s; run: log: (pid 11443) 39931s
+run: postgres-exporter: (pid 11879) 39866s; run: log: (pid 11682) 39903s
+run: postgresql: (pid 11081) 40037s; run: log: (pid 11125) 40034s
+run: prometheus: (pid 11854) 39867s; run: log: (pid 11630) 39914s
+run: puma: (pid 11287) 39958s; run: log: (pid 11294) 39957s
+run: redis: (pid 10932) 40084s; run: log: (pid 10940) 40082s
+run: redis-exporter: (pid 11847) 39868s; run: log: (pid 11469) 39919s
+run: sidekiq: (pid 11303) 39952s; run: log: (pid 11320) 39950s</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_查看gitlab默认http端口">3.3.3. 查看GitLab默认HTTP端口</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitlab-ctl show-config 2&gt;/dev/null | grep '"external-url":'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>    "external-url": "http://gitlab.sjx.com:8181",</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>GitLab访问URL：http://gitlab.sjx.com:8181</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_为gitlab新增防火墙规则">3.4. 为GitLab新增防火墙规则</h3>
+<div class="paragraph">
+<p>1.增加防火墙放行规则</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">GITLAB_PORT=8181
+PERM="--permanent"
+SERV_NAME=GITLAB_${GITLAB_PORT}
+SERV="${PERM} --service=${SERV_NAME}"
+
+firewall-cmd ${PERM} --new-service=${SERV_NAME}
+firewall-cmd ${SERV} --set-short="GitLab ports"
+firewall-cmd ${SERV} --set-description="GitLab port exceptions"
+firewall-cmd ${SERV} --add-port=${GITLAB_PORT}/tcp
+firewall-cmd ${PERM} --add-service=${SERV_NAME}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">参数说明</div>
+<p>GITLAB_PORT
+GITLAB运行端口注意和 预设GitLab访问URL 的端口保持一致</p>
+</div>
+<div class="paragraph">
+<p>2.重载防火墙配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.查看防火墙规则</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --list-all</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s3
+  sources:
+  services: GITLAB_8181 dhcpv6-client ssh
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>放行的规则中必须有 GITLAB_8181 服务
+现在，可以去试一试 第一次访问GitLab Web
+访问 <a href="http://gitlab.sjx.com:8181" class="bare">http://gitlab.sjx.com:8181</a> ，完成第一次登录操作</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jenkins">4. Jenkins</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_新增jenkins_yum仓库">4.1. 新增Jenkins Yum仓库</h3>
+<div class="sect3">
+<h4 id="_下载仓库文件">4.1.1. 下载仓库文件</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget \
+  --inet4-only \
+  -O /etc/yum.repos.d/jenkins.repo \
+  https://pkg.jenkins.io/redhat-stable/jenkins.repo</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+wget参数说明
+--inet4-only
+表示仅使用IPv4下载文件。pkg.jenkins.io 使用了IPv6解析域名，可能导致下载失败
+-O
+下载文件保存到指定位置
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_导入仓库密钥">4.1.2. 导入仓库密钥</h4>
+<div class="paragraph">
+<p>下载密钥文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget \
+  --inet4-only \
+  -O /tmp/jenkins.io.key \
+  https://pkg.jenkins.io/redhat-stable/jenkins.io.key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>导入密钥</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm --import /tmp/jenkins.io.key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>删除临时文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rm -f /tmp/jenkins.io.key</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_默认禁用jenkins仓库">4.1.3. 默认禁用Jenkins仓库</h4>
+<div class="paragraph">
+<p>按需单独启用Jenkins仓库</p>
+</div>
+<div class="paragraph">
+<p>Jenkins仓库（服务器位于国外）经常无法访问或者速度慢，影响Yum使用，默认禁用之</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum-config-manager --disable jenkins | egrep '(\[jenkins\])|enabled'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[jenkins]
+enabled = 0 或 False</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装jenkins软件包">4.2. 安装Jenkins软件包</h3>
+<div class="sect3">
+<h4 id="_安装依赖">4.2.1. 安装依赖</h4>
+<div class="paragraph">
+<p>1.安装Java11</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.设置系统默认Java</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">alternatives --set java `ls /usr/lib/jvm/java-11-openjdk-*/bin/java`
+alternatives --set javac `ls /usr/lib/jvm/java-11-openjdk-*/bin/javac`
+alternatives --set jre_openjdk `ls -d /usr/lib/jvm/java-11-openjdk-*`
+alternatives --set java_sdk_openjdk `ls -d /usr/lib/jvm/java-11-openjdk-*`</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+同时设置四个选项后，/etc/alternatives/java_sdk 会自动链接到 /usr/lib/jvm/java-11-openjdk-*，最终 JAVA_HOME 才是期望的Java 11
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>查看默认Java版本</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -version</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>openjdk version "11.0.6" 2020-01-14 LTS
+OpenJDK Runtime Environment 18.9 (build 11.0.6+10-LTS)
+OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing)</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_安装jenkins">4.2.2. 安装Jenkins</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum --disablerepo=\* --enablerepo=jenkins install jenkins</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+单独启用Jenkins仓库（ jenkins ），安装Jenkins
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_配置jenkins服务">4.3. 配置Jenkins服务</h3>
+<div class="sect3">
+<h4 id="_开机启动jenkins">4.3.1. 开机启动Jenkins</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl enable jenkins</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_设置jenkins启动参数">4.3.2. 设置Jenkins启动参数</h4>
+<div class="paragraph">
+<p>1.创建Systemd配置文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /etc/systemd/system/jenkins.service.d/
+
+cat &lt;&lt; EOF &gt; /etc/systemd/system/jenkins.service.d/override.conf
+[Service]
+Environment="JENKINS_PORT=8282"
+# 默认配置文件中的 %C 实际并未生效，而是出现了错误的 "/var/lib/jenkins/%C/jenkins/"
+Environment="JENKINS_WEBROOT=/var/cache/jenkins/war"
+Environment="JENKINS_LOG=/var/log/jenkins/jenkins.log"
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">参数说明</div>
+<p>JENKINS_PORT</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Jenkins运行端口。默认端口是8080，和之前安装的GitLab端口（同为8080）冲突，所以设置为 8282</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>JENKINS_WEBROOT</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Jenkins缓存目录</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>JENKINS_LOG</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Jenkins日志文件</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+JENKINS_DEBUG_LEVEL 参数无任何效果（官方文档未说明）
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>2.重载Systemd配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl daemon-reload</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_为jenkins新增防火墙规则">4.4. 为Jenkins新增防火墙规则</h3>
+<div class="paragraph">
+<p>1.增加防火墙放行规则</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">JENKINS_PORT=8282
+PERM="--permanent"
+SERV_NAME=jenkins_${JENKINS_PORT}
+SERV="${PERM} --service=${SERV_NAME}"
+
+firewall-cmd ${PERM} --new-service=${SERV_NAME}
+firewall-cmd ${SERV} --set-short="Jenkins ports"
+firewall-cmd ${SERV} --set-description="Jenkins port exceptions"
+firewall-cmd ${SERV} --add-port=${JENKINS_PORT}/tcp
+firewall-cmd ${PERM} --add-service=${SERV_NAME}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">参数说明</div>
+<p>JENKINS_PORT</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Jenkins运行端口注意和 设置Jenkins启动参数 保持一致</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.重载防火墙配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.查看防火墙规则</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --list-all</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: enp0s3
+  sources:
+  services: dhcpv6-client http https jenkins_8282 ssh
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>放行的规则中必须有 jenkins_8282 服务</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_启动jenkins">4.5. 启动Jenkins</h3>
+<div class="paragraph">
+<p>1.启动Jenkins</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl start jenkins</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.查看Jenkins状态</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status jenkins</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>● jenkins.service - Jenkins Continuous Integration Server
+   Loaded: loaded (/usr/lib/systemd/system/jenkins.service; enabled; vendor preset: disabled)
+  Drop-In: /etc/systemd/system/jenkins.service.d
+           └─override.conf
+   Active: active (running) since Mon 2023-01-02 16:18:45 CST; 9h ago
+......
+......</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>输出中有 active (running) 表示Jenkins已经启动</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Jenkins Web暂时无法访问，详情见下文
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>3.等待Jenkins启动完成</p>
+</div>
+<div class="paragraph">
+<p>查看日志文件： /var/log/jenkins/jenkins.log，确认Jenkins启动完成</p>
+</div>
+<div class="listingblock">
+<div class="title">日志文件内容</div>
+<div class="content">
+<pre>1	Running from: /usr/share/java/jenkins.war
+2	2023-01-03 14:34:54.190+0000 [id=1]	INFO	winstone.Logger#logInternal: Beginning extraction from war file
+3	2023-01-03 14:34:54.243+0000 [id=1]	WARNING	o.e.j.s.handler.ContextHandler#setContextPath: Empty contextPath
+4	2023-01-03 14:34:54.310+0000 [id=1]	INFO	org.eclipse.jetty.server.Server#doStart: jetty-10.0.12; built: 2022-09-14T01:54:40.076Z; git: 408d0139887e27a57b54ed52e2d92a36731a7e88; jvm 11.0.17+8-LTS
+......
+......
+12	2023-01-03 14:34:56.463+0000 [id=31]	INFO	jenkins.InitReactorRunner$1#onAttained: Started initialization
+13	2023-01-03 14:34:56.740+0000 [id=36]	INFO	jenkins.InitReactorRunner$1#onAttained: Listed all plugins
+14	2023-01-03 14:35:00.167+0000 [id=35]	INFO	jenkins.InitReactorRunner$1#onAttained: Prepared all plugins
+15	2023-01-03 14:35:00.207+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: Started all plugins
+16	2023-01-03 14:35:00.227+0000 [id=30]	INFO	jenkins.InitReactorRunner$1#onAttained: Augmented all extensions
+17	2023-01-03 14:35:00.926+0000 [id=35]	INFO	h.p.b.g.GlobalTimeOutConfiguration#load: global timeout not set
+18	2023-01-03 14:35:01.596+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: System config loaded
+19	2023-01-03 14:35:01.597+0000 [id=38]	INFO	jenkins.InitReactorRunner$1#onAttained: System config adapted
+20	2023-01-03 14:35:01.626+0000 [id=31]	INFO	jenkins.InitReactorRunner$1#onAttained: Loaded all jobs
+21	2023-01-03 14:35:01.639+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: Configuration for all jobs updated
+22	2023-01-03 14:35:01.981+0000 [id=30]	INFO	jenkins.InitReactorRunner$1#onAttained: Completed initialization
+23	2023-01-03 14:35:02.107+0000 [id=23]	INFO	hudson.lifecycle.Lifecycle#onReady: Jenkins is fully up and running</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>注意23行日志</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+未见以下日志消息，必须长时间等待（半小时甚至更久）：
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Jenkins is fully up and running</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>现在，你可以访问 第一次访问Jenkins Web 继续完成Jenkins安装操作</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</h3>
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-14 10:13:28 +0800
+Last updated 2023-08-21 08:47:57 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
