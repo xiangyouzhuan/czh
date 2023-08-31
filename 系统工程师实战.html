@@ -830,7 +830,77 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_为jenkins新增防火墙规则">4.4. 为Jenkins新增防火墙规则</a></li>
 <li><a href="#_启动jenkins">4.5. 启动Jenkins</a></li>
-<li><a href="#_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</a></li>
+<li><a href="#_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</a>
+<ul class="sectlevel3">
+<li><a href="#获取初始管理员密码">4.6.1. 获取初始管理员密码</a></li>
+<li><a href="#_访问jenkins_web">4.6.2. 访问Jenkins Web</a></li>
+<li><a href="#_解锁jenkins">4.6.3. 解锁Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_linux无密码登陆">5. Linux无密码登陆</a>
+<ul class="sectlevel2">
+<li><a href="#_生成不带密码的密钥对">5.1. 生成不带密码的密钥对</a></li>
+<li><a href="#_上传公钥文件到远程主机">5.2. 上传公钥文件到远程主机</a></li>
+<li><a href="#_在本地linux终端中配置私钥">5.3. 在本地Linux终端中配置私钥</a></li>
+</ul>
+</li>
+<li><a href="#_prometheus">6. prometheus</a>
+<ul class="sectlevel2">
+<li><a href="#_downloading_prometheus">6.1. Downloading Prometheus</a></li>
+<li><a href="#_configuring_prometheus">6.2. Configuring Prometheus</a></li>
+<li><a href="#_starting_prometheus">6.3. Starting Prometheus</a></li>
+<li><a href="#_安装mysql_exporter">6.4. 安装mysql exporter</a></li>
+</ul>
+</li>
+<li><a href="#_zabbixmysql">7. zabbix+mysql</a>
+<ul class="sectlevel2">
+<li><a href="#_选择zabbix服务器的平台">7.1. 选择Zabbix服务器的平台</a></li>
+<li><a href="#_安装配置zabbix">7.2. 安装配置zabbix</a></li>
+<li><a href="#_快速开始">7.3. 快速开始</a></li>
+<li><a href="#_zabbixmysql_2">7.4. Zabbix+Mysql</a>
+<ul class="sectlevel3">
+<li><a href="#_overview">7.4.1. Overview</a></li>
+<li><a href="#_requirements">7.4.2. Requirements</a></li>
+<li><a href="#_tested_versions">7.4.3. Tested versions</a></li>
+<li><a href="#_setup">7.4.4. Setup</a></li>
+<li><a href="#_start">7.4.5. Start</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_zhiyan_mod_letsencrypt">8. zhiyan-mod-letsencrypt</a>
+<ul class="sectlevel2">
+<li><a href="#_配置zhiyan_mod_letsencrypt">8.1. 配置zhiyan-mod-letsencrypt</a></li>
+<li><a href="#_安装zysdk">8.2. 安装zySDK</a></li>
+</ul>
+</li>
+<li><a href="#_zhiyan_mod_php_fpm">9. zhiyan-mod-php-fpm</a>
+<ul class="sectlevel2">
+<li><a href="#_克隆_zhiyan_mod_php_fpmlibzygrpclibzymod_rust">9.1. 克隆 zhiyan-mod-php-fpm、libzygrpc、libzymod-rust</a>
+<ul class="sectlevel3">
+<li><a href="#_配置zhiyan_mod_php_fpm">9.1.1. 配置zhiyan-mod-php-fpm</a></li>
+</ul>
+</li>
+<li><a href="#_rust">9.2. RUST</a></li>
+<li><a href="#_编译zhiyan_mod_php_fpm并运行">9.3. 编译zhiyan-mod-php-fpm并运行</a></li>
+</ul>
+</li>
+<li><a href="#_grpcpython">10. grpc+python</a>
+<ul class="sectlevel2">
+<li><a href="#_快速开始_2">10.1. 快速开始</a>
+<ul class="sectlevel3">
+<li><a href="#_环境准备">10.1.1. 环境准备</a></li>
+<li><a href="#_安装grpc">10.1.2. 安装gRPC</a></li>
+<li><a href="#_grpc_tools">10.1.3. gRPC tools</a></li>
+<li><a href="#_下载example">10.1.4. 下载example</a></li>
+<li><a href="#_运行_grpc_应用">10.1.5. 运行 gRPC 应用</a></li>
+<li><a href="#_更新grpc_service">10.1.6. 更新gRPC service</a></li>
+<li><a href="#_生成grpc代码">10.1.7. 生成gRPC代码</a></li>
+<li><a href="#_更新并运行该应用">10.1.8. 更新并运行该应用</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2088,15 +2158,1328 @@ Jenkins Web暂时无法访问，详情见下文
 </div>
 <div class="sect2">
 <h3 id="_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/第一次访问jenkins.png" alt="第一次访问jenkins">
+</div>
+</div>
+<div class="sect3">
+<h4 id="获取初始管理员密码">4.6.1. 获取初始管理员密码</h4>
+<div class="paragraph">
+<p>查看密码</p>
+</div>
+<div class="paragraph">
+<div class="title">位置：内网服务器</div>
+<p>cat /var/lib/jenkins/secrets/initialAdminPassword</p>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>35e10761f3e44cddbac0ecc586c17639</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+每次安装Jenkins生成的密码都不同，本文展示的密码仅作示例用途，请勿直接使用
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_访问jenkins_web">4.6.2. 访问Jenkins Web</h4>
+<div class="paragraph">
+<p>操作位置
+.开发工作机</p>
+</div>
+<div class="paragraph">
+<p>访问Jenkins Web地址
+<a href="http://jenkins.sjx.com:8282" class="bare">http://jenkins.sjx.com:8282</a></p>
+</div>
+<div class="paragraph">
+<p>注意端口是 8282，具体设置见 设置Jenkins启动参数</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_解锁jenkins">4.6.3. 解锁Jenkins</h4>
+<div class="paragraph">
+<p>输入 <a href="#获取初始管理员密码">获取初始管理员密码</a> 看到的密码，解锁Jenkins</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/解锁jenkins.png" alt="解锁jenkins">
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_linux无密码登陆">5. Linux无密码登陆</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_生成不带密码的密钥对">5.1. 生成不带密码的密钥对</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen -N "" -f ~/.ssh/mk</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_上传公钥文件到远程主机">5.2. 上传公钥文件到远程主机</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-copy-id -i ~/.ssh/mk.pub root@192.168.2.236</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_在本地linux终端中配置私钥">5.3. 在本地Linux终端中配置私钥</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt;&gt; ~/.ssh/config
+Host 192.168.2.236
+    IdentityFile ~/.ssh/mk
+EOF</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+如果在gitlab中添加了ssh公钥，则在克隆时必须在本地添加域名解析
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prometheus">6. prometheus</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_downloading_prometheus">6.1. Downloading Prometheus</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/prometheus/releases/download/v2.46.0/prometheus-2.46.0.linux-amd64.tar.gz
+tar xvfz prometheus-*.tar.gz
+cd prometheus-*</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>执行下面命令检测是否可以正常使用</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./prometheus --help</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_prometheus">6.2. Configuring Prometheus</h3>
+<div class="paragraph">
+<p>省略不做，详细解释查看
+<a href="https://prometheus.io/docs/introduction/first_steps/">官方教程</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_starting_prometheus">6.3. Starting Prometheus</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd prometheus-*
+./prometheus --config.file=prometheus.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>访问
+<a href="http://localhost:9090" class="bare">http://localhost:9090</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装mysql_exporter">6.4. 安装mysql exporter</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.0/mysqld_exporter-0.15.0.linux-amd64.tar.gz
+tar xvfz mysqld_exporter-0.15.0.linux-amd64.tar.gz</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">得到解压的文件</div>
+<div class="content">
+<pre>[pr@zabbix Download]$ ls
+mysqld_exporter-0.15.0.linux-amd64         prometheus-2.46.0.linux-amd64
+mysqld_exporter-0.15.0.linux-amd64.tar.gz  prometheus-2.46.0.linux-amd64.tar.gz</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd mysqld_exporter-0.15.0.linux-amd64</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>root登陆数据库</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql -uroot -ppassword</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>创建用户</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#更改密码策略，否则简单密码password不可用
+mysql&gt;SET GLOBAL validate_password.policy = 0;
+mysql&gt;CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'password' WITH MAX_USER_CONNECTIONS 3;
+mysql&gt;GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
+mysql&gt;quit;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>创建编辑文件.my.cnf</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo &lt;&lt; EOF &gt; .my.cnf
+[client]
+user=exporter
+password=password
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>进入prometheus-2.46.0.linux-amd64目录下</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd prometheus-2.46.0.linux-amd64/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo &lt;&lt; EOF &gt;&gt; prometheus.yml
+  - job_name: "mysqld"
+    static_configs:
+    - targets: ["localhost:9104"]
+EOF
+./mysqld_exporter --config.my-cnf=.my.cnf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>官网地址
+<a href="https://prometheus.io/download/#mysqld_exporter" class="bare">https://prometheus.io/download/#mysqld_exporter</a></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zabbixmysql">7. zabbix+mysql</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_选择zabbix服务器的平台">7.1. 选择Zabbix服务器的平台</h3>
+<div class="paragraph">
+<p>选择zabbix服务器平台以获得对应的rpm包</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+选择的服务器平台不同，操作也会不同，本教程选择如下
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/01-选择zabbix服务器平台.png" alt="01 选择zabbix服务器平台">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装配置zabbix">7.2. 安装配置zabbix</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+如果你安装了EPEL，则需要禁用EPEL提供的zabbix包
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>编辑配置文件 /etc/yum.repos.d/epel.repo</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/yum.repos.d/epel.repo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>然后添加下列内容</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[epel]
+...
+excludepkgs=zabbix*</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>1.安装zabbix仓库</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -Uvh https://repo.zabbix.com/zabbix/6.4/rhel/9/x86_64/zabbix-release-6.4-1.el9.noarch.rpm
+dnf clean all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.安装Zabbix server，Web前端，agent</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install zabbix-server-mysql zabbix-web-mysql zabbix-apache-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.创建初始数据库
+    需要确保有数据库服务已启动并运行
+在数据库主机上运行以下代码。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql -uroot -p
+password
+mysql&gt; SET GLOBAL validate_password.policy = 0;
+mysql&gt; create database zabbix character set utf8mb4 collate utf8mb4_bin;
+mysql&gt; create user zabbix@localhost identified by 'password';
+mysql&gt; grant all privileges on zabbix.* to zabbix@localhost;
+mysql&gt; set global log_bin_trust_function_creators = 1;
+mysql&gt; quit;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>导入初始架构和数据，系统将提示您输入新创建的密码。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在导入数据库模式后禁用日志bin信任功能创建者选项。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql -uroot -p
+password
+mysql&gt; set global log_bin_trust_function_creators = 0;
+mysql&gt; quit;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>4.为Zabbix server配置数据库
+编辑配置文件 /etc/zabbix/zabbix_server.conf</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/zabbix/zabbix_server.conf</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>DBPassword=password</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>5.启动Zabbix server和agent进程
+启动Zabbix server和agent进程，并为它们设置开机自启：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl restart zabbix-server zabbix-agent httpd php-fpm
+systemctl enable zabbix-server zabbix-agent httpd php-fpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>6.打开zabbix的web UI
+使用Apache web server时，Zabbix UI的默认URL是
+<a href="http://host/zabbix" class="bare">http://host/zabbix</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_快速开始">7.3. 快速开始</h3>
+<div class="paragraph">
+<p>1.登录和配置用户</p>
+</div>
+<div class="paragraph">
+<p>概览：</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>本章节你将学会如何登录和设立Zabbix中的系统用户</pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/02-zabbix登录页.png" alt="02 zabbix登录页">
+</div>
+<div class="title">Figure 1. 登录界面</div>
+</div>
+<div class="paragraph">
+<p>输入以下用户名和密码登录为Zabbix超级用户</p>
+</div>
+<div class="paragraph">
+<p>用户名：Admin
+密码：zabbix</p>
+</div>
+<div class="paragraph">
+<p>最后进入zabbix首页</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/03-zabbix首页.png" alt="03 zabbix首页">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zabbixmysql_2">7.4. Zabbix+Mysql</h3>
+<div class="sect3">
+<h4 id="_overview">7.4.1. Overview</h4>
+<div class="paragraph">
+<p>该template的设计是为了让Zabbix通过Zabbix agent监控MySQL更简单
+，不需要其他任何插件就可以实现</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_requirements">7.4.2. Requirements</h4>
+<div class="paragraph">
+<p>Zabbix version: 6.4 and higher.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tested_versions">7.4.3. Tested versions</h4>
+<div class="paragraph">
+<p><strong>该template 测试在：</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>mysql  Ver 8.0.34</p>
+</li>
+<li>
+<p>Zabbix version: 6.4</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setup">7.4.4. Setup</h4>
+<div class="paragraph">
+<p>1.
+<a href="https://book.cdgeekcamp.com/geekcamp-web-newbie-tutorial/#%E5%AE%89%E8%A3%85MySQL">安装Mysql client</a></p>
+</div>
+<div class="paragraph">
+<p>2.复制userparameter_mysql.conf到另一个目录下并改名为template_db_mysql.conf</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp /usr/share/doc/zabbix-agent/userparameter_mysql.conf /etc/zabbix/zabbix_agentd.d/template_db_mysql.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.重启Zabbix agent</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl restart zabbix-agent</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>4.创建一个MySQL user用于监控</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql&gt;CREATE USER 'zbx_monitor'@'%' IDENTIFIED BY 'password';
+mysql&gt;GRANT REPLICATION CLIENT,PROCESS,SHOW DATABASES,SHOW VIEW ON *.* TO 'zbx_monitor'@'%';</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>5.创建/var/lib/zabbix/.my.cnf</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir /var/lib/zabbix
+
+cat &lt;&lt; EOF &gt;/var/lib/zabbix/.my.cnf
+[client]
+user='zbx_monitor'
+password='password'
+EOF</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_start">7.4.5. Start</h4>
+<div class="paragraph">
+<p>进入zabbix主页
+<a href="http://host/zabbix" class="bare">http://host/zabbix</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/03-zabbix首页.png" alt="03 zabbix首页">
+</div>
+</div>
+<div class="paragraph">
+<p>左侧菜单栏&#8594;monitoring&#8594;Hosts&#8594;Create host</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/04-createhost.png" alt="04 createhost">
+</div>
+</div>
+<div class="paragraph">
+<p>&#8594;update</p>
+</div>
+<div class="paragraph">
+<p>创建完成后如图,有名为mysql的host</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/05-createdhost.png" alt="05 createdhost">
+</div>
+</div>
+<div class="paragraph">
+<p>点击该主机名，查看详细数据，点击item</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/06-查看数据.png" alt="06 查看数据">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/07-itemlist.png" alt="07 itemlist">
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zhiyan_mod_letsencrypt">8. zhiyan-mod-letsencrypt</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_配置zhiyan_mod_letsencrypt">8.1. 配置zhiyan-mod-letsencrypt</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyanmodule/zhiyan-mod-letsencrypt.git
+cd zhiyan-mod-letsencrypt
+pycharm .</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将conf文件下的letsencrypt.conf.sample复制一份并改名为letsencrypt.conf，并参照以下提示进行更改
+找到下面参数：</p>
+</div>
+<div class="paragraph">
+<p>1.将</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dry_run = no</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>改为</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dry_run = yes</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.将</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">language_file=/opt/gc/zy/etc/language/zh_CN/letsencrypt.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>改为</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">language_file=/home/czh/workspace/github/zhiyan-mod-letsencrypt/language/zh_CN/letsencrypt.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将该文件中的所有</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">level = INFO</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>改为</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">level = TRACE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将需要分析的log文件保存到本地的/var/log/letsencrypt/下(需要分析的log文件通常在服务器的/var/log/letsencrypt目录下)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /var/log/letsencrypt/
+scp root@8.210.45.121:/var/log/letsencrypt/letsencrypt.log /var/log/letsencrypt/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将已完成证书签发的服务器上的/etc/letsencrypt目录保存到本地的/etc/letsencrypt</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">scp -r root@8.210.45.121:/etc/letsencrypt /etc/letsencrypt</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装zysdk">8.2. 安装zySDK</h3>
+<div class="paragraph">
+<p>1.克隆所需的项目</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/libzygrpc.git
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/libzymod-python.git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.进入libzymod-python目录进行以下操作</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/libzymod-python/
+git checkout dev
+git pull origin dev
+sh build.sh
+cd dist/
+pip install zymod-0.0.2.3-py3-none-any.whl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.安装以下版本的依赖</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install grpcio==1.57.0
+pip install grpcio-tools==1.57.0
+pip install protobuf==4.21.12
+pip install setuptool==68.0.0</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+setuptool可以使用更低版本如
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>4.在libzygrpc目录下进行以下操作</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/libzygrpc/
+git checkout dev
+git pull origin dev
+cd python/
+sh build.sh
+cd dist/
+pip install zygrpc-0.0.1.15-py3-none-any.whl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>现在准备好了所有环境，回到pycharm查看是否还有依赖不存在的问题，没有报错后，回到zhiyan-mod-letsencrypt目录下继续操作</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/zhiyan-mod-letsencrypt
+python zymod_letsencrypt.py -c /home/czh/workspace/github/zhiyan-mod-letsencrypt/conf/letsencrypt.conf</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">屏幕输出如下</div>
+<div class="content">
+<pre>[czh@archlinux zhiyan-mod-letsencrypt]$ python zymod_letsencrypt.py -c /home/czh/workspace/github/zhiyan-mod-letsencrypt/conf/letsencrypt.conf
+2023-08-28 19:55:45 26872 [INFO] 未启用日志配置文件，加载默认设置
+2023-08-28 19:55:45 26872 [INFO] 日志配置文件 '/home/czh/workspace/github/zhiyan-mod-letsencrypt/conf/letsencrypt.conf' 加载成功
+2023-08-28 19:55:45 26872 [INFO] 查找自动续签定时任务设置：当前模式-&gt;systemd
+2023-08-28 19:55:45 26872 [TRACE] Enter function: get_timer_prop
+2023-08-28 19:55:45 26872 [TRACE] Enter function: __calc_next_elapse
+2023-08-28 19:55:45 26872 [TRACE] input-&gt;now_ts=1693223745.7171829
+2023-08-28 19:55:45 26872 [TRACE] input-&gt;now_monotonic_ts=39455.986456076
+2023-08-28 19:55:45 26872 [TRACE] input-&gt;next_usec=1693238400000000
+2023-08-28 19:55:45 26872 [TRACE] input-&gt;next_monotonic_usec=0
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;next_ts=1693238400.0
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;next_monotonic_ts=0.0
+2023-08-28 19:55:45 26872 [TRACE] output-&gt;result=1693238400.0
+2023-08-28 19:55:45 26872 [TRACE] Exit function: __calc_next_elapse
+2023-08-28 19:55:45 26872 [TRACE] output-&gt;result=ZySystemdTimerProp(timer_name='letsencrypt.timer', unit_name='letsencrypt.service', timers_calendar=[('OnCalendar', '*-*-* 00:00:00')], next_elapse=datetime.datetime(2023, 8, 29, 0, 0), last_trigger=datetime.datetime(1970, 1, 1, 8, 0), result='success', persistent=True, wake_system=False)
+2023-08-28 19:55:45 26872 [TRACE] Exit function: get_timer_prop
+2023-08-28 19:55:45 26872 [TRACE] Enter function: get_last_result_from_log
+2023-08-28 19:55:45 26872 [TRACE] input-&gt;log_file=/var/log/letsencrypt/letsencrypt.log
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;_log_file=/var/log/letsencrypt/letsencrypt.log
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;result=(True, datetime.datetime(2023, 8, 25, 9, 33, 19))
+2023-08-28 19:55:45 26872 [TRACE] output-&gt;result=(True, datetime.datetime(2023, 8, 25, 9, 33, 19), '/var/log/letsencrypt/letsencrypt.log')
+2023-08-28 19:55:45 26872 [TRACE] Exit function: get_last_result_from_log
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;last_run=1970-01-01 08:00:00
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;next_running=2023-08-29 00:00:00
+2023-08-28 19:55:45 26872 [TRACE] Enter function: mod_send_request_grpc
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;name=letsencrypt
+2023-08-28 19:55:45 26872 [TRACE] var-&gt;datetime=2023-08-28 11:55:45.724902+00:00
+2023-08-28 19:55:45 26872 [DEBUG] content=
+{
+    "Certificates": [
+        {
+            "Certificate": {
+                "Issued By": {
+                    "Common Name": "R3",
+                    "Organization": "Let's Encrypt",
+                    "Organization Unit": "&lt;未包含在证书中&gt;"
+                },
+                "Issued To": {
+                    "Common Name": "*.chengzenghuan.asia",
+                    "Organization": "&lt;未包含在证书中&gt;",
+                    "Organization Unit": "&lt;未包含在证书中&gt;"
+                },
+                "Subject Alternative Name": {
+                    "DNS Names": [
+                        "*.chengzenghuan.asia"
+                    ]
+                },
+                "Validity Period": {
+                    "Expires On": "2023-11-23 05:26:20",
+                    "Issued On": "2023-08-25 05:26:21",
+                    "Time Left": "86天17时30分34秒"
+                }
+            },
+            "Certificate Path": "/etc/letsencrypt/live/chengzenghuan.asia/fullchain.pem",
+            "Domain": "*.chengzenghuan.asia",
+            "Private Key Path": "/etc/letsencrypt/live/chengzenghuan.asia/privkey.pem",
+            "Private Key Type": "ECDSA",
+            "Root Certificate Path": "/etc/letsencrypt/live/chengzenghuan.asia/chain.pem"
+        }
+    ],
+    "CertificatesTitleColName": "Domain",
+    "RenewalTimerState": {
+        "Activate": "letsencrypt.service",
+        "LastRan": "1970-01-01 08:00:00",
+        "LastRanResult": true,
+        "Left": "4 h, 4 min, 14 sec",
+        "NextRunning": "2023-08-29 00:00:00",
+        "Passed": "19597 days, 11 h, 55 min, 45 sec",
+        "RenewalLogFile": "/var/log/letsencrypt/letsencrypt.log",
+        "RenewalResult": true,
+        "RenewalTime": "2023-08-25 09:33:19",
+        "SystemTime": "2023-08-28 19:55:45",
+        "TimerName": "letsencrypt.timer"
+    }
+}
+2023-08-28 19:55:45 26872 [INFO] zymod：试运行中，不进行注册.....
+2023-08-28 19:55:45 26872 [TRACE] Exit function: mod_send_request_grpc</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zhiyan_mod_php_fpm">9. zhiyan-mod-php-fpm</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_克隆_zhiyan_mod_php_fpmlibzygrpclibzymod_rust">9.1. 克隆 zhiyan-mod-php-fpm、libzygrpc、libzymod-rust</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYanModule
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyanmodule/zhiyan-mod-php-fpm.git
+cd zhiyan-mod-php-fpm
+git checkout dev
+git pull origin dev
+
+cd /home/czh/workspace/github/ZhiYan
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/libzymod-rust.git
+cd libzymod-rust
+git checkout dev
+git pull origin dev
+
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/libzygrpc.git
+cd libzygrpc
+git checkout dev
+git pull origin dev</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+每个项目都要切换分支并拉取最新代码
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_配置zhiyan_mod_php_fpm">9.1.1. 配置zhiyan-mod-php-fpm</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYan
+cat &lt;&lt; EOF &gt; Cargo.toml
+[workspace]
+members = ["libzymod-rust"]
+exclude = ["libzygrpc", "nginx-access-log-parser", "nginx-error-log-parser"]
+
+[patch]
+[patch.crates-io]
+[patch.crates-io.libzymod-rust]
+path = "/home/czh/workspace/github/ZhiYan/libzymod-rust"
+
+[patch.crates-io.libzygrpc]
+path = "/home/czh/workspace/github/ZhiYan/libzygrpc/rust"
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYanModule
+cat &lt;&lt; EOF &gt;Cargo.toml
+[workspace]
+
+members = [
+    "zhiyan-mod-php-fpm",
+]
+
+[patch.crates-io]
+libzymod-rust = { path = '/home/czh/workspace/github/ZhiYan/libzymod-rust' }
+libzygrpc = { path = '/home/czh/workspace/github/ZhiYan/libzygrpc/rust' }
+EOF</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rust">9.2. RUST</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+RUST安装与使用参照
+<a href="https://fifilyu.github.io/seia/#_Rust_chapter">此文档</a>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_编译zhiyan_mod_php_fpm并运行">9.3. 编译zhiyan-mod-php-fpm并运行</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYan/libzygrpc/rust
+p cargo build
+
+cd /home/czh/workspace/github/ZhiYan/libzymod-rust
+p cargo build
+
+cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm
+p cargo build</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>切换到cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm目录,执行以下命令可以得到一个可执行文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm
+cargo run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>warning: `zhiyan-mod-php-fpm` (bin "zhiyan-mod-php-fpm") generated 1 warning
+    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
+     Running `/home/czh/workspace/github/ZhiYanModule/target/debug/zhiyan-mod-php-fpm`
+2023-08-29 19:29:08 30984 [WARN] 检测到日志配置文件'/opt/gc/zy/etc/php-fpm_log.yaml'不存在,将加载默认设置(Level：Debug)
+2023-08-29 19:29:08 30984 [ERROR] 检测到智眼模块配置文件'/opt/gc/zy/etc/php-fpm.conf'不存在</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>可执行文件为</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/home/czh/workspace/github/ZhiYanModule/target/debug/zhiyan-mod-php-fpm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>执行以下命令就可以查看帮助信息</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/home/czh/workspace/github/ZhiYanModule/target/debug/zhiyan-mod-php-fpm --help</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>更改zhiyan-mod-php-fpm/conf下的配置文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf
+mv php-fpm.conf.sample php-fpm.conf
+mv php-fpm.log.yaml.sample php-fpm.log.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>1.修改php-fpm.conf文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim php-fpm.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>更改以下内容</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">将
+language_file=/opt/gc/zy/etc/language/zh_CN/php-fpm.json
+改为
+language_file=/home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/language/zh_CN/php-fpm.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.修改php-fpm.log.yaml</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim php-fpm.log.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将
+level: error
+改为
+level: trace</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /var/log/php
+touch /var/log/php/errors.log
+chown -R czh:czh /var/log/php/errors.log
+
+cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm
+mkdir var/log
+touch var/log/php-fpm.log/php-fpm.log</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>执行</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/home/czh/workspace/github/ZhiYanModule/target/debug/zhiyan-mod-php-fpm -c  /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf/php-fpm.conf -l /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf/php-fpm.log.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>[czh@archlinux php-fpm.d]$ /home/czh/workspace/github/ZhiYanModule/target/debug/zhiyan-mod-php-fpm -c  /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf/php-fpm.conf -l /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf/php-fpm.log.yaml
+log4rs: error deserializing appender file: Permission denied (os error 13)
+log4rs: Reference to nonexistent appender: `file`
+2023-08-29 19:57:48 32333 [INFO] 日志配置文件'/home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm/conf/php-fpm.log.yaml'加载成功。
+2023-08-29 19:57:48 32333 [INFO] Code:"1",Messages:"phpfpm模块注册失败，Agent连接失败,十秒后进行下一次尝试,Error Message:transport error"
+2023-08-29 19:57:58 32333 [INFO] Code:"1",Messages:"phpfpm模块注册失败，Agent连接失败,十秒后进行下一次尝试,Error Message:transport error"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>安装配置php-fpm</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -Syy
+sudo pacman -S  extra/php-fpm
+systemctl enable php-fpm.service
+systemctl start php-fpm.service
+systemctl status php-fpm.service
+
+vim /etc/php/php-fpm.d/www.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>删除258行的第一个符号‘；’</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>255 ;       anything, but it may not be a good idea to use the .php extension or it
+256 ;       may conflict with a real PHP file.
+257 ; Default Value: not set
+258 ;pm.status_path = /status
+259
+260 ; The address on which to accept FastCGI status request. This creates a new
+261 ; invisible pool that can handle requests independently. This is useful</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重启php-fpm.service</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl restart php-fpm.service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>配置nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/nginx/nginx.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在文件末尾最后一个}符号的上一行添加如下内容</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>    server {
+    listen       8023;
+    server_name  _;
+    root         /usr/share/nginx/html;
+    location ~ ^/status$ {
+        fastcgi_pass unix://run/php-fpm/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        allow 127.0.0.1;
+        deny all;
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>接下来访问
+<a href="http://localhost:8023/status?json" class="bare">http://localhost:8023/status?json</a></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_grpcpython">10. grpc+python</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_快速开始_2">10.1. 快速开始</h3>
+<div class="sect3">
+<h4 id="_环境准备">10.1.1. 环境准备</h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+以下命令匀在root下执行
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+ <code>python -m ensurepip</code>
+检查当前Python环境中是否已经安装了pip。如果没有安装，则会自动下载并安装最新版本的pip
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>更新pip版本</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -m pip install --upgrade pip</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_安装grpc">10.1.2. 安装gRPC</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -m pip install grpcio</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_grpc_tools">10.1.3. gRPC tools</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -m pip install grpcio-tools</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_下载example">10.1.4. 下载example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone -b v1.57.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc
+cd grpc/examples/python/helloworld</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_运行_grpc_应用">10.1.5. 运行 gRPC 应用</h4>
+<div class="paragraph">
+<p>进入 <code>examples/python/helloworld</code> 目录</p>
+</div>
+<div class="paragraph">
+<p>1.运行server</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python greeter_server.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[root@gitserver helloworld]# python greeter_server.py
+Server started, listening on 50051</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.在另一个终端同一目录下运行client</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python greeter_client.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[root@gitserver helloworld]# python greeter_client.py
+Will try to greet world ...
+Greeter client received: Hello, you!</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_更新grpc_service">10.1.6. 更新gRPC service</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim examples/protos/helloworld.proto</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>添加
+<code>// Sends another greeting
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}</code>
+到下列文字标识处</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  *添加到此处*
+
+  //rpc SayHelloStreamReply (HelloRequest) returns (stream HelloReply) {}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>添加后变成</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  // Sends another greeting
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+
+  //rpc SayHelloStreamReply (HelloRequest) returns (stream HelloReply) {}
+}</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_生成grpc代码">10.1.7. 生成gRPC代码</h4>
+<div class="paragraph">
+<p>进入 <code>examples/python/helloworld</code> 目录，执行下列命令</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/helloworld.proto</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_更新并运行该应用">10.1.8. 更新并运行该应用</h4>
+<div class="paragraph">
+<p>1.更新server
+在相同目录下，编辑greeter_server.py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim greeter_server.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>class Greeter(helloworld_pb2_grpc.GreeterServicer):
+
+  def SayHello(self, request, context):
+    return helloworld_pb2.HelloReply(message=f'Hello, {request.name}!')
+
+  def SayHelloAgain(self, request, context):
+    return helloworld_pb2.HelloReply(message=f'Hello again, {request.name}!')
+...</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在上面代码中，已经添加了下面这段代码</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>  def SayHelloAgain(self, request, context):
+    return helloworld_pb2.HelloReply(message=f'Hello again, {request.name}!')</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.更新client
+在相同目录下，编辑greeter_client.py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim greeter_client.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>def run():
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = helloworld_pb2_grpc.GreeterStub(channel)
+        response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
+        print("Greeter client received: " + response.message)
+        response = stub.SayHelloAgain(helloworld_pb2.HelloRequest(name='you'))
+        print("Greeter client received: " + response.message)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>上面代码中，已经添加了下面这段代码</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        response = stub.SayHelloAgain(helloworld_pb2.HelloRequest(name='you'))
+        print("Greeter client received: " + response.message)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.运行</p>
+</div>
+<div class="paragraph">
+<p>到 <code>examples/python/helloworld</code> 这个目录下</p>
+</div>
+<div class="paragraph">
+<p>(1)运行server</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python greeter_server.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[root@gitserver helloworld]# python greeter_server.py
+Server started, listening on 50051</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在另一个终端中的相同目录下</p>
+</div>
+<div class="paragraph">
+<p>(2)运行client</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python greeter_client.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[root@gitserver helloworld]# python greeter_client.py
+Will try to greet world ...
+Greeter client received: Hello, you!
+Greeter client received: Hello again, you!</pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-21 08:47:57 +0800
+Last updated 2023-08-30 20:49:40 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
