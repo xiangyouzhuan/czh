@@ -903,6 +903,11 @@ p { margin-bottom: 1.25rem; }
 </li>
 </ul>
 </li>
+<li><a href="#_zhiyan_mod_iptables">11. zhiyan-mod-iptables</a>
+<ul class="sectlevel2">
+<li><a href="#_zhiyan_mod_iptables_2">11.1. zhiyan-mod-iptables</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -3471,15 +3476,66 @@ Greeter client received: Hello again, you!</pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
-<div style="page-break-after: always;"></div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zhiyan_mod_iptables">11. zhiyan-mod-iptables</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_zhiyan_mod_iptables_2">11.1. zhiyan-mod-iptables</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">su root
+python -m pip install --upgrade pip
+pip install python-iptables --break-system-packages</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python
+&gt;&gt;&gt; import iptc
+&gt;&gt;&gt; iptc.easy.dump_chain('filter', 'OUTPUT', ipv6=False)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>[{'target': 'LIBVIRT_OUT', 'counters': (100462, 12548250)}]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>输出nat table</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&gt;&gt;&gt; iptc.easy.dump_table('nat', ipv6=False)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>&gt;&gt;&gt; iptc.easy.dump_table('nat', ipv6=False)
+{'PREROUTING': [{'addrtype': {'dst-type': 'LOCAL'}, 'target':
+.....
+.....
+.....
+.....
+.....
+.....
+24', 'target': 'MASQUERADE', 'counters': (0, 0)}]}</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-31 15:17:37 +0800
+Last updated 2023-09-01 15:58:18 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
