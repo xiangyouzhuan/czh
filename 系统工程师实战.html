@@ -908,6 +908,40 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_zhiyan_mod_iptables_2">11.1. zhiyan-mod-iptables</a></li>
 </ul>
 </li>
+<li><a href="#_zhiyan_web_server">12. zhiyan-web-server</a>
+<ul class="sectlevel2">
+<li><a href="#_zhiyan_web_flutter">12.1. zhiyan-web-flutter</a></li>
+<li><a href="#_zhiyan_web_server_2">12.2. zhiyan-web-server</a></li>
+<li><a href="#_zhiyan_agent">12.3. zhiyan-agent</a></li>
+<li><a href="#_第一个vue_js应用">12.4. 第一个Vue.js应用</a>
+<ul class="sectlevel3">
+<li><a href="#_环境依赖">12.4.1. 环境依赖</a></li>
+<li><a href="#_创建应用">12.4.2. 创建应用</a></li>
+<li><a href="#_运行">12.4.3. 运行</a></li>
+<li><a href="#_打包">12.4.4. 打包</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_CentOS_chapter">13. CentOS</a>
+<ul class="sectlevel2">
+<li><a href="#_centos6挂载iso文件做仓库">13.1. CentOS6挂载ISO文件做仓库</a>
+<ul class="sectlevel3">
+<li><a href="#_下载_centos6_iso镜像">13.1.1. 下载 CentOS6 ISO镜像</a></li>
+<li><a href="#_设置本地软件仓库">13.1.2. 设置本地软件仓库</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_python">14. Python</a>
+<ul class="sectlevel2">
+<li><a href="#_centos9_install_python311">14.1. CentOS9 Install Python311</a>
+<ul class="sectlevel3">
+<li><a href="#_编译安装">14.1.1. 编译安装</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -3037,7 +3071,7 @@ p cargo build</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>切换到cd /home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm目录,执行以下命令可以得到一个可执行文件</p>
+<p>切换到/home/czh/workspace/github/ZhiYanModule/zhiyan-mod-php-fpm目录,执行以下命令可以得到一个可执行文件</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3528,14 +3562,514 @@ pip install python-iptables --break-system-packages</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zhiyan_web_server">12. zhiyan-web-server</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_zhiyan_web_flutter">12.1. zhiyan-web-flutter</h3>
+<div class="listingblock">
+<div class="title">克隆</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /home/czh/workspace/github/ZhiYanModule
+git clone https://github.com/flutter/flutter.git
+cd flutter
+git checkout 3.10.6
+./bin/flutter doctor -v
+ln -s bin/flutter /usr/bin/flutter
+
+cd /home/czh/workspace/github/ZhiYanModule
+git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/zhiyan-web-flutter.git
+cd zhiyan-web-flutter
+
+flutter build web --release --web-renderer html</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -m http.server</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zhiyan_web_server_2">12.2. zhiyan-web-server</h3>
+<div class="listingblock">
+<div class="content">
+<pre>git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/zhiyan-web-server.git
+cd zhiyan-web-server
+cp src/main/resources/application.properties.sample src/main/resources/application.properties
+vim src/main/resources/application.properties</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>更改</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>spring.datasource.url=jdbc:postgresql://127.0.0.1:5432/zhiyan
+spring.datasource.username=zy
+spring.datasource.password=geek</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>更改</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>logging.config=/home/czh/workspace/temp/zhiyan-web-server/src/main/resources/logback.xml
+
+# 用户头像保存目录
+application.config.user-photo-save-dir=/home/czh/workspace/temp/zhiyan-web-server/var/images/avatar</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>cp src/main/resources/logback.xml.sample src/main/resources/logback.xml
+vim src/main/resources/logback.xml</p>
+</div>
+<div class="paragraph">
+<p>更改</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;file&gt;/home/czh/workspace/temp/zhiyan-web-server/var/log/web-server.log&lt;/file&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>mvn spring-boot:run</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zhiyan_agent">12.3. zhiyan-agent</h3>
+<div class="paragraph">
+<p>git clone ssh://git@git.cdgeekcamp.com:4295/zhiyan/zhiyan-agent.git
+cd zhiyan-agent
+cp conf/agent.conf.sample conf/agent.conf
+vim conf/agent.conf</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>agent_host=192.168.2.134
+server_host=192.168.2.134
+host=192.168.2.134
+token=YmY0MD********************MGQ2OGI3MTEyODNiYjAyZGJjMA==</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>cp conf/agent.log.yaml.sample conf/agent.log.yaml
+vim conf/agent.log.yaml</p>
+</div>
+<div class="paragraph">
+<p>mkdir /var/log/zy
+chown czh:czh -R /var/log/zy</p>
+</div>
+<div class="paragraph">
+<p>cd ..
+cat &lt;&lt;EOF &gt;Cargo.toml</p>
+</div>
+<div class="paragraph">
+<p>members = [
+    "zhiyan-mod-php-fpm",
+    "agent"
+]</p>
+</div>
+<div class="paragraph crates-io">
+<p>libzymod-rust = { path = '/home/lyuqiang/workspace/ZhiYan/libzymod-rust' }
+libzygrpc = { path = '/home/lyuqiang/workspace/ZhiYan/libzygrpc/rust' }
+EOF</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_第一个vue_js应用">12.4. 第一个Vue.js应用</h3>
+<div class="sect3">
+<h4 id="_环境依赖">12.4.1. 环境依赖</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Node.js</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_创建应用">12.4.2. 创建应用</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">npm install --global vue-cli
+echo "export PATH=\$PATH:~/.npm-global/bin/" &gt;&gt; ~/.bashrc
+source ~/.bashrc
+vue init webpack demo_project</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_运行">12.4.3. 运行</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">npm run dev</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_打包">12.4.4. 打包</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">npm run build</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>dist</code> 目录中的文件就是构建的静态页面。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ tree dist/
+dist/
+├── index.html
+└── static
+    ├── css
+    │   ├── app.30790115300ab27614ce176899523b62.css
+    │   └── app.30790115300ab27614ce176899523b62.css.map
+    └── js
+        ├── app.2b6e1782b7cdd8e0b86c.js
+        ├── app.2b6e1782b7cdd8e0b86c.js.map
+        ├── manifest.2ae2e69a05c33dfc65f8.js
+        ├── manifest.2ae2e69a05c33dfc65f8.js.map
+        ├── vendor.dc2a748e035f2d805547.js
+        └── vendor.dc2a748e035f2d805547.js.map</pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_CentOS_chapter">13. CentOS</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_centos6挂载iso文件做仓库">13.1. CentOS6挂载ISO文件做仓库</h3>
+<div class="paragraph">
+<p>CentOS6官方已经停止支持，软件仓库被移除（涉及所有仓库镜像，包括国内镜像）。</p>
+</div>
+<div class="paragraph">
+<p>现在，<code>yum</code> 命令已经不能在线安装任何软件包。</p>
+</div>
+<div class="paragraph">
+<p>详情见： <a href="http://mirror.centos.org/centos/6/readme" class="bare">http://mirror.centos.org/centos/6/readme</a></p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>This directory (and version of CentOS) is deprecated. Please see this FAQ
+concerning the CentOS release scheme:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://wiki.centos.org/FAQ/General" class="bare">https://wiki.centos.org/FAQ/General</a></p>
+</div>
+<div class="paragraph">
+<p>Please keep in mind that 6.0, 6.1, 6.2, 6.3, 6.4 , 6.5, 6.6, 6.7, 6.8 , 6.9 and 6.10 no longer get any updates, nor
+any security fix&#8217;s.
+The whole CentOS 6 is <strong>dead</strong> and <strong>shouldn&#8217;t</strong> be used anywhere at <strong>all</strong></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>生产服务器不能换系统，挂载ISO文件做仓库成唯一快速方法。</p>
+</div>
+<hr>
+<div class="paragraph">
+<p>另外一种方法是替换 <code>/etc/yum.repos.d/CentOS-Base.repo</code> 中的URL：</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>baseurl=http://mirror.centos.org/centos/$releasever/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>替换为：</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>baseurl=https://vault.centos.org/6.10/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>6.10</code> 注意替换为当前系统的版本号。</p>
+</div>
+<div class="paragraph">
+<p>替换后下载速度慢，建议加代理使用，比如 <code>all_proxy=http://x.x.x.x:8123</code>。</p>
+</div>
+<hr>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+EPEL仓库也已经被移除，官方移动到了 <a href="https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/" class="bare">https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_下载_centos6_iso镜像">13.1.1. 下载 CentOS6 ISO镜像</h4>
+<div class="paragraph">
+<p>国内CentOS镜像已经无法下载，只能从CentOS官方提供的地址下载。</p>
+</div>
+<div class="paragraph">
+<p>地址： <a href="https://vault.centos.org/6.10/isos/x86_64/" class="bare">https://vault.centos.org/6.10/isos/x86_64/</a></p>
+</div>
+<div class="paragraph">
+<p>需要下载 CentOS-6.10-x86_64-bin-DVD1.iso 和 CentOS-6.10-x86_64-bin-DVD2.iso。</p>
+</div>
+<div class="paragraph">
+<p>推荐用种子下载，更快：</p>
+</div>
+<div class="paragraph">
+<p><a href="https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1to2.torrent" class="bare">https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1to2.torrent</a></p>
+</div>
+<div class="paragraph">
+<p>也可以直接下载，只是更慢：</p>
+</div>
+<div class="paragraph">
+<p><a href="https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1.iso" class="bare">https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD1.iso</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD2.iso" class="bare">https://vault.centos.org/6.10/isos/x86_64/CentOS-6.10-x86_64-bin-DVD2.iso</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_设置本地软件仓库">13.1.2. 设置本地软件仓库</h4>
+<div class="sect4">
+<h5 id="_创建挂载目录">创建挂载目录</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /media/CentOS-DVD1 /media/CentOS-DVD2</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_挂载iso镜像">挂载ISO镜像</h5>
+<div class="paragraph">
+<p>方法一：从光驱挂载</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mount -o loop,ro /dev/cdrom /media/CentOS-DVD1
+mount -o loop,ro /dev/cdrom1 /media/CentOS-DVD2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>方法二：从ISO文件挂载</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mount -o loop,ro CentOS-6.10-x86_64-bin-DVD1.iso /media/CentOS-DVD1
+mount -o loop,ro CentOS-6.10-x86_64-bin-DVD2.iso /media/CentOS-DVD2</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_设置仓库文件">设置仓库文件</h5>
+<div class="paragraph">
+<p>先备份：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp /etc/yum.repos.d/CentOS-Media.repo /etc/yum.repos.d/CentOS-Media.repo.bak</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>创建配置文件：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /etc/yum.repos.d/CentOS-Media.repo
+# CentOS-Media.repo
+#
+#  This repo can be used with mounted DVD media, verify the mount point for
+#  CentOS-6.  You can use this repo and yum to install items directly off the
+#  DVD ISO that we release.
+#
+# To use this repo, put in your DVD and use it with the other repos too:
+#  yum --enablerepo=c6-media [command]
+#
+# or for ONLY the media repo, do this:
+#
+#  yum --disablerepo=\* --enablerepo=c6-media [command]
+
+[c6-media]
+name=CentOS-\$releasever - Media
+baseurl=file:///media/CentOS-DVD1
+        file:///media/CentOS-DVD2
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>清除YUM安装包缓存：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum clean all</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_禁用在线仓库">禁用在线仓库</h5>
+<div class="paragraph">
+<p>因为在线仓库已经不可用，禁用所有在线仓库。</p>
+</div>
+<div class="paragraph">
+<p>安装 <code>yum-config-manager</code> 命令所属的软件包 <code>yum-utils</code>：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum --disablerepo=\* --enablerepo=c6-media install -y yum-utils</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>yum-utils</code> 包含很多有用的命令：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">[root@localhost ~]# rpm -ql yum-utils|grep bin/
+/usr/bin/debuginfo-install
+/usr/bin/find-repos-of-install
+/usr/bin/needs-restarting
+/usr/bin/package-cleanup
+/usr/bin/repo-graph
+/usr/bin/repo-rss
+/usr/bin/repoclosure
+/usr/bin/repodiff
+/usr/bin/repomanage
+/usr/bin/repoquery
+/usr/bin/reposync
+/usr/bin/repotrack
+/usr/bin/show-changed-rco
+/usr/bin/show-installed
+/usr/bin/verifytree
+/usr/bin/yum-builddep
+/usr/bin/yum-config-manager
+/usr/bin/yum-debug-dump
+/usr/bin/yum-debug-restore
+/usr/bin/yum-groups-manager
+/usr/bin/yumdownloader
+/usr/sbin/yum-complete-transaction
+/usr/sbin/yumdb</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>永久禁用默认启用的仓库：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum-config-manager --disable base updates extras</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>用 <code>yum repolist</code> 命令确认只有 <code>"c6-media"</code> 仓库被启用：</p>
+</div>
+<div class="listingblock">
+<div class="title">控制台输出</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">[root@localhost ~]# yum repolist
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+repo id                            repo name                                 status
+c6-media                           CentOS- - Media                           6,713
+repolist: 6,713</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_确认本地仓库生效">确认本地仓库生效</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum list|grep vim</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">控制台输出</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">vim-common.x86_64                          2:7.4.629-5.el6_8.1         @c6-media
+vim-enhanced.x86_64                        2:7.4.629-5.el6_8.1         @c6-media
+vim-filesystem.x86_64                      2:7.4.629-5.el6_8.1         @c6-media
+vim-minimal.x86_64                         2:7.4.629-5.el6_8.1         @anaconda-CentOS-201806291108.x86_64/6.10
+vim-X11.x86_64                             2:7.4.629-5.el6_8.1         c6-media</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>现在，可以用 <code>yum install</code> 安装软件包了。</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_python">14. Python</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_centos9_install_python311">14.1. CentOS9 Install Python311</h3>
+<div class="sect3">
+<h4 id="_编译安装">14.1.1. 编译安装</h4>
+<div class="listingblock">
+<div class="title">环境准备</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir ~/downloads
+dnf install -y gcc gcc-c++ make libffi-devel bzip2-devel readline-devel ncurses-devel tcl-devel tcl libuuid-devel zlib-devel zlib xz-devel xz tk-devel tk openssl-devel sqlite-devel</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">安装Python</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd  ~/downloads
+wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tar.xz
+tar xf Python-3.11.5.tar.xz
+cd Python-3.11.5
+./configure --prefix=/usr/local/python-3.11.5 \
+    --enable-optimizations \
+    --with-ensurepip \
+    --enable-loadable-sqlite-extensions
+make
+make install
+
+
+ln -s /usr/local/python-3.11.5 /usr/local/python3
+ln -s /usr/local/python3/bin/pip3 /usr/local/bin/gpip
+ln -s /usr/local/python3/bin/python3 /usr/local/bin/gpy
+
+gpip install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple pip
+gpip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-01 15:58:18 +0800
+Last updated 2023-09-13 14:40:43 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
