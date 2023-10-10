@@ -929,6 +929,60 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_编译安装">14.1.1. 编译安装</a></li>
 </ul>
 </li>
+<li><a href="#_python版本管理">14.2. Python版本管理</a></li>
+</ul>
+</li>
+<li><a href="#_Terminal_chapter">15. Terminal</a>
+<ul class="sectlevel2">
+<li><a href="#_zsr">15.1. zsr</a></li>
+</ul>
+</li>
+<li><a href="#_mqtt">16. MQTT</a>
+<ul class="sectlevel2">
+<li><a href="#_mqttdemo">16.1. MQTTdemo</a></li>
+</ul>
+</li>
+<li><a href="#_troubleshoot">17. troubleshoot</a>
+<ul class="sectlevel2">
+<li><a href="#_troubleshoot_2">17.1. troubleshoot</a></li>
+</ul>
+</li>
+<li><a href="#_mysql主从">18. mysql主从</a></li>
+<li><a href="#_pypi">19. pypi</a>
+<ul class="sectlevel2">
+<li><a href="#_打包成可执行文件">19.1. 打包成可执行文件</a></li>
+<li><a href="#_上传到pypi">19.2. 上传到pypi</a></li>
+</ul>
+</li>
+<li><a href="#_kafka">20. kafka</a>
+<ul class="sectlevel2">
+<li><a href="#_quickstart">20.1. quickstart</a>
+<ul class="sectlevel3">
+<li><a href="#_环境准备_2">20.1.1. 环境准备</a></li>
+<li><a href="#_1_下载kafka">20.1.2. 1.下载KAFKA</a></li>
+<li><a href="#_2_启动kafka环境">20.1.3. 2.启动KAFKA环境</a></li>
+<li><a href="#_3_创建一个topic用来存储事件">20.1.4. 3.创建一个topic用来存储事件</a></li>
+<li><a href="#_4_往该topic中写入事件">20.1.5. 4.往该topic中写入事件</a></li>
+<li><a href="#_5_读事件">20.1.6. 5.读事件</a></li>
+<li><a href="#_6_用kafka_connnect将数据导入导出成事件流">20.1.7. 6.用KAFKA CONNNECT将数据导入/导出成事件流</a></li>
+<li><a href="#_常用命令">20.1.8. 常用命令</a></li>
+</ul>
+</li>
+<li><a href="#_kafka_java_demo">20.2. kafka java demo</a></li>
+</ul>
+</li>
+<li><a href="#_GitLab_chapter">21. RabbitMQ</a>
+<ul class="sectlevel2">
+<li><a href="#_rabbitmq_quickstart">21.1. RabbitMQ quickstart</a>
+<ul class="sectlevel3">
+<li><a href="#_python测试脚本">21.1.1. python测试脚本</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_centos_stream_9">22. centos-stream-9</a>
+<ul class="sectlevel2">
+<li><a href="#_yum_换源">22.1. yum 换源</a></li>
 </ul>
 </li>
 </ul>
@@ -3804,7 +3858,7 @@ dnf install -y gcc gcc-c++ make libffi-devel bzip2-devel readline-devel ncurses-
 <div class="title">安装Python</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd  ~/downloads
-wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tar.xz
+wget --no-check-certificate https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tar.xz
 tar xf Python-3.11.5.tar.xz
 cd Python-3.11.5
 ./configure --prefix=/usr/local/python-3.11.5 \
@@ -3823,16 +3877,1405 @@ gpip install --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple pip
 gpip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</code></pre>
 </div>
 </div>
-<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_python版本管理">14.2. Python版本管理</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+该部分提供思路，不可直接使用
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#查看当前电脑上有多少个版本的python
+[root@192 workspace]# ls /usr/bin/python*
+
+#建立软链接更改使用的python
+[root@192 workspace]# ln -s /usr/bin/python3.9 python
+#或者
+[root@192 workspace]# ln -s /usr/bin/python311 python
+
+更改pip安装库的位置
+[root@192 workspace]# which pip
+/usr/bin/pip
+[root@192 workspace]# realpath  /usr/local/bin/gpip
+/usr/local/python-3.11.5/bin/pip3
+
+#建立软链接更改使用的python
+[root@192 workspace]# ln -s /usr/local/python-3.11.5/bin/pip3 /usr/bin/pip</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Terminal_chapter">15. Terminal</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_zsr">15.1. zsr</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -S check
+cd /home/czh/workspace/github
+git clone  git@github.com:fifilyu/zsr.git
+cd zsr
+cmake .
+make
+make install
+cd bin
+./zsr -c 5 --cpu</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>cpu=0.00,0.00,0.00;
+cpu=98.98,1.02,0.00;
+cpu=98.71,1.29,0.00;
+cpu=99.11,0.89,0.03;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>添加到环境变量</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo 'export PATH=$PATH:~/workspace/github/zsr/bin' &gt;&gt; ~/.bashrc
+source ~/.bashrc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在任何路径执行</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">zsr -c 5 --cpu</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>cpu=0.00,0.00,0.00;
+cpu=98.98,1.02,0.00;
+cpu=98.71,1.29,0.00;
+cpu=99.11,0.89,0.03;</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mqtt">16. MQTT</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_mqttdemo">16.1. MQTTdemo</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install paho-mqtt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>该demo本人运行在centos stream 9</p>
+</div>
+<div class="paragraph">
+<p>安装mosquitto(MQTT的broker)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install mosquitto
+systemctl status mosquitto.service
+
+cat &lt;&lt;EOF &gt;&gt;/etc/mosquitto/mosquitto.conf
+allow_anonymous
+listener 1883 0.0.0.0
+EOF
+
+systemctl restart mosquitto.service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在一个终端subscribe</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mosquitto_sub -t 'test/topic' -v</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在另一个终端publish</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mosquitto_pub -t 'test/topic' -m 'hello world'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">在执行subscribe的终端输出</div>
+<div class="content">
+<pre>[root@master ~]# mosquitto_sub -t 'test/topic' -v
+test/topic hello world</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>出现以上内容则mosquitto搭建成功</p>
+</div>
+<div class="paragraph">
+<p>subscribe.py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># python3.6
+
+import random
+
+from paho.mqtt import client as mqtt_client
+
+
+#broker = 'broker.emqx.io'
+broker = '192.168.122.254'
+port = 1883
+topic = "python/mqtt"
+# Generate a Client ID with the subscribe prefix.
+client_id = f'subscribe-{random.randint(0, 100)}'
+# username = 'emqx'
+# password = 'public'
+
+
+def connect_mqtt() -&gt; mqtt_client:
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+
+    client = mqtt_client.Client(client_id)
+    # client.username_pw_set(username, password)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
+
+
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+
+    client.subscribe(topic)
+    client.on_message = on_message
+
+
+def run():
+    client = connect_mqtt()
+    subscribe(client)
+    client.loop_forever()
+
+
+
+if __name__ == '__main__':
+    run()</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>publish.py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># python 3.6
+
+import random
+import time
+
+from paho.mqtt import client as mqtt_client
+
+#broker = 'broker.emqx.io'
+broker = '192.168.122.254'
+port = 1883
+topic = "python/mqtt"
+# Generate a Client ID with the publish prefix.
+client_id = f'publish-{random.randint(0, 1000)}'
+# username = 'emqx'
+# password = 'public'
+
+def connect_mqtt():
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!")
+        else:
+            print("Failed to connect, return code %d\n", rc)
+
+    client = mqtt_client.Client(client_id)
+    # client.username_pw_set(username, password)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
+
+
+def publish(client):
+    msg_count = 1
+    while True:
+        time.sleep(1)
+        msg = f"messages: {msg_count}"
+        result = client.publish(topic, msg)
+        # result: [0, 1]
+        status = result[0]
+        if status == 0:
+            print(f"Send `{msg}` to topic `{topic}`")
+        else:
+            print(f"Failed to send message to topic {topic}")
+        msg_count += 1
+        if msg_count &gt; 5:
+            break
+
+
+def run():
+    client = connect_mqtt()
+    client.loop_start()
+    publish(client)
+    client.loop_stop()
+
+
+if __name__ == '__main__':
+    run()</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshoot">17. troubleshoot</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_troubleshoot_2">17.1. troubleshoot</h3>
+<div class="paragraph">
+<p>Q:Failed to find catalog entry: Invalid argument</p>
+</div>
+<div class="listingblock">
+<div class="title">A:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">journalctl --update-catalog</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Q:MongoDB loads but breaks, returning status=14</p>
+</div>
+<div class="listingblock">
+<div class="title">A:也许不在此路径，先查看是否存在该文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rm -rf /tmp/mongodb-27017.sock</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mysql主从">18. mysql主从</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">主：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql
+mysql&gt;SET GLOBAL server_id = 1;
+mysql&gt;SET GLOBAL validate_password.policy = 0;
+mysql&gt; CREATE USER 'repl'@'%' IDENTIFIED BY '@#$Rfg345634523rft4fa';
+mysql&gt; GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+mysql&gt; FLUSH TABLES WITH READ LOCK;</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+执行 <code>FLUSH TABLES WITH READ LOCK</code> 之后不要退出客户端。再开另一个终端到主：
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">主：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql
+mysql&gt; SHOW MASTER STATUS\G</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>*************************** 1. row ***************************
+             File: mysql-bin.000002
+         Position: 690
+     Binlog_Do_DB:
+ Binlog_Ignore_DB:
+Executed_Gtid_Set:
+1 row in set (0.00 sec)</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+注意记录输出信息中的File和Position
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">从：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo 'server-id=2' &gt;&gt; /etc/my.cnf
+mysql
+mysql&gt;SET GLOBAL server_id = 2;
+mysql&gt; CHANGE REPLICATION SOURCE TO
+        SOURCE_HOST='192.168.122.254',
+        SOURCE_USER='repl',
+        SOURCE_PASSWORD='@#$Rfg345634523rft4fa',
+        SOURCE_LOG_FILE='mysql-bin.000007',
+        SOURCE_LOG_POS=597;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>回到</p>
+</div>
+<div class="listingblock">
+<div class="title">主：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql&gt; UNLOCK TABLES;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">从：</div>
+<p>在从mysql中查看主从同步状态：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql&gt; show slave status \G;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>*************************** 1. row ***************************
+               Slave_IO_State:
+                  Master_Host: master
+                  Master_User: repl
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000002
+          Read_Master_Log_Pos: 690
+               Relay_Log_File: slave-relay-bin.000001
+                Relay_Log_Pos: 4
+        Relay_Master_Log_File: mysql-bin.000002
+             Slave_IO_Running: No
+            Slave_SQL_Running: No
+              Replicate_Do_DB:
+              ...
+              ...
+       Master_public_key_path:
+        Get_master_public_key: 0
+            Network_Namespace:
+1 row in set, 1 warning (0.00 sec)
+
+ERROR:
+No query specified</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>此时的SlaveIORunning 和 SlaveSQLRunning 都是No，因为我们还没有开启主从复制过程。
+开启主从复制：</p>
+</div>
+<div class="listingblock">
+<div class="title">从：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">start slave;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>再次查看同步状态：</p>
+</div>
+<div class="listingblock">
+<div class="title">从：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">show slave status \G;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>SlaveIORunning 和 SlaveSQLRunning 都是Yes说明主从复制已经开启。</p>
+</div>
+<div class="paragraph">
+<p>regerence:
+<a href="https://dev.mysql.com/doc/refman/8.0/en/replication.html" class="bare">https://dev.mysql.com/doc/refman/8.0/en/replication.html</a>
+<a href="https://juejin.cn/post/6844903921677238285" class="bare">https://juejin.cn/post/6844903921677238285</a></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pypi">19. pypi</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_打包成可执行文件">19.1. 打包成可执行文件</h3>
+<div class="listingblock">
+<div class="title">文件结构</div>
+<div class="content">
+<pre>mongo-py
+├── common.py
+├── file.json
+├── main.py
+├── mongo_tool
+│   ├── delete.py
+│   ├── insert.py
+│   ├── query.py
+│   └── update.py
+├── pyproject.toml
+├── README.md</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">pyproject.toml</div>
+<div class="content">
+<pre>[tool.poetry]
+name = "czh-mongo-py"
+version = "0.0.1.0"
+description = ""
+authors = ["xiangyouzhuan &lt;xiangyouzhuan2018@gmail.com&gt;"]
+readme = "README.md"
+
+packages = [
+    { include = "common.py" },  #包含所需的文件
+    { include = "main.py" },
+    { include = "mongo_tool" }
+]
+
+[tool.poetry.dependencies]
+python = "&gt;=3.8.5 &lt;4.0.0"
+
+[tool.poetry.scripts]
+czhmongopy = "main:main"  #此处‘czhmongopy’是使用软件时的命令，等同于python main.py
+                          #"main:main"指main.py下的main()函数
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd mongo-py
+poetry build -f wheel</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>本地安装测试</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install -U --user dist/xxxxx.whl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>列出 Python 包文件列表：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip show czh-mongo-py -f</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>获取命令行工具执行路径：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python -c "import site; print('%s/bin/czhmongopy' % site.USER_BASE)"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>~/.local/bin/czhmongopy</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>运行</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">~/.local/bin/czhmongopy</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>命令行参数错误，请查看使用说明
+usage: mongo_tool [-i file] [-d filter] [-u filter json] [-q filter]
+
+mongo工具
+
+options:
+  -h, --help            show this help message and exit
+  -i file, --insert file
+                        将js文件内容写入数据库
+  -u filter json, --update filter json
+                        更改满足filter的数据
+  -q filter, --query filter
+                        查询满足filter的数据
+  -d filter, --delete filter
+                        删除所有满足条件的document
+  -v, --version         显示版本信息</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">reference</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/" class="bare">https://packaging.python.org/en/latest/tutorials/packaging-projects/</a></p>
+</li>
+<li>
+<p><a href="https://github.com/geekcampchina/geekcamp-calculator" class="bare">https://github.com/geekcampchina/geekcamp-calculator</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_上传到pypi">19.2. 上传到pypi</h3>
+<div class="listingblock">
+<div class="title">上传到testpypi</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">twine upload --repository testpypi dist/*</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">上传到pypi</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">twine upload dist/*</code></pre>
+</div>
+</div>
+<div class="ulist">
+<div class="title">终端提醒输入username 和 password时：</div>
+<ul>
+<li>
+<p>username输入 <code>__token__</code></p>
+</li>
+<li>
+<p>password输入token(token需要在pypi生成)</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>Uploading distributions to https://test.pypi.org/legacy/
+Enter your username: __token__
+Uploading czh-mongo-py-0.0.1-py3-none-any.whl
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.2/8.2 kB • 00:01 • ?
+Uploading czh-mongo-py-0.0.1.tar.gz
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.8/6.8 kB • 00:00 • ?</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>测试从testpypi安装czh-mongo-py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install --index-url https://test.pypi.org/simple/ --no-deps czh-mongo-py</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>设置连接数据库的环境变量</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export mongoship=192.168.122.52
+export mongoshport=27017</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输入命令</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">czhmongpy</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>命令行参数错误，请查看使用说明
+usage: mongo_tool [-i file] [-d filter] [-u filter json] [-q filter]
+
+mongo工具
+
+options:
+  -h, --help            show this help message and exit
+  -i file, --insert file
+                        将js文件内容写入数据库
+  -u filter json, --update filter json
+                        更改满足filter的数据
+  -q filter, --query filter
+                        查询满足filter的数据
+  -d filter, --delete filter
+                        删除所有满足条件的document
+  -v, --version         显示版本信息</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kafka">20. kafka</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_quickstart">20.1. quickstart</h3>
+<div class="sect3">
+<h4 id="_环境准备_2">20.1.1. 环境准备</h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+本地环境必须安装Java 8+
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">安装java17</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@dlp ~]# dnf -y install java-17-openjdk java-17-openjdk-devel
+
+[root@dlp ~]# cat &gt; /etc/profile.d/java.sh &lt;&lt;'EOF'
+export JAVA_HOME=$(dirname $(dirname $(readlink $(readlink $(which java)))))
+export PATH=$PATH:$JAVA_HOME/bin
+EOF
+
+[root@dlp ~]# source /etc/profile.d/java.sh
+
+[root@dlp ~]# java --version
+openjdk 17.0.3 2022-04-19 LTS
+OpenJDK Runtime Environment 21.9 (build 17.0.3+7-LTS)
+OpenJDK 64-Bit Server VM 21.9 (build 17.0.3+7-LTS, mixed mode, sharing)
+
+# verify to create test program
+[root@dlp ~]# cat &gt; java_test.java &lt;&lt;'EOF'
+class java_test {
+    public static void main(String[] args) {
+        System.out.println("Hello Java World !");
+    }
+}
+EOF
+
+[root@dlp ~]# javac java_test.java
+[root@dlp ~]# java java_test
+Hello Java World !</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果您从CentOS官方存储库安装了多个版本的Java，则可以使用 <code>alternatives</code> 来切换它们。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@dlp ~]# alternatives --config java
+
+There are 3 programs which provide 'java'.
+
+  Selection    Command
+-----------------------------------------------
+   1           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el9.x86_64/jre/bin/java)
+*+ 2           java-11-openjdk.x86_64 (/usr/lib/jvm/java-11-openjdk-11.0.15.0.10-1.el9.x86_64/bin/java)
+   3           java-17-openjdk.x86_64 (/usr/lib/jvm/java-17-openjdk-17.0.3.0.7-1.el9.x86_64/bin/java)
+
+Enter to keep the current selection[+], or type selection number: 3
+
+[root@dlp ~]# alternatives --config javac
+
+There are 3 programs which provide 'javac'.
+
+  Selection    Command
+-----------------------------------------------
+   1           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el9.x86_64/bin/javac)
+*+ 2           java-11-openjdk.x86_64 (/usr/lib/jvm/java-11-openjdk-11.0.15.0.10-1.el9.x86_64/bin/javac)
+   3           java-17-openjdk.x86_64 (/usr/lib/jvm/java-17-openjdk-17.0.3.0.7-1.el9.x86_64/bin/javac)
+
+Enter to keep the current selection[+], or type selection number: 3
+
+[root@dlp ~]# java --version
+openjdk 17.0.3 2022-04-19 LTS
+OpenJDK Runtime Environment 21.9 (build 17.0.3+7-LTS)
+OpenJDK 64-Bit Server VM 21.9 (build 17.0.3+7-LTS, mixed mode, sharing)
+[root@dlp ~]# javac --version
+javac 17.0.3</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_下载kafka">20.1.2. 1.下载KAFKA</h4>
+<div class="paragraph">
+<p>下载新的KAFKA发行版并解压</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://dlcdn.apache.org/kafka/3.5.0/kafka_2.13-3.5.0.tgz
+tar xf kafka_2.13-3.5.0.tgz
+cd kafka_2.13-3.5.0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_启动kafka环境">20.1.3. 2.启动KAFKA环境</h4>
+<div class="paragraph">
+<p>为了使zookeeper和Kafka broker服务管理更方便，将它们添加至系统服务</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; /etc/systemd/system/zookeeper.service
+[Unit]
+Description=ZooKeeper Server
+After=network.target
+before=kafka.service
+
+[Service]
+User=root
+ExecStart=/root/kafka_2.13-3.5.0/bin/zookeeper-server-start.sh /root/kafka_2.13-3.5.0/config/zookeeper.properties
+WorkingDirectory=/root/kafka_2.13-3.5.0
+
+[Install]
+WantedBy=multi-user.target
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; /etc/systemd/system/kafka.service
+[Unit]
+Description=Kafka Server
+After=network.target zookeeper.service
+
+[Service]
+User=root
+ExecStart=/root/kafka_2.13-3.5.0/bin/kafka-server-start.sh /root/kafka_2.13-3.5.0/config/server.properties
+WorkingDirectory=/root/kafka_2.13-3.5.0
+
+[Install]
+WantedBy=multi-user.target
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">启动ZooKeeper服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#设置开机自启动
+systemctl enable zookeeper
+#启动ZooKeeper服务
+systemctl start zookeeper
+#查看ZooKeeper服务
+systemctl status zookeeper</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">启动Kafka broker服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#设置开机自启动
+systemctl enable kafka
+#启动kafka服务
+systemctl start kafka
+#查看kafka服务
+systemctl status kafka</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_3_创建一个topic用来存储事件">20.1.4. 3.创建一个topic用来存储事件</h4>
+<div class="paragraph">
+<p>在写第一个事件之前，必须创建一个topic。</p>
+</div>
+<div class="paragraph">
+<p>打开另一个终端</p>
+</div>
+<div class="listingblock">
+<div class="title">创建一个topic</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_4_往该topic中写入事件">20.1.5. 4.往该topic中写入事件</h4>
+<div class="listingblock">
+<div class="title">使用producer</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+This is my first event
+This is my second event</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>你可以在任何时候使用 <code>Ctrl-C</code> 关闭producer客户端</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_5_读事件">20.1.6. 5.读事件</h4>
+<div class="listingblock">
+<div class="title">再开一个终端，执行</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+This is my first event
+This is my second event</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>使用 <code>Ctrl-C</code> 可终止程序</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_6_用kafka_connnect将数据导入导出成事件流">20.1.7. 6.用KAFKA CONNNECT将数据导入/导出成事件流</h4>
+<div class="paragraph">
+<p>Kafka Connect允许你不断地从外部系统摄取数据到Kafka
+在这个快速入门中，我们将看到如何使用简单的连接器来运行Kafka Connect，将数据从文件导入到Kafka topic，并将数据从Kafka topic导出到文件。</p>
+</div>
+<div class="listingblock">
+<div class="title">在文件config/connect-standalone.properties中添加配置属性</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "plugin.path=libs/connect-file-3.5.0.jar"&gt;&gt;config/connect-standalone.properties</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">添加测试的数据</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo -e "foo\nbar" &gt; test.txt</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">启动以独立模式运行的两个连接器</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>新开一个终端</p>
+</div>
+<div class="listingblock">
+<div class="title">查看test.sink.txt文件内容</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">more test.sink.txt
+foo
+bar</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+数据被存储在Kafka的topic：connect-test中，所以我们也可以运行一个console-consumer来查看主题中的数据(或者使用自定义consumer代码来处理它):
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">运行console-consumer查看connect-test中数据</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+{"schema":{"type":"string","optional":false},"payload":"foo"}
+{"schema":{"type":"string","optional":false},"payload":"bar"}
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>此时connector继续处理数据，因此我们可以将数据添加到文件中，并看到它在管道中移动:</p>
+</div>
+<div class="paragraph">
+<p>打开一个新终端</p>
+</div>
+<div class="listingblock">
+<div class="title">添加数据到文件中</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo Another line &gt;&gt; test.txt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>现在你应该看到这一行出现在console consumer 的输出和test.sink.txt文件中。</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_常用命令">20.1.8. 常用命令</h4>
+<div class="listingblock">
+<div class="title">增加kafka topic quickstart-events</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">kafka命令行发消息：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+This is my first event
+This is my second event</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">kafka命令行收消息：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">删除kafka topic quickstart-events</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-topics.sh --delete --topic quickstart-events --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看kafka quickstart-events详情</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看kafka topic列表</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-topics.sh --list --bootstrap-server localhost:9092</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看topic中数据</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kafka_java_demo">20.2. kafka java demo</h3>
+<div class="paragraph">
+<p>将项目打包成jar
+sudo mvn clean compile assembly:single
+cd target
+java -jar xxxxx.jar</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_GitLab_chapter">21. RabbitMQ</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_rabbitmq_quickstart">21.1. RabbitMQ quickstart</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">官方文档</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.rabbitmq.com/install-rpm.html#cloudsmith" class="bare">https://www.rabbitmq.com/install-rpm.html#cloudsmith</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>安装RabbitMQ和Cloudsmith签名密钥</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">## primary RabbitMQ signing key
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc'
+## modern Erlang repository
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key'
+## RabbitMQ server repository
+rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将以下内容写入文件 <code>/etc/yum.repos.d/rabbitmq.repo</code> 中</p>
+</div>
+<div class="listingblock">
+<div class="title">添加RabbitMQ仓库</div>
+<div class="content">
+<pre># In /etc/yum.repos.d/rabbitmq.repo
+
+##
+## Zero dependency Erlang RPM
+##
+
+[modern-erlang]
+name=modern-erlang-el9
+# uses a Cloudsmith mirror @ yum.novemberain.com.
+# Unlike Cloudsmith, it does not have any traffic quotas
+baseurl=https://yum1.novemberain.com/erlang/el/9/$basearch
+        https://yum2.novemberain.com/erlang/el/9/$basearch
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/rpm/el/9/$basearch
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[modern-erlang-noarch]
+name=modern-erlang-el9-noarch
+# uses a Cloudsmith mirror @ yum.novemberain.com.
+# Unlike Cloudsmith, it does not have any traffic quotas
+baseurl=https://yum1.novemberain.com/erlang/el/9/noarch
+        https://yum2.novemberain.com/erlang/el/9/noarch
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/rpm/el/9/noarch
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[modern-erlang-source]
+name=modern-erlang-el9-source
+# uses a Cloudsmith mirror @ yum.novemberain.com.
+# Unlike Cloudsmith, it does not have any traffic quotas
+baseurl=https://yum1.novemberain.com/erlang/el/9/SRPMS
+        https://yum2.novemberain.com/erlang/el/9/SRPMS
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang/rpm/el/9/SRPMS
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+
+
+##
+## RabbitMQ Server
+##
+
+[rabbitmq-el9]
+name=rabbitmq-el9
+baseurl=https://yum2.novemberain.com/rabbitmq/el/9/$basearch
+        https://yum1.novemberain.com/rabbitmq/el/9/$basearch
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/rpm/el/9/$basearch
+repo_gpgcheck=1
+enabled=1
+# Cloudsmith's repository key and RabbitMQ package signing key
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[rabbitmq-el9-noarch]
+name=rabbitmq-el9-noarch
+baseurl=https://yum2.novemberain.com/rabbitmq/el/9/noarch
+        https://yum1.novemberain.com/rabbitmq/el/9/noarch
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/rpm/el/9/noarch
+repo_gpgcheck=1
+enabled=1
+# Cloudsmith's repository key and RabbitMQ package signing key
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+       https://github.com/rabbitmq/signing-keys/releases/download/3.0/rabbitmq-release-signing-key.asc
+gpgcheck=1
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md
+
+[rabbitmq-el9-source]
+name=rabbitmq-el9-source
+baseurl=https://yum2.novemberain.com/rabbitmq/el/9/SRPMS
+        https://yum1.novemberain.com/rabbitmq/el/9/SRPMS
+        https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/rpm/el/9/SRPMS
+repo_gpgcheck=1
+enabled=1
+gpgkey=https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key
+gpgcheck=0
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+pkg_gpgcheck=1
+autorefresh=1
+type=rpm-md</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">更新软件包的元数据信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf update -y</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">从标准软件仓库中安装依赖项</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install socat logrotate -y</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">安装 Erlang 和 RabbitMQ</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install -y erlang rabbitmq-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">设置开机自启动</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl enable rabbitmq-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">启动rabbitmq-server</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl start rabbitmq-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看rabbitmq-server状态</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status  rabbitmq-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">停止rabbitmq-server</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl stop rabbitmq-server</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_python测试脚本">21.1.1. python测试脚本</h4>
+<div class="listingblock">
+<div class="title">环境准备</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install pika</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">receive.py脚本文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; receive.py
+import pika, sys, os
+
+def main():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='hello')
+
+    def callback(ch, method, properties, body):
+        print(f" [x] Received {body}")
+
+    channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">send.py脚本文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; send.py
+import pika
+
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
+channel.queue_declare(queue='hello')
+channel.basic_publish(exchange='',
+                      routing_key='hello',
+                      body='Hello World!')
+print(" [x] Sent 'Hello World!'")
+connection.close()
+
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">执行receive.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python receive.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[*] Waiting for messages. To exit press CTRL+C</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>打开另一个终端
+.执行send.py</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python send.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre> [x] Sent 'Hello World!'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>回到执行receive.py的终端，可看到</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[*] Waiting for messages. To exit press CTRL+C
+[x] Received b'Hello World!'</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_centos_stream_9">22. centos-stream-9</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_yum_换源">22.1. yum 换源</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mv /etc/yum.repos.d/centos.repo /etc/yum.repos.d/centos.repo.backup
+touch /etc/yum.repos.d/centos.repo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将以下内容写入centos.repo中</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the
+# remarked out baseurl= line instead.
+#
+#
+
+[base]
+name=CentOS-$releasever - Base - mirrors.aliyun.com
+#failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos-stream/$stream/BaseOS/$basearch/os/
+        http://mirrors.aliyuncs.com/centos-stream/$stream/BaseOS/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos-stream/$stream/BaseOS/$basearch/os/
+gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official
+
+#additional packages that may be useful
+#[extras]
+#name=CentOS-$releasever - Extras - mirrors.aliyun.com
+#failovermethod=priority
+#baseurl=https://mirrors.aliyun.com/centos-stream/$stream/extras/$basearch/os/
+#        http://mirrors.aliyuncs.com/centos-stream/$stream/extras/$basearch/os/
+#        http://mirrors.cloud.aliyuncs.com/centos-stream/$stream/extras/$basearch/os/
+#gpgcheck=1
+#gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus - mirrors.aliyun.com
+#failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos-stream/$stream/centosplus/$basearch/os/
+        http://mirrors.aliyuncs.com/centos-stream/$stream/centosplus/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos-stream/$stream/centosplus/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official
+
+[PowerTools]
+name=CentOS-$releasever - PowerTools - mirrors.aliyun.com
+#failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos-stream/$stream/PowerTools/$basearch/os/
+        http://mirrors.aliyuncs.com/centos-stream/$stream/PowerTools/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos-stream/$stream/PowerTools/$basearch/os/
+gpgcheck=1
+enabled=0
+gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official
+
+
+[AppStream]
+name=CentOS-$releasever - AppStream - mirrors.aliyun.com
+#failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos-stream/$stream/AppStream/$basearch/os/
+        http://mirrors.aliyuncs.com/centos-stream/$stream/AppStream/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos-stream/$stream/AppStream/$basearch/os/
+gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>更新缓存</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum makecache &amp;&amp; yum update</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-13 14:40:43 +0800
+Last updated 2023-10-09 15:47:29 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
