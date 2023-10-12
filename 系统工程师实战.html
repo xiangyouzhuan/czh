@@ -841,9 +841,8 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_linux无密码登陆">5. Linux无密码登陆</a>
 <ul class="sectlevel2">
-<li><a href="#_生成不带密码的密钥对">5.1. 生成不带密码的密钥对</a></li>
-<li><a href="#_上传公钥文件到远程主机">5.2. 上传公钥文件到远程主机</a></li>
-<li><a href="#_在本地linux终端中配置私钥">5.3. 在本地Linux终端中配置私钥</a></li>
+<li><a href="#_无密码登录">5.1. 无密码登录</a></li>
+<li><a href="#_ssh密钥对克隆git仓库">5.2. ssh密钥对克隆git仓库</a></li>
 </ul>
 </li>
 <li><a href="#_prometheus">6. prometheus</a>
@@ -971,18 +970,24 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_kafka_java_demo">20.2. kafka java demo</a></li>
 </ul>
 </li>
-<li><a href="#_GitLab_chapter">21. RabbitMQ</a>
+<li><a href="#_rabbitmq">21. RabbitMQ</a>
 <ul class="sectlevel2">
 <li><a href="#_rabbitmq_quickstart">21.1. RabbitMQ quickstart</a>
 <ul class="sectlevel3">
 <li><a href="#_python测试脚本">21.1.1. python测试脚本</a></li>
 </ul>
 </li>
+<li><a href="#_rabbitmq_配置">21.2. RabbitMQ 配置</a></li>
 </ul>
 </li>
-<li><a href="#_centos_stream_9">22. centos-stream-9</a>
+<li><a href="#_yum换源">22. yum换源</a>
 <ul class="sectlevel2">
 <li><a href="#_yum_换源">22.1. yum 换源</a></li>
+</ul>
+</li>
+<li><a href="#_proxychains">23. Proxychains</a>
+<ul class="sectlevel2">
+<li><a href="#_安装配置">23.1. 安装配置</a></li>
 </ul>
 </li>
 </ul>
@@ -2306,26 +2311,18 @@ Jenkins Web暂时无法访问，详情见下文
 <h2 id="_linux无密码登陆">5. Linux无密码登陆</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_生成不带密码的密钥对">5.1. 生成不带密码的密钥对</h3>
+<h3 id="_无密码登录">5.1. 无密码登录</h3>
 <div class="listingblock">
+<div class="title">无密码登录设置</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen -N "" -f ~/.ssh/mk</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_上传公钥文件到远程主机">5.2. 上传公钥文件到远程主机</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-copy-id -i ~/.ssh/mk.pub root@192.168.2.236</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_在本地linux终端中配置私钥">5.3. 在本地Linux终端中配置私钥</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt;&gt; ~/.ssh/config
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#生成不带密码的密钥对
+ssh-keygen -N "" -f ~/.ssh/mk
+
+#上传公钥文件到远程主机
+ssh-copy-id -i ~/.ssh/mk.pub root@192.168.2.236
+
+#在本地Linux终端中配置私钥
+cat &lt;&lt; EOF &gt;&gt; ~/.ssh/config
 Host 192.168.2.236
     IdentityFile ~/.ssh/mk
 EOF</code></pre>
@@ -2338,10 +2335,46 @@ EOF</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-如果在gitlab中添加了ssh公钥，则在克隆时必须在本地添加域名解析
+如果是在gitlab中添加ssh公钥，则在克隆时必须在本地添加域名解析
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ssh密钥对克隆git仓库">5.2. ssh密钥对克隆git仓库</h3>
+<div class="listingblock">
+<div class="title">生成密钥对</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#一路回车直到生成
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f keyname</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">参数说明</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>-t rsa 指定密钥对类型为RSA，</p>
+</li>
+<li>
+<p>-b 4096 指定密钥长度为4096位，</p>
+</li>
+<li>
+<p>-C "<a href="mailto:your_email@example.com">your_email@example.com</a>" 注释该密钥对相关联的电子邮件地址（公钥文件末尾会出现该注释）</p>
+</li>
+<li>
+<p>-f ~/.ssh/mk 指定密钥文件的名称和路径。</p>
+</li>
+<li>
+<p>-N "" 指定空密码</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -4883,7 +4916,7 @@ java -jar xxxxx.jar</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_GitLab_chapter">21. RabbitMQ</h2>
+<h2 id="_rabbitmq">21. RabbitMQ</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_rabbitmq_quickstart">21.1. RabbitMQ quickstart</h3>
@@ -5175,13 +5208,64 @@ EOF</code></pre>
 [x] Received b'Hello World!'</pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rabbitmq_配置">21.2. RabbitMQ 配置</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">官方文档</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.rabbitmq.com/install-rpm.html#cloudsmith" class="bare">https://www.rabbitmq.com/install-rpm.html#cloudsmith</a></p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="title">配置RabbitMQ</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加用户并设置密码
+rabbitmqctl add_user 'username' '2a55f70a841f18b97c3a7db939b7adc9e34a0f1b'
+
+#列出所有的用户
+rabbitmqctl list_users
+
+#添加虚拟主机qa1
+rabbitmqctl add_vhost qa1
+
+#向用户授权
+#第一个 .* 表示对于每个实体，都授予配置权限。
+#第二个 .* 表示对于每个实体，都授予写入权限。
+#第三个 .* 表示对于每个实体，都授予读取权限。
+rabbitmqctl set_permissions -p "custom-vhost" "username" ".*" ".*" ".*"
+
+#设置系统最大文件句柄
+echo "*               soft   nofile            65535" &gt;&gt; /etc/security/limits.conf
+echo "*               hard   nofile            65535" &gt;&gt; /etc/security/limits.conf
+reboot生效
+#查看文件句柄最大值
+ulimit -n
+
+#设置RabbitMQ最大文件句柄
+sed -i "s|# LimitNOFILE=65536|LimitNOFILE=65536|" /usr/lib/systemd/system/rabbitmq-server.service
+sed -i "s|LimitNOFILE=32768|#LimitNOFILE=32768|" /usr/lib/systemd/system/rabbitmq-server.service
+
+#重启服务
+systemctl daemon-reload
+systemctl restart rabbitmq-server</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
-<h2 id="_centos_stream_9">22. centos-stream-9</h2>
+<h2 id="_yum换源">22. yum换源</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_yum_换源">22.1. yum 换源</h3>
@@ -5268,6 +5352,32 @@ gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_proxychains">23. Proxychains</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_安装配置">23.1. 安装配置</h3>
+<div class="listingblock">
+<div class="title">安装配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
+yum install proxychains-ng.x86_64
+
+sed -E -i 's/socks4\s+127.0.0.1 9050/socks5 192.168.2.8 1080/' /etc/proxychains.conf
+sed -i 's/#quiet_mode/quiet_mode/g' /etc/proxychains.conf
+
+echo 'alias p="/usr/bin/proxychains4"' &gt;&gt; ~/.bashrc
+# 不重启终端生效环境配置
+source ~/.bashrc
+
+# 测试访问
+p curl -I www.youtube.com</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -5275,7 +5385,7 @@ gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-09 15:47:29 +0800
+Last updated 2023-10-12 14:48:39 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
