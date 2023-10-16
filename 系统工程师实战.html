@@ -990,6 +990,13 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_安装配置">23.1. 安装配置</a></li>
 </ul>
 </li>
+<li><a href="#_drupal环境搭建">24. Drupal环境搭建</a>
+<ul class="sectlevel2">
+<li><a href="#_配置内网环境一安装nginx">24.1. 配置内网环境一：安装Nginx</a></li>
+<li><a href="#_配置内网环境二安装php">24.2. 配置内网环境二：安装PHP</a></li>
+<li><a href="#_配置内网环境三lnmp环境测试">24.3. 配置内网环境三：LNMP环境测试</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -5366,7 +5373,7 @@ gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
 yum install proxychains-ng.x86_64
 
-sed -E -i 's/socks4\s+127.0.0.1 9050/socks5 192.168.2.8 1080/' /etc/proxychains.conf
+sed -E -i 's/socks4\s+127.0.0.1 9050/socks5 127.0.0.1 1080/' /etc/proxychains.conf
 sed -i 's/#quiet_mode/quiet_mode/g' /etc/proxychains.conf
 
 echo 'alias p="/usr/bin/proxychains4"' &gt;&gt; ~/.bashrc
@@ -5378,6 +5385,253 @@ p curl -I www.youtube.com</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drupal环境搭建">24. Drupal环境搭建</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_配置内网环境一安装nginx">24.1. 配置内网环境一：安装Nginx</h3>
+<div class="listingblock">
+<div class="title">安装Nginx</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y nginx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>修改nginx配置文件</p>
+</div>
+<div class="listingblock">
+<div class="title">1.修改Nginx主配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /etc/nginx/nginx.conf
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
+user nginx;
+worker_processes auto;
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+worker_rlimit_nofile 65535;
+
+events {
+    worker_connections 65535;
+}
+
+http {
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    log_format  main  '\$host \$server_port \$remote_addr - \$remote_user [\$time_local] "\$request" '
+                      '\$status \$request_time \$body_bytes_sent "\$http_referer" '
+                      '"\$http_user_agent" "\$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    server_names_hash_bucket_size 128;
+    server_name_in_redirect off;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 4 32k;
+
+    client_header_timeout  3m;
+    client_body_timeout    3m;
+    client_max_body_size 50m;
+    client_body_buffer_size 256k;
+    send_timeout           3m;
+
+    gzip  on;
+    gzip_min_length  1k;
+    gzip_buffers     4 16k;
+    gzip_http_version 1.0;
+    gzip_comp_level 2;
+    gzip_types image/svg+xml application/x-font-wof text/plain text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript text/javascript;
+    gzip_vary on;
+
+    proxy_redirect off;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header REMOTE-HOST \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_connect_timeout 60;
+    proxy_send_timeout 60;
+    proxy_read_timeout 60;
+    proxy_buffer_size 256k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+    proxy_temp_file_write_size 256k;
+    proxy_next_upstream error timeout invalid_header http_500 http_503 http_404;
+    proxy_max_temp_file_size 128m;
+    #让代理服务端不要主动关闭客户端的连接，协助处理499返回代码问题
+    proxy_ignore_client_abort on;
+
+    fastcgi_buffer_size 64k;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+
+    index index.html index.htm index.php default.html default.htm default.php;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">2.增加默认 Host</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /etc/nginx/conf.d
+
+test -f /etc/nginx/conf.d/default.conf &amp;&amp; (test -f /etc/nginx/conf.d/default.conf.init || cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.init)
+
+cat &lt;&lt; EOF &gt; /etc/nginx/conf.d/default.conf
+server {
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  _;
+    root         /usr/share/nginx/html;
+
+    # Load configuration files for the default server block.
+    include /etc/nginx/default.d/*.conf;
+
+    location / {
+    }
+
+    error_page 404 /404.html;
+        location = /40x.html {
+    }
+
+    error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+    }
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">3.测试Nginx配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nginx -t &amp;&amp; (test -s /var/run/nginx.pid || rm -f /var/run/nginx.pid)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>启动Nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">开机启动
+systemctl enable nginx
+systemctl start nginx
+systemctl status nginx</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>● nginx.service - nginx - high performance web server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Thu 2023-01-19 00:00:23 CST; 3s ago
+     Docs: http://nginx.org/en/docs/
+  Process: 9617 ExecStart=/usr/sbin/nginx -c /etc/nginx/nginx.conf (code=exited, status=0/SUCCESS)
+ Main PID: 9618 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─9618 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+           ├─9619 nginx: worker process
+           ├─9620 nginx: worker process
+           ├─9621 nginx: worker process
+           └─9622 nginx: worker process
+
+Jan 19 00:00:23 lan_server systemd[1]: Starting nginx - high performance web server...
+Jan 19 00:00:23 lan_server systemd[1]: Started nginx - high performance web server.</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_配置内网环境二安装php">24.2. 配置内网环境二：安装PHP</h3>
+<div class="listingblock">
+<div class="title">安装Nginx</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y  php  \
+                php -bcmath \
+                php -fpm \
+                php -gd \
+                php -intl \
+                php -mbstring \
+                php -mysqlnd \
+                php -opcache \
+                php -pdo \
+                php -pecl-apcu \
+                php -devel</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_配置内网环境三lnmp环境测试">24.3. 配置内网环境三：LNMP环境测试</h3>
+<div class="listingblock">
+<div class="title">增加Nginx Host设置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /etc/nginx/conf.d/test.drupal.com.conf
+server {
+    listen       80;
+
+    server_name  test.drupal.com;
+    root         /data/web/test.drupal.com;
+    error_log /var/log/nginx/test.drupal.com_error.log;
+    access_log /var/log/nginx/test.drupal.com_access.log  main;
+
+    location / {
+        try_files \$uri /index.php\$is_args\$query_string;
+    }
+
+    location ~ \.php\$ {
+        try_files \$uri \$uri/ 404;
+
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+EOF
+
+nginx -t &amp;&amp; nginx -s reload</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">准备Drupal</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /data/web/test.drupal.com
+
+# 使用 -O 参数指定保存文件名，会强制覆盖已经存在的文件
+wget https://ftp.drupal.org/files/projects/drupal-9.5.11.tar.gz -O drupal-9.5.11.tar.gz
+tar xf drupal-9.5.11.tar.gz
+
+mv drupal-9.5.11/* /data/web/test.drupal.com
+rm -rf drupal-9.5.11
+chown -R apache:nginx /data/web/test.drupal.com
+chmod -R 755 /data/web/test.drupal.com
+
+echo '127.0.0.1 test.drupal.com' &gt;&gt; /etc/hosts
+最后，访问 http://test.drupal.com 完成安装。</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -5385,7 +5639,7 @@ p curl -I www.youtube.com</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-12 14:48:39 +0800
+Last updated 2023-10-13 16:19:48 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
