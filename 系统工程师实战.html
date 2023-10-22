@@ -5777,10 +5777,10 @@ rsync -rvl /opt/module/ hadoop@bigdata3:/opt/module</code></pre>
 </tbody>
 </table>
 <div class="paragraph">
-<p>接下来编辑配置文件
-.进入配置文件目录</p>
+<p>接下来编辑配置文件</p>
 </div>
 <div class="listingblock">
+<div class="title">进入配置文件目录</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /opt/module/hadoop-3.3.6/etc/hadoop</code></pre>
 </div>
@@ -5888,10 +5888,10 @@ rsync -rvl /opt/module/hadoop-3.3.6/ hadoop@bigdata3:/opt/module/hadoop-3.3.6</c
 <div class="sect2">
 <h3 id="_集群操作">25.3. 集群操作</h3>
 <div class="paragraph">
-<p>接下来启动集群，首次启动集群需要对 NameNode 进行格式化：
-.在bigdata1上执行</p>
+<p>接下来启动集群，首次启动集群需要对 NameNode 进行格式化：</p>
 </div>
 <div class="listingblock">
+<div class="title">在bigdata1上执行</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#对NameNode 进行格式化
 cd /opt/module/hadoop-3.3.6
@@ -5921,8 +5921,7 @@ sbin/start-yarn.sh</code></pre>
 <p><a href="http://bigdata3:50090/" class="bare">http://bigdata3:50090/</a></p>
 </li>
 <li>
-<p><a href="http://bigdata1:9870/" class="bare">http://bigdata1:9870/</a>
-*</p>
+<p><a href="http://bigdata1:9870/" class="bare">http://bigdata1:9870/</a></p>
 </li>
 </ul>
 </div>
