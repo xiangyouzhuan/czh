@@ -997,6 +997,13 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_配置内网环境三lnmp环境测试">24.3. 配置内网环境三：LNMP环境测试</a></li>
 </ul>
 </li>
+<li><a href="#_hadoop">25. hadoop</a>
+<ul class="sectlevel2">
+<li><a href="#_环境准备_3">25.1. 环境准备</a></li>
+<li><a href="#_hadoop安装配置">25.2. hadoop安装配置</a></li>
+<li><a href="#_集群操作">25.3. 集群操作</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1005,7 +1012,7 @@ p { margin-bottom: 1.25rem; }
 <h2 id="_Docker_chapter">1. Ceph</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>基于 Centos9 stream</strong></p>
+<p><strong>基于 Centos-stream-9</strong></p>
 </div>
 <div class="sect2">
 <h3 id="_搭建ceph_cluster">1.1. 搭建Ceph Cluster</h3>
@@ -4214,6 +4221,17 @@ if __name__ == '__main__':
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rm -rf /tmp/mongodb-27017.sock</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Q:arch linux 没有声音</p>
+</div>
+<div class="listingblock">
+<div class="title">A:安装音频驱动包</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -S sof-firmware
+sudo pacman -S alsa-ucm-conf
+reboot</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -5088,7 +5106,7 @@ type=rpm-md</pre>
 <div class="listingblock">
 <div class="title">从标准软件仓库中安装依赖项</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install socat logrotate -y</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install -y socat logrotate</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -5632,6 +5650,286 @@ echo '127.0.0.1 test.drupal.com' &gt;&gt; /etc/hosts
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hadoop">25. hadoop</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_环境准备_3">25.1. 环境准备</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>centos-stream-9</p>
+</li>
+<li>
+<p>java11</p>
+</li>
+<li>
+<p>hadoop-3.3.6</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>准备三台服务器bigdata1 bigdata2 bigdata3</p>
+</div>
+<div class="listingblock">
+<div class="title">在这三台服务器上均执行以下内容</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl stop firewalld.service
+systemctl disable firewalld.service
+
+cat &lt;&lt; EOF &gt;&gt; /etc/hosts
+192.168.122.25 bigdata1
+192.168.122.146 bigdata2
+192.168.122.219 bigdata3
+EOF
+
+yum update -y
+yum install -y java-11-openjdk java-11-openjdk-devel
+yum install -y rsync
+
+cat &lt;&lt; EOF &gt;&gt; ~/.bashrc
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.18.0.10-3.el9.x86_64
+export PATH=$PATH:$JAVA_HOME/bin
+export HADOOP_HOME=/opt/module/hadoop-3.3.6
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+EOF
+
+
+source ~/.bashrc
+
+useradd hadoop
+passwd hadoop
+
+mkdir /opt/module
+chown -R hadoop:hadoop /opt/module</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hadoop安装配置">25.2. hadoop安装配置</h3>
+<div class="listingblock">
+<div class="title">在bigdata1执行以下命令</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">su hadoop
+ssh-keygen -t rsa
+
+ssh-copy-id bigdata1
+ssh-copy-id bigdata2
+ssh-copy-id bigdata3
+
+cd /opt/module
+wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+
+tar xf hadoop-3.3.6.tar.gz
+
+hadoop version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>hadoop 的安装完成，到这里，单台机器的软件已经安装完成，接下来使用rsync将安装好的软件拷贝到bigdata2和bigdata3</p>
+</div>
+<div class="listingblock">
+<div class="title">拷贝hadoop</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rsync -rvl /opt/module/ hadoop@bigdata2:/opt/module
+rsync -rvl /opt/module/ hadoop@bigdata3:/opt/module</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>至此，所有软件安装完成</p>
+</div>
+<div class="paragraph">
+<p>基础环境配置完成后，需要对集群中服务器做规划，让每台服务器承担不同的角色。
+具体规划如下，最重要的 NameNode 放在第一台服务器上，yarn 的 ResourceManager 放在 第二台服务器上，SecondaryNamenode 则放在第三台服务器上。
+具体规划如下：</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. 集群规划</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">用途</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bigdata1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bigdata2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bigdata3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HDFS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NameNode DataNode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DataNode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SecondaryNameNode DataNode</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YARN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NodeManager</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ResourceManager NodeManager</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NodeManager</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>接下来编辑配置文件
+.进入配置文件目录</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /opt/module/hadoop-3.3.6/etc/hadoop</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">core-site.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi core-site.xml
+
+&lt;property&gt;
+    &lt;name&gt;fs.defaultFS&lt;/name&gt;
+    &lt;value&gt;hdfs://bigdata1:9000&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+    &lt;value&gt;/opt/module/hadoop-3.3.6/data/tmp&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">hadoop-env.sh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi hadoop-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.18.0.10-3.el9.x86_64/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">hdfs-site.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi hdfs-site.xml
+
+&lt;property&gt;
+    &lt;name&gt;dfs.replication&lt;/name&gt;
+    &lt;value&gt;3&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;
+    &lt;value&gt;bigdata3:50090&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">yarn-env.sh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi yarn-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.18.0.10-3.el9.x86_64/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">yarn-site.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi yarn-site.xml
+
+&lt;property&gt;
+    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+    &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;
+    &lt;value&gt;bigdata2&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">mapred-env.sh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi mapred-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.18.0.10-3.el9.x86_64/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">mapred-site.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi mapred-site.xml
+
+&lt;property&gt;
+    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+    &lt;value&gt;yarn&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">workers</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi workers
+
+bigdata1
+bigdata2
+bigdata3</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>然后将配置同步到另外两台机器：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rsync -rvl /opt/module/hadoop-3.3.6/ hadoop@bigdata2:/opt/module/hadoop-3.3.6
+rsync -rvl /opt/module/hadoop-3.3.6/ hadoop@bigdata3:/opt/module/hadoop-3.3.6</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_集群操作">25.3. 集群操作</h3>
+<div class="paragraph">
+<p>接下来启动集群，首次启动集群需要对 NameNode 进行格式化：
+.在bigdata1上执行</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#对NameNode 进行格式化
+cd /opt/module/hadoop-3.3.6
+bin/hdfsnamenode-format
+
+#启动 hdfs
+sbin/start-dfs.sh</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">在bigdata2上执行</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#启动 yarn
+sbin/start-yarn.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>访问一下网址需要添加本地域名解析</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">然后访问</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://bigdata3:50090/" class="bare">http://bigdata3:50090/</a></p>
+</li>
+<li>
+<p><a href="http://bigdata1:9870/" class="bare">http://bigdata1:9870/</a>
+*</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -5639,7 +5937,7 @@ echo '127.0.0.1 test.drupal.com' &gt;&gt; /etc/hosts
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-13 16:19:48 +0800
+Last updated 2023-10-20 17:40:49 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
