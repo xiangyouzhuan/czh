@@ -5178,12 +5178,15 @@ rabbitmqctl add_vhost qa1
 #第一个 .* 表示对于每个实体，都授予配置权限。
 #第二个 .* 表示对于每个实体，都授予写入权限。
 #第三个 .* 表示对于每个实体，都授予读取权限。
-rabbitmqctl set_permissions -p "custom-vhost" "myuser" ".*" ".*" ".*"
+rabbitmqctl set_permissions -p "qa1" "myuser" ".*" ".*" ".*"
 
 #设置系统最大文件句柄
 echo "*               soft   nofile            65535" &gt;&gt; /etc/security/limits.conf
 echo "*               hard   nofile            65535" &gt;&gt; /etc/security/limits.conf
-reboot生效
+
+#重启生效
+reboot
+
 #查看文件句柄最大值
 ulimit -n
 
@@ -5201,9 +5204,28 @@ systemctl restart rabbitmq-server</code></pre>
 <h3 id="_rabbimq使用">21.3. RabbiMQ使用</h3>
 <div class="sect3">
 <h4 id="_rabbitmq_cli">21.3.1. RabbitMQ cli</h4>
-<div class="paragraph">
-<p>rabbitmqctl consume my_queue
-rabbitmqctl publish my_queue "Hello World!"</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rabbitmq-plugins enable rabbitmq_management
+RABBITMQ_ADMIN=`find / -name rabbitmqadmin`
+cp $RABBITMQ_ADMIN /usr/bin/
+chmod +x /usr/bin/rabbitmqadmin
+
+#定义一个队列queue，durable=true代表持久化打开。
+rabbitmqadmin declare queue name=test durable=true
+
+#定义一个Topic路由
+rabbitmqadmin declare exchange name=my.topic type=topic
+
+#发布一条消息
+rabbitmqadmin publish routing_key=test payload="hello world"
+
+#使用路由转发消息
+rabbitmqadmin publish routing_key=my.test exchange=my.topic payload="hello world"
+
+#查看消息
+rabbitmqadmin get queue=test</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -5218,32 +5240,25 @@ rabbitmqctl publish my_queue "Hello World!"</p>
 <div class="title">receive.py脚本文件</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; receive.py
-import pika, sys, os
+import pika
 
-def main():
-    auth = pika.PlainCredentials("myuser","2a55f70a841f18b97c3a7db939b7adc9e34a0f1b")
-    connect = pika.BlockingConnection(pika.ConnectionParameters("RabbitMQ   ", port=5672, virtual_host='qa1', credentials=auth))
-    channel = connect.channel()
+credentials = pika.PlainCredentials('myuser','2a55f70a841f18b97c3a7db939b7adc9e34a0f1b')
+connection = pika.BlockingConnection(pika.ConnectionParameters(
+    'localhost',5672,'qa1',credentials))
+channel = connection.channel()
 
-    channel.queue_declare(queue='hello')
+channel.queue_declare(queue='balance')
 
-    def callback(ch, method, properties, body):
-        print(f" [x] Received {body}")
 
-    channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+def callback(ch, method, properties, body):
+    print(" [x] Received %r" % body)
 
-    print(' [*] Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
+channel.basic_consume(queue='balance',
+                      auto_ack=False,
+                      on_message_callback=callback)
 
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print('Interrupted')
-        try:
-            sys.exit(0)
-        except SystemExit:
-            os._exit(0)
+print(' [*] Waiting for messages. To exit press CTRL+C')
+channel.start_consuming()
 
 EOF</code></pre>
 </div>
@@ -5252,20 +5267,19 @@ EOF</code></pre>
 <div class="title">send.py脚本文件</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; send.py
+#!/usr/bin/env python
 import pika
 
 auth = pika.PlainCredentials("myuser","2a55f70a841f18b97c3a7db939b7adc9e34a0f1b")
-connect = pika.BlockingConnection(pika.ConnectionParameters("RabbitMQ", port=5672, virtual_host='qa1', credentials=auth))
+connect = pika.BlockingConnection(pika.ConnectionParameters("localhost", port=5672, virtual_host='qa1', credentials=auth))
 channel = connect.channel()
 
-channel.queue_declare(queue='hello')
+channel.queue_declare(queue='balance')
 channel.basic_publish(exchange='',
-                      routing_key='hello',
+                      routing_key='balance',
                       body='Hello World!')
 print(" [x] Sent 'Hello World!'")
 connect.close()
-
-
 EOF</code></pre>
 </div>
 </div>
