@@ -972,12 +972,14 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_rabbitmq">21. RabbitMQ</a>
 <ul class="sectlevel2">
-<li><a href="#_rabbitmq_quickstart">21.1. RabbitMQ quickstart</a>
+<li><a href="#_rabbitmq安装">21.1. RabbitMQ安装</a></li>
+<li><a href="#_rabbitmq_配置">21.2. RabbitMQ 配置</a></li>
+<li><a href="#_rabbimq使用">21.3. RabbiMQ使用</a>
 <ul class="sectlevel3">
-<li><a href="#_python测试脚本">21.1.1. python测试脚本</a></li>
+<li><a href="#_rabbitmq_cli">21.3.1. RabbitMQ cli</a></li>
+<li><a href="#_python_2">21.3.2. python</a></li>
 </ul>
 </li>
-<li><a href="#_rabbitmq_配置">21.2. RabbitMQ 配置</a></li>
 </ul>
 </li>
 <li><a href="#_yum换源">22. yum换源</a>
@@ -4952,7 +4954,7 @@ java -jar xxxxx.jar</p>
 <h2 id="_rabbitmq">21. RabbitMQ</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_rabbitmq_quickstart">21.1. RabbitMQ quickstart</h3>
+<h3 id="_rabbitmq安装">21.1. RabbitMQ安装</h3>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">官方文档</dt>
@@ -4986,7 +4988,8 @@ rpm --import 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/clo
 <div class="listingblock">
 <div class="title">添加RabbitMQ仓库</div>
 <div class="content">
-<pre># In /etc/yum.repos.d/rabbitmq.repo
+<pre>cat &lt;&lt;EOF &gt;/etc/yum.repos.d/rabbitmq.repo
+# In /etc/yum.repos.d/rabbitmq.repo
 
 ##
 ## Zero dependency Erlang RPM
@@ -5102,7 +5105,8 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
 pkg_gpgcheck=1
 autorefresh=1
-type=rpm-md</pre>
+type=rpm-md
+EOF</pre>
 </div>
 </div>
 <div class="listingblock">
@@ -5141,107 +5145,6 @@ type=rpm-md</pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status  rabbitmq-server</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">停止rabbitmq-server</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl stop rabbitmq-server</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_python测试脚本">21.1.1. python测试脚本</h4>
-<div class="listingblock">
-<div class="title">环境准备</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip install pika</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">receive.py脚本文件</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; receive.py
-import pika, sys, os
-
-def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-
-    channel.queue_declare(queue='hello')
-
-    def callback(ch, method, properties, body):
-        print(f" [x] Received {body}")
-
-    channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
-
-    print(' [*] Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
-
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print('Interrupted')
-        try:
-            sys.exit(0)
-        except SystemExit:
-            os._exit(0)
-EOF</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">send.py脚本文件</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; send.py
-import pika
-
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-channel = connection.channel()
-channel.queue_declare(queue='hello')
-channel.basic_publish(exchange='',
-                      routing_key='hello',
-                      body='Hello World!')
-print(" [x] Sent 'Hello World!'")
-connection.close()
-
-EOF</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">执行receive.py</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python receive.py</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>[*] Waiting for messages. To exit press CTRL+C</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>打开另一个终端
-.执行send.py</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python send.py</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre> [x] Sent 'Hello World!'</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>回到执行receive.py的终端，可看到</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[*] Waiting for messages. To exit press CTRL+C
-[x] Received b'Hello World!'</pre>
-</div>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_rabbitmq_配置">21.2. RabbitMQ 配置</h3>
@@ -5263,7 +5166,7 @@ EOF</code></pre>
 <div class="title">配置RabbitMQ</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加用户并设置密码
-rabbitmqctl add_user 'username' '2a55f70a841f18b97c3a7db939b7adc9e34a0f1b'
+rabbitmqctl add_user 'myuser' '2a55f70a841f18b97c3a7db939b7adc9e34a0f1b'
 
 #列出所有的用户
 rabbitmqctl list_users
@@ -5275,7 +5178,7 @@ rabbitmqctl add_vhost qa1
 #第一个 .* 表示对于每个实体，都授予配置权限。
 #第二个 .* 表示对于每个实体，都授予写入权限。
 #第三个 .* 表示对于每个实体，都授予读取权限。
-rabbitmqctl set_permissions -p "custom-vhost" "username" ".*" ".*" ".*"
+rabbitmqctl set_permissions -p "custom-vhost" "myuser" ".*" ".*" ".*"
 
 #设置系统最大文件句柄
 echo "*               soft   nofile            65535" &gt;&gt; /etc/security/limits.conf
@@ -5293,7 +5196,117 @@ systemctl daemon-reload
 systemctl restart rabbitmq-server</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_rabbimq使用">21.3. RabbiMQ使用</h3>
+<div class="sect3">
+<h4 id="_rabbitmq_cli">21.3.1. RabbitMQ cli</h4>
+<div class="paragraph">
+<p>rabbitmqctl consume my_queue
+rabbitmqctl publish my_queue "Hello World!"</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_python_2">21.3.2. python</h4>
+<div class="listingblock">
+<div class="title">环境准备</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip3 install pika</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">receive.py脚本文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; receive.py
+import pika, sys, os
+
+def main():
+    auth = pika.PlainCredentials("myuser","2a55f70a841f18b97c3a7db939b7adc9e34a0f1b")
+    connect = pika.BlockingConnection(pika.ConnectionParameters("RabbitMQ   ", port=5672, virtual_host='qa1', credentials=auth))
+    channel = connect.channel()
+
+    channel.queue_declare(queue='hello')
+
+    def callback(ch, method, properties, body):
+        print(f" [x] Received {body}")
+
+    channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
+
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">send.py脚本文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; send.py
+import pika
+
+auth = pika.PlainCredentials("myuser","2a55f70a841f18b97c3a7db939b7adc9e34a0f1b")
+connect = pika.BlockingConnection(pika.ConnectionParameters("RabbitMQ", port=5672, virtual_host='qa1', credentials=auth))
+channel = connect.channel()
+
+channel.queue_declare(queue='hello')
+channel.basic_publish(exchange='',
+                      routing_key='hello',
+                      body='Hello World!')
+print(" [x] Sent 'Hello World!'")
+connect.close()
+
+
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">执行receive.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python3 receive.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[*] Waiting for messages. To exit press CTRL+C</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>打开另一个终端</p>
+</div>
+<div class="listingblock">
+<div class="title">执行send.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">python3 send.py</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre> [x] Sent 'Hello World!'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>回到执行receive.py的终端，可看到</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[*] Waiting for messages. To exit press CTRL+C
+[x] Received b'Hello World!'</pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
