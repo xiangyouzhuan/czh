@@ -1014,6 +1014,13 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_配置内网环境四安装wordpress">26.4. 配置内网环境四：安装WordPress</a></li>
 </ul>
 </li>
+<li><a href="#_elasticsearch">27. ElasticSearch</a>
+<ul class="sectlevel2">
+<li><a href="#ElasticSearch_install_chapter">27.1. ElasticSearch安装</a></li>
+<li><a href="#_kibana安装">27.2. Kibana安装</a></li>
+<li><a href="#_elasticsearch添加节点">27.3. ElasticSearch添加节点</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -4242,6 +4249,15 @@ sudo pacman -S alsa-ucm-conf
 reboot</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Q:error: Refusing to undefine while domain managed save image exists</p>
+</div>
+<div class="listingblock">
+<div class="title">A:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">virsh managedsave-remove win7</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -5424,9 +5440,9 @@ gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre
 <div class="title">安装配置</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
-yum install proxychains-ng.x86_64
+yum install -y proxychains-ng.x86_64
 
-sed -E -i 's/socks4\s+127.0.0.1 9050/socks5 127.0.0.1 1080/' /etc/proxychains.conf
+sed -E -i 's/socks4\s+127.0.0.1 9050/socks5 192.168.2.8 1080/' /etc/proxychains.conf
 sed -i 's/#quiet_mode/quiet_mode/g' /etc/proxychains.conf
 
 echo 'alias p="/usr/bin/proxychains4"' &gt;&gt; ~/.bashrc
@@ -6079,6 +6095,274 @@ cp wp-config-sample.php wp-config.php</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_elasticsearch">27. ElasticSearch</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="ElasticSearch_install_chapter">27.1. ElasticSearch安装</h3>
+<div class="listingblock">
+<div class="title">安装elasticsearch</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#下载并安装公共签名密钥:
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+#添加仓库
+cat &lt;&lt; EOF &gt;/etc/yum.repos.d/elasticsearch.repo
+[elasticsearch]
+name=Elasticsearch repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=0
+autorefresh=1
+type=rpm-md
+EOF
+
+#安装elasticsearch
+sudo yum install -y --enablerepo=elasticsearch elasticsearch</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+安装时会自动创建一个超级用户elastic，并在终端输出它的密码，记住该密码
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">启动Elasticsearch</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#重新加载systemd管理配置
+sudo /bin/systemctl daemon-reload
+#设置开机自启动
+sudo /bin/systemctl enable elasticsearch.service
+#开启服务
+sudo systemctl start elasticsearch.service
+#查看服务状态
+sudo systemctl status elasticsearch.service</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">检查Elasticsearch是否正在运行</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>{
+  "name" : "Cp8oag6",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "AT69_T_DTp-1qgIJlatQqA",
+  "version" : {
+    "number" : "8.10.4",
+    "build_type" : "tar",
+    "build_hash" : "f27399d",
+    "build_flavor" : "default",
+    "build_date" : "2016-03-30T09:51:41.449Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.7.0",
+    "minimum_wire_compatibility_version" : "1.2.3",
+    "minimum_index_compatibility_version" : "1.2.3"
+  },
+  "tagline" : "You Know, for Search"
+}</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kibana安装">27.2. Kibana安装</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加kibana仓库
+cat &lt;&lt; EOF &gt;/etc/yum.repos.d/kibana.repo
+[kibana-8.x]
+name=Kibana repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+
+
+#启动kibana
+sudo yum install -y kibana
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable kibana.service
+sudo systemctl start kibana.service</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">检查kibana是否正常启动</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -I  http://localhost:5601</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>HTTP/1.1 200 OK
+x-content-type-options: nosniff
+referrer-policy: no-referrer-when-downgrade
+permissions-policy: camera=(), display-capture=(), fullscreen=(self), geolocation=(), microphone=(), web-share=()
+cross-origin-opener-policy: same-origin
+content-security-policy: script-src 'self'; worker-src blob: 'self'; style-src 'unsafe-inline' 'self'
+kbn-name: ES
+content-type: text/html; charset=utf-8
+cache-control: private, no-cache, no-store, must-revalidate
+content-length: 39382
+vary: accept-encoding
+Date: Thu, 26 Oct 2023 07:15:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=120</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>至此，kibana已经正常启动</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/kibana/kibana.yml
+server.port: 5601
+server.host: 192.168.122.135</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>systemctl restart kibana.server</p>
+</div>
+<div class="paragraph">
+<p>浏览器访问
+<a href="http://部署kibana的主机IP:5601/" class="bare">http://部署kibana的主机IP:5601/</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/kibana_install_01.png" alt="kibana install 01">
+</div>
+</div>
+<div class="listingblock">
+<div class="title">在elasticseaerch的一个主机上给Kibana生成token</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+token只有30分钟有效期，若超过时间需要重新生成
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>eyJ2ZXIiOiI4LjEwLjQiLCJhZHIiOlsiMTkyLjE2OC4xMjIuMTM1OjkyMDAiXSwiZmdyIjoiMzk4YjI3ZjUxZWM0NzI1NGRjMWNlNjQyZGY4NDE2OTNjMThiOGE4OWYzMmEwZmMzZjBiNWYyMWM4N2MwNWI3OSIsImtleSI6IkQza0thNHNCWjRCZXd0ODFIbm9hOjMwamU4XzFJVFBPWDhPakt2eE50OUEifQ==</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>生成verification code</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/kibana/bin/kibana-verification-code</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_elasticsearch添加节点">27.3. ElasticSearch添加节点</h3>
+<div class="paragraph">
+<p>准备一个新的节点，操作同 <a href="#ElasticSearch_install_chapter">安装ElasticSearch</a>，但是安装完不要启动！不要启动！不要启动！
+然后更改其配置文件 <code>elasticsearch.yml</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+请严格按照一下步骤顺序操作，否则可能无法正确加入节点
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">elasticsearch.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi /etc/elasticsearch/elasticsearch.yml
+
+  cluster.name
+  node.name
+  network.host
+  http.port
+
+systemctl status firewalld
+systemctl stop firewalld
+systemctl disable firewalld
+systemctl status firewalld</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>在node1执行以下操作</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">在node1上生成token</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>eyJ2ZXIiOiI4LjEwLjQiLCJhZHIiOlsiMTkyLjE2OC4xMjIuMTM1OjkyMDAiXSwiZmdyIjoiMzk4YjI3ZjUxZWM0NzI1NGRjMWNlNjQyZGY4NDE2OTNjMThiOGE4OWYzMmEwZmMzZjBiNWYyMWM4N2MwNWI3OSIsImtleSI6ImxSRWljSXNCMWM0ZEJiZ2xPbGpqOnpRZUNlUVpiUnVxaVpEZ3p0ekNRblEifQ==</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>复制这个生成的token</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>在node2执行以下操作</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">在node2上执行</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#此处的&lt;token&gt;即为node1上生成的token
+/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token &lt;token&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">启动elasticsearch服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+sudo systemctl status elasticsearch.service</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6086,7 +6370,7 @@ cp wp-config-sample.php wp-config.php</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-23 19:33:59 +0800
+Last updated 2023-10-27 11:09:20 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
