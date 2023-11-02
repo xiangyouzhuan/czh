@@ -1018,7 +1018,7 @@ p { margin-bottom: 1.25rem; }
 <ul class="sectlevel2">
 <li><a href="#ElasticSearch_install_chapter">27.1. ElasticSearch安装</a></li>
 <li><a href="#_kibana安装">27.2. Kibana安装</a></li>
-<li><a href="#_elasticsearch添加节点">27.3. ElasticSearch添加节点</a></li>
+<li><a href="#_filebeat安装">27.3. filebeat安装</a></li>
 </ul>
 </li>
 </ul>
@@ -4258,6 +4258,15 @@ reboot</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">virsh managedsave-remove win7</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Q:Failed to start OpenSSH Daemon</p>
+</div>
+<div class="listingblock">
+<div class="title">A:检查配置文件帮助排错</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sshd -t</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6101,8 +6110,38 @@ cp wp-config-sample.php wp-config.php</code></pre>
 <div class="sect1">
 <h2 id="_elasticsearch">27. ElasticSearch</h2>
 <div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>环境准备</p>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：centos-stream9</p>
+</li>
+<li>
+<p>cpu：两核</p>
+</li>
+<li>
+<p>内存：4G</p>
+</li>
+<li>
+<p>Elasticsearch版本：8.10</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 <div class="sect2">
 <h3 id="ElasticSearch_install_chapter">27.1. ElasticSearch安装</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>官方文档： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.10/install-elasticsearch.html" class="bare">https://www.elastic.co/guide/en/elasticsearch/reference/8.10/install-elasticsearch.html</a></p>
+</li>
+</ul>
+</div>
 <div class="listingblock">
 <div class="title">安装elasticsearch</div>
 <div class="content">
@@ -6132,10 +6171,33 @@ sudo yum install -y --enablerepo=elasticsearch elasticsearch</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-安装时会自动创建一个超级用户elastic，并在终端输出它的密码，记住该密码
+安装时会自动创建一个超级用户elastic，并在终端输出它的密码，记住该密码,将用于后续kibana前端登陆和filebeat的配置
 </td>
 </tr>
 </table>
+</div>
+<div class="listingblock">
+<div class="title">将密码存储在变量ELASTIC_PASSWORD中</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#例：假设密码是vjT4*xK-Q_o__oXMWRY9则执行
+export ELASTIC_PASSWORD="vjT4*xK-Q_o__oXMWRY9"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">更改以下配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/elasticsearch/elasticsearch.yml
+#将相关内容更改为以下值
+xpack.security.enabled: false
+
+xpack.security.enrollment.enabled: false
+
+xpack.security.http.ssl:
+  enabled: false
+
+xpack.security.transport.ssl:
+  enabled: false</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="title">启动Elasticsearch</div>
@@ -6153,7 +6215,7 @@ sudo systemctl status elasticsearch.service</code></pre>
 <div class="listingblock">
 <div class="title">检查Elasticsearch是否正在运行</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:$ELASTIC_PASSWORD https://localhost:9200</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl  -u elastic:$ELASTIC_PASSWORD http://localhost:9200</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -6181,6 +6243,18 @@ sudo systemctl status elasticsearch.service</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_kibana安装">27.2. Kibana安装</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+如果Kibana与ElasticSearch装在同一台主机上，则主机内存要求4G以上
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加kibana仓库
@@ -6195,12 +6269,25 @@ autorefresh=1
 type=rpm-md
 EOF
 
-
-#启动kibana
-sudo yum install -y kibana
+#安装kibana
+sudo yum install -y kibana</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">编辑kibana.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/kibana/kibana.yml
+#更改对应配置为以下值
+server.port: 5601
+server.host: "0.0.0.0"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#启动kibana
 sudo /bin/systemctl daemon-reload
-sudo /bin/systemctl enable kibana.service
-sudo systemctl start kibana.service</code></pre>
+sudo /bin/systemctl enable kibana
+sudo systemctl start kibana</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -6218,28 +6305,18 @@ referrer-policy: no-referrer-when-downgrade
 permissions-policy: camera=(), display-capture=(), fullscreen=(self), geolocation=(), microphone=(), web-share=()
 cross-origin-opener-policy: same-origin
 content-security-policy: script-src 'self'; worker-src blob: 'self'; style-src 'unsafe-inline' 'self'
-kbn-name: ES
+kbn-name: es3
 content-type: text/html; charset=utf-8
 cache-control: private, no-cache, no-store, must-revalidate
-content-length: 39382
+content-length: 90867
 vary: accept-encoding
-Date: Thu, 26 Oct 2023 07:15:36 GMT
+Date: Wed, 01 Nov 2023 12:04:55 GMT
 Connection: keep-alive
 Keep-Alive: timeout=120</pre>
 </div>
 </div>
 <div class="paragraph">
 <p>至此，kibana已经正常启动</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/kibana/kibana.yml
-server.port: 5601
-server.host: 192.168.122.135</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>systemctl restart kibana.server</p>
 </div>
 <div class="paragraph">
 <p>浏览器访问
@@ -6250,44 +6327,15 @@ server.host: 192.168.122.135</code></pre>
 <img src="images/kibana_install_01.png" alt="kibana install 01">
 </div>
 </div>
-<div class="listingblock">
-<div class="title">在elasticseaerch的一个主机上给Kibana生成token</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-token只有30分钟有效期，若超过时间需要重新生成
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>eyJ2ZXIiOiI4LjEwLjQiLCJhZHIiOlsiMTkyLjE2OC4xMjIuMTM1OjkyMDAiXSwiZmdyIjoiMzk4YjI3ZjUxZWM0NzI1NGRjMWNlNjQyZGY4NDE2OTNjMThiOGE4OWYzMmEwZmMzZjBiNWYyMWM4N2MwNWI3OSIsImtleSI6IkQza0thNHNCWjRCZXd0ODFIbm9hOjMwamU4XzFJVFBPWDhPakt2eE50OUEifQ==</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>生成verification code</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/kibana/bin/kibana-verification-code</code></pre>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_elasticsearch添加节点">27.3. ElasticSearch添加节点</h3>
-<div class="paragraph">
-<p>准备一个新的节点，操作同 <a href="#ElasticSearch_install_chapter">安装ElasticSearch</a>，但是安装完不要启动！不要启动！不要启动！
-然后更改其配置文件 <code>elasticsearch.yml</code></p>
+<h3 id="_filebeat安装">27.3. filebeat安装</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>官方文档: <a href="https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#filebeat-installation-configuration" class="bare">https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html#filebeat-installation-configuration</a></p>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -6296,71 +6344,114 @@ token只有30分钟有效期，若超过时间需要重新生成
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-请严格按照一下步骤顺序操作，否则可能无法正确加入节点
+将filebeat安装在需要管理的服务器上。本例中将filebeat安装在与ElasticSearch相同的主机上
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock">
-<div class="title">elasticsearch.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi /etc/elasticsearch/elasticsearch.yml
-
-  cluster.name
-  node.name
-  network.host
-  http.port
-
-systemctl status firewalld
-systemctl stop firewalld
-systemctl disable firewalld
-systemctl status firewalld</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>在node1执行以下操作</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="title">在node1上生成token</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir downloads
+cd downloads/
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.10.4-x86_64.rpm
+sudo rpm -vi filebeat-8.10.4-x86_64.rpm</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">终端输出</div>
 <div class="content">
-<pre>eyJ2ZXIiOiI4LjEwLjQiLCJhZHIiOlsiMTkyLjE2OC4xMjIuMTM1OjkyMDAiXSwiZmdyIjoiMzk4YjI3ZjUxZWM0NzI1NGRjMWNlNjQyZGY4NDE2OTNjMThiOGE4OWYzMmEwZmMzZjBiNWYyMWM4N2MwNWI3OSIsImtleSI6ImxSRWljSXNCMWM0ZEJiZ2xPbGpqOnpRZUNlUVpiUnVxaVpEZ3p0ekNRblEifQ==</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/filebeat/filebeat.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>复制这个生成的token</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>在node2执行以下操作</p>
-</li>
-</ul>
+<p>设置Filebeat可以找到Elasticsearch安装的主机和端口，并设置有权安装Filebeat的用户名和密码(密码则为<a href="#ElasticSearch_install_chapter">ElaxticSearch安装</a> 时生成的默认密码)</p>
 </div>
 <div class="listingblock">
-<div class="title">在node2上执行</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#此处的&lt;token&gt;即为node1上生成的token
-/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token &lt;token&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#找到以下配置更改并更改对应的值
+output.elasticsearch:
+  hosts: ["http://安装ElasticSearch主机的ip:9200"]
+  username: "elastic"
+  password: "vjT4*xK-Q_o__oXMWRY9"</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">启动elasticsearch服务</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo /bin/systemctl daemon-reload
-sudo /bin/systemctl enable elasticsearch.service
-sudo systemctl start elasticsearch.service
-sudo systemctl status elasticsearch.service</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#列出filebeat可用模块
+filebeat modules list
+
+#启用nginx模块配置
+filebeat modules enable nginx
+
+#更改nginx模块配置
+#var.paths为nginx的access.log路径
+vim /etc/filebeat/modules.d/nginx.yml
+- module: nginx
+  access:
+    enabled: true
+    var.paths: ["/var/log/nginx/access.log*"]
+
+#Filebeat 提供了预定义的数据解析、索引和可视化资源。
+#加载这些资源
+filebeat setup -e
+
+#启动filebeat
+systemctl enable filebeat
+systemctl start filebeat
+systemctl status filebeat</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>访问
+<a href="http://安装kibana主机的ip:5601" class="bare">http://安装kibana主机的ip:5601</a></p>
+</div>
+<div class="paragraph">
+<p>在侧边导航区单击“Discover”。为了查看Filebeat数据，请确保选择预定义的Filebeat -*索引模式，此时还没有数据</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/filebeat_install_01.png" alt="filebeat install 01">
+</div>
+</div>
+<div class="listingblock">
+<div class="title">为产生日志数据用于检测，安装nginx</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y nginx
+systemctl enable nginx
+systemctl start nginx
+systemctl status nginx
+
+#用于请求nginx默认界面的脚本
+cat &lt;&lt; EOF &gt;filebeat.sh
+#!/bin/bash
+while true;
+do
+    curl -I http://nginx主机的ip:80
+    sleep 1
+done
+EOF
+
+sh filebeat.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>等待1分钟刷新界面即可看到</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/filebeat_install_02.png" alt="filebeat install 02">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+如果在Kibana中看不到数据，请尝试将time filter更改为更大的范围。默认情况下，Kibana显示最近15分钟。
+</td>
+</tr>
+</table>
 </div>
 <div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
