@@ -1021,6 +1021,11 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_filebeat安装">27.3. filebeat安装</a></li>
 </ul>
 </li>
+<li><a href="#_minikube">28. minikube</a>
+<ul class="sectlevel2">
+<li><a href="#_minikube安装">28.1. minikube安装</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -6454,6 +6459,186 @@ sh filebeat.sh</code></pre>
 </table>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_minikube">28. minikube</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_minikube安装">28.1. minikube安装</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>环境准备</p>
+<div class="ulist">
+<ul>
+<li>
+<p>2 CPUs</p>
+</li>
+<li>
+<p>2GB 内存</p>
+</li>
+<li>
+<p>20GB 可用磁盘空间</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">安装minikube</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir /root/downloads
+cd /root/downloads
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest.x86_64.rpm
+sudo rpm -Uvh minikube-latest.x86_64.rpm</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">安装docker</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo systemctl start docker
+#运行hello-world image测试是否已经正确安装docker
+sudo docker run hello-world</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>至此docker已经成功正确安装</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">adduser czh
+passwd czh
+echo 'czh   ALL=(ALL) ALL' &gt;&gt; /etc/sudoers
+su czh
+sudo usermod -aG docker $USER &amp;&amp; newgrp docker
+
+#使用docker driver启动集群:
+minikube start --driver=docker</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[czh@K8S-1 root]$ minikube start --driver=docker
+😄  minikube v1.31.2 on Centos 9 (kvm/amd64)
+✨  Using the docker driver based on user configuration
+📌  Using Docker driver with root privileges
+👍  Starting control plane node minikube in cluster minikube
+🚜  Pulling base image ...
+💾  Downloading Kubernetes v1.27.4 preload ...
+    &gt; preloaded-images-k8s-v18-v1...:  393.21 MiB / 393.21 MiB  100.00% 25.86 M
+    &gt; index.docker.io/kicbase/sta...:  447.62 MiB / 447.62 MiB  100.00% 3.98 Mi
+❗  minikube was unable to download gcr.io/k8s-minikube/kicbase:v0.0.40, but successfully downloaded docker.io/kicbase/stable:v0.0.40 as a fallback image
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🐳  Preparing Kubernetes v1.27.4 on Docker 24.0.4 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+💡  kubectl not found. If you need it, try: 'minikube kubectl -- get pods -A'
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#设置docker为默认driver:
+minikube config set driver docker
+
+
+#添加kubectl仓库
+cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+EOF
+
+#安装kubectl
+sudo yum install -y kubectl
+
+#创建一个sample,并开放8080端口:
+kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+
+#查看hello-minikube服务
+kubectl get services hello-minikube
+
+#使用minikube启动一个web browser
+kubectl port-forward service/hello-minikube 7080:8080 --address 0.0.0.0</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>Forwarding from 0.0.0.0:7080 -&gt; 8080
+Handling connection for 7080
+Handling connection for 7080
+Handling connection for 7080</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在另一个终端执行</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -I http://localhost:7080/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>HTTP/1.1 200 OK
+Content-Type: text/plain
+Date: Thu, 02 Nov 2023 09:18:38 GMT
+Content-Length: 131</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>浏览器访问http://搭建minikube的主机ip:7080/</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/minikube_install_01.png" alt="minikube install 01">
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6461,7 +6646,7 @@ sh filebeat.sh</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-27 11:09:20 +0800
+Last updated 2023-11-02 18:06:24 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
