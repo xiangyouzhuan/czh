@@ -1032,6 +1032,11 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_常用命令_2">29.2. 常用命令</a></li>
 </ul>
 </li>
+<li><a href="#_nginx">30. Nginx</a>
+<ul class="sectlevel2">
+<li><a href="#_请求转发">30.1. 请求转发</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -6735,6 +6740,55 @@ docker exec -it containerID /bin/bash</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nginx">30. Nginx</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_请求转发">30.1. 请求转发</h3>
+<div class="paragraph">
+<p>添加本地域名解析</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; /etc/hosts
+127.0.0.1 test.testdemo.com
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/nginx/nginx.conf
+
+#添加一个server模块测试
+server {
+        listen      80;
+        server_name test.testdemo.com;
+
+        # 转发请求到 http://www.example.com
+        location / {
+            proxy_pass http://www.baidu.com;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重载nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nginx -t &amp;&amp; nginx -s reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>浏览器访问 [<a href="http://test.testdemo.com" class="bare">http://test.testdemo.com</a>]</p>
+</div>
+<div class="paragraph">
+<p>页面将自动跳转到百度首页</p>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6742,7 +6796,7 @@ docker exec -it containerID /bin/bash</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-08 16:51:30 +0800
+Last updated 2023-12-08 17:23:05 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
