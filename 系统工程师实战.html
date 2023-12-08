@@ -1026,6 +1026,12 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_minikube安装">28.1. minikube安装</a></li>
 </ul>
 </li>
+<li><a href="#_docker">29. Docker</a>
+<ul class="sectlevel2">
+<li><a href="#_docker安装">29.1. Docker安装</a></li>
+<li><a href="#_常用命令_2">29.2. 常用命令</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -4257,6 +4263,9 @@ reboot</code></pre>
 <div class="paragraph">
 <p>Q:error: Refusing to undefine while domain managed save image exists</p>
 </div>
+<div class="paragraph">
+<p>Q:错误： 域管理的保存映像存在时拒绝取消定义</p>
+</div>
 <div class="listingblock">
 <div class="title">A:</div>
 <div class="content">
@@ -4270,6 +4279,15 @@ reboot</code></pre>
 <div class="title">A:检查配置文件帮助排错</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sshd -t</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Q:jdk-openjdk and jre-openjdk are in conflict</p>
+</div>
+<div class="listingblock">
+<div class="title">A:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -Sy jre-openjdk</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -6639,6 +6657,84 @@ Content-Length: 131</pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_docker">29. Docker</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_docker安装">29.1. Docker安装</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>系统：centos-stream-9</p>
+</li>
+<li>
+<p>cpu 2</p>
+</li>
+<li>
+<p>内存 4G</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">安装docker</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo systemctl start docker
+#运行hello-world image测试是否已经正确安装docker
+sudo docker run hello-world</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>至此docker已经成功正确安装</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_常用命令_2">29.2. 常用命令</h3>
+<div class="listingblock">
+<div class="title">常用命令</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#构建镜像并指定镜像名称和标29-Docker签
+docker build -t testdemo:v1 .
+
+#创建容器
+docker run -d --privileged -p 8000(宿主机端口):8080(容器内端口) --name testdemo testdemo:v1
+
+#进入容器
+docker exec -it containerID /bin/bash</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6646,7 +6742,7 @@ Content-Length: 131</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-11-02 18:06:24 +0800
+Last updated 2023-12-08 16:51:30 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
