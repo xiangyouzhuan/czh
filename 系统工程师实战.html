@@ -6664,13 +6664,17 @@ Bus 004 Device 001: ID 03f0:1617 Linux Foundation 3.0 root hub</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>将一下内容添加到虚拟机.xml文件的"devices" block
-&lt;hostdev mode='subsystem' type='usb'&gt;
+<p>将一下内容添加到虚拟机.xml文件的"devices" block</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;hostdev mode='subsystem' type='usb'&gt;
   &lt;source startupPolicy='optional'&gt;
     &lt;vendor id='0x03f0'/&gt;
     &lt;product id='0x1617'/&gt;
   &lt;/source&gt;
-&lt;/hostdev&gt;</p>
+&lt;/hostdev&gt;</pre>
+</div>
 </div>
 <div class="paragraph">
 <p>然后</p>
@@ -6743,8 +6747,7 @@ $ sudo reboot</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#输入需要执行的脚本位置
-@reboot /root/auto_run_script.sh
-----</code></pre>
+@reboot /root/auto_run_script.sh</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
