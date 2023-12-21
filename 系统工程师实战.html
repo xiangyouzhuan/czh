@@ -825,18 +825,10 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_配置jenkins服务">4.3. 配置Jenkins服务</a>
 <ul class="sectlevel3">
 <li><a href="#_开机启动jenkins">4.3.1. 开机启动Jenkins</a></li>
-<li><a href="#_设置jenkins启动参数">4.3.2. 设置Jenkins启动参数</a></li>
 </ul>
 </li>
 <li><a href="#_为jenkins新增防火墙规则">4.4. 为Jenkins新增防火墙规则</a></li>
-<li><a href="#_启动jenkins">4.5. 启动Jenkins</a></li>
-<li><a href="#_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</a>
-<ul class="sectlevel3">
-<li><a href="#获取初始管理员密码">4.6.1. 获取初始管理员密码</a></li>
-<li><a href="#_访问jenkins_web">4.6.2. 访问Jenkins Web</a></li>
-<li><a href="#_解锁jenkins">4.6.3. 解锁Jenkins</a></li>
-</ul>
-</li>
+<li><a href="#_访问jenkins">4.5. 访问jenkins</a></li>
 </ul>
 </li>
 <li><a href="#_linux无密码登陆">5. Linux无密码登陆</a>
@@ -985,6 +977,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_yum换源">22. yum换源</a>
 <ul class="sectlevel2">
 <li><a href="#_yum_换源">22.1. yum 换源</a></li>
+<li><a href="#_yum常用命令">22.2. yum常用命令</a></li>
 </ul>
 </li>
 <li><a href="#_proxychains">23. Proxychains</a>
@@ -1024,6 +1017,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_minikube">28. minikube</a>
 <ul class="sectlevel2">
 <li><a href="#_minikube安装">28.1. minikube安装</a></li>
+<li><a href="#_k8s">28.2. k8s</a></li>
 </ul>
 </li>
 <li><a href="#_docker">29. Docker</a>
@@ -1040,6 +1034,17 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_java">31. java</a>
 <ul class="sectlevel2">
 <li><a href="#_java安装">31.1. java安装</a></li>
+</ul>
+</li>
+<li><a href="#_kvm">32. kvm</a>
+<ul class="sectlevel2">
+<li><a href="#_kvm虚拟机使用usb">32.1. kvm虚拟机使用usb</a></li>
+</ul>
+</li>
+<li><a href="#_开机自动执行脚本">33. 开机自动执行脚本</a>
+<ul class="sectlevel2">
+<li><a href="#_方法一修改_etcrc_drc_local_文件">33.1. 方法一：修改 /etc/rc.d/rc.local 文件</a></li>
+<li><a href="#_方法二使用_crontab">33.2. 方法二：使用 crontab</a></li>
 </ul>
 </li>
 </ul>
@@ -1900,16 +1905,18 @@ GITLAB运行端口注意和 预设GitLab访问URL 的端口保持一致</p>
 <div class="sect1">
 <h2 id="_jenkins">4. Jenkins</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos">jenkins官网安装步骤</a></p>
+</div>
 <div class="sect2">
 <h3 id="_新增jenkins_yum仓库">4.1. 新增Jenkins Yum仓库</h3>
 <div class="sect3">
 <h4 id="_下载仓库文件">4.1.1. 下载仓库文件</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget \
-  --inet4-only \
-  -O /etc/yum.repos.d/jenkins.repo \
-  https://pkg.jenkins.io/redhat-stable/jenkins.repo</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo wget --inet4-only \
+    -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1932,30 +1939,19 @@ wget参数说明
 <div class="sect3">
 <h4 id="_导入仓库密钥">4.1.2. 导入仓库密钥</h4>
 <div class="paragraph">
-<p>下载密钥文件</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget \
-  --inet4-only \
-  -O /tmp/jenkins.io.key \
-  https://pkg.jenkins.io/redhat-stable/jenkins.io.key</code></pre>
-</div>
-</div>
-<div class="paragraph">
 <p>导入密钥</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm --import /tmp/jenkins.io.key</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>删除临时文件</p>
+<p>更新缓存</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rm -f /tmp/jenkins.io.key</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum upgrade</code></pre>
 </div>
 </div>
 </div>
@@ -1992,34 +1988,11 @@ enabled = 0 或 False</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install fontconfig java-17-openjdk</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>2.设置系统默认Java</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">alternatives --set java `ls /usr/lib/jvm/java-11-openjdk-*/bin/java`
-alternatives --set javac `ls /usr/lib/jvm/java-11-openjdk-*/bin/javac`
-alternatives --set jre_openjdk `ls -d /usr/lib/jvm/java-11-openjdk-*`
-alternatives --set java_sdk_openjdk `ls -d /usr/lib/jvm/java-11-openjdk-*`</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-同时设置四个选项后，/etc/alternatives/java_sdk 会自动链接到 /usr/lib/jvm/java-11-openjdk-*，最终 JAVA_HOME 才是期望的Java 11
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>查看默认Java版本</p>
+<p>2.查看默认Java版本</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2029,9 +2002,9 @@ alternatives --set java_sdk_openjdk `ls -d /usr/lib/jvm/java-11-openjdk-*`</code
 <div class="listingblock">
 <div class="title">终端输出</div>
 <div class="content">
-<pre>openjdk version "11.0.6" 2020-01-14 LTS
-OpenJDK Runtime Environment 18.9 (build 11.0.6+10-LTS)
-OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing)</pre>
+<pre>openjdk version "17.0.6" 2023-01-17 LTS
+OpenJDK Runtime Environment (Red_Hat-17.0.6.0.10-3.el9) (build 17.0.6+10-LTS)
+OpenJDK 64-Bit Server VM (Red_Hat-17.0.6.0.10-3.el9) (build 17.0.6+10-LTS, mixed mode, sharing)</pre>
 </div>
 </div>
 </div>
@@ -2039,20 +2012,16 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing)</pre>
 <h4 id="_安装jenkins">4.2.2. 安装Jenkins</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum --disablerepo=\* --enablerepo=jenkins install jenkins</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum --disablerepo=\* --enablerepo=jenkins install -y jenkins</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-单独启用Jenkins仓库（ jenkins ），安装Jenkins
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>重新加载系统管理守护进程 (systemd) 的配置文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl daemon-reload</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2062,64 +2031,10 @@ OpenJDK 64-Bit Server VM 18.9 (build 11.0.6+10-LTS, mixed mode, sharing)</pre>
 <h4 id="_开机启动jenkins">4.3.1. 开机启动Jenkins</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl enable jenkins</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins</code></pre>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_设置jenkins启动参数">4.3.2. 设置Jenkins启动参数</h4>
-<div class="paragraph">
-<p>1.创建Systemd配置文件</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /etc/systemd/system/jenkins.service.d/
-
-cat &lt;&lt; EOF &gt; /etc/systemd/system/jenkins.service.d/override.conf
-[Service]
-Environment="JENKINS_PORT=8282"
-# 默认配置文件中的 %C 实际并未生效，而是出现了错误的 "/var/lib/jenkins/%C/jenkins/"
-Environment="JENKINS_WEBROOT=/var/cache/jenkins/war"
-Environment="JENKINS_LOG=/var/log/jenkins/jenkins.log"
-EOF</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="title">参数说明</div>
-<p>JENKINS_PORT</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Jenkins运行端口。默认端口是8080，和之前安装的GitLab端口（同为8080）冲突，所以设置为 8282</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>JENKINS_WEBROOT</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Jenkins缓存目录</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>JENKINS_LOG</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Jenkins日志文件</pre>
-</div>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-JENKINS_DEBUG_LEVEL 参数无任何效果（官方文档未说明）
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>2.重载Systemd配置</p>
@@ -2138,21 +2053,21 @@ JENKINS_DEBUG_LEVEL 参数无任何效果（官方文档未说明）
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">JENKINS_PORT=8282
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">YOURPORT=8080
 PERM="--permanent"
-SERV_NAME=jenkins_${JENKINS_PORT}
-SERV="${PERM} --service=${SERV_NAME}"
+SERV="$PERM --service=jenkins"
 
-firewall-cmd ${PERM} --new-service=${SERV_NAME}
-firewall-cmd ${SERV} --set-short="Jenkins ports"
-firewall-cmd ${SERV} --set-description="Jenkins port exceptions"
-firewall-cmd ${SERV} --add-port=${JENKINS_PORT}/tcp
-firewall-cmd ${PERM} --add-service=${SERV_NAME}</code></pre>
+firewall-cmd $PERM --new-service=jenkins
+firewall-cmd $SERV --set-short="Jenkins ports"
+firewall-cmd $SERV --set-description="Jenkins port exceptions"
+firewall-cmd $SERV --add-port=$YOURPORT/tcp
+firewall-cmd $PERM --add-service=jenkins
+firewall-cmd --zone=public --add-service=http --permanent</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <div class="title">参数说明</div>
-<p>JENKINS_PORT</p>
+<p>YOURPORT</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2167,195 +2082,18 @@ firewall-cmd ${PERM} --add-service=${SERV_NAME}</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --reload</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>3.查看防火墙规则</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --list-all</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>public (active)
-  target: default
-  icmp-block-inversion: no
-  interfaces: enp0s3
-  sources:
-  services: dhcpv6-client http https jenkins_8282 ssh
-  ports:
-  protocols:
-  masquerade: no
-  forward-ports:
-  source-ports:
-  icmp-blocks:
-  rich rules:</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>放行的规则中必须有 jenkins_8282 服务</p>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_启动jenkins">4.5. 启动Jenkins</h3>
+<h3 id="_访问jenkins">4.5. 访问jenkins</h3>
 <div class="paragraph">
-<p>1.启动Jenkins</p>
+<p>1.浏览器访问Jenkins <a href="http://localhost:8080" class="bare">http://localhost:8080</a> 出现以下界面</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl start jenkins</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>2.查看Jenkins状态</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status jenkins</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>● jenkins.service - Jenkins Continuous Integration Server
-   Loaded: loaded (/usr/lib/systemd/system/jenkins.service; enabled; vendor preset: disabled)
-  Drop-In: /etc/systemd/system/jenkins.service.d
-           └─override.conf
-   Active: active (running) since Mon 2023-01-02 16:18:45 CST; 9h ago
-......
-......</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>输出中有 active (running) 表示Jenkins已经启动</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Jenkins Web暂时无法访问，详情见下文
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>3.等待Jenkins启动完成</p>
-</div>
-<div class="paragraph">
-<p>查看日志文件： /var/log/jenkins/jenkins.log，确认Jenkins启动完成</p>
-</div>
-<div class="listingblock">
-<div class="title">日志文件内容</div>
-<div class="content">
-<pre>1	Running from: /usr/share/java/jenkins.war
-2	2023-01-03 14:34:54.190+0000 [id=1]	INFO	winstone.Logger#logInternal: Beginning extraction from war file
-3	2023-01-03 14:34:54.243+0000 [id=1]	WARNING	o.e.j.s.handler.ContextHandler#setContextPath: Empty contextPath
-4	2023-01-03 14:34:54.310+0000 [id=1]	INFO	org.eclipse.jetty.server.Server#doStart: jetty-10.0.12; built: 2022-09-14T01:54:40.076Z; git: 408d0139887e27a57b54ed52e2d92a36731a7e88; jvm 11.0.17+8-LTS
-......
-......
-12	2023-01-03 14:34:56.463+0000 [id=31]	INFO	jenkins.InitReactorRunner$1#onAttained: Started initialization
-13	2023-01-03 14:34:56.740+0000 [id=36]	INFO	jenkins.InitReactorRunner$1#onAttained: Listed all plugins
-14	2023-01-03 14:35:00.167+0000 [id=35]	INFO	jenkins.InitReactorRunner$1#onAttained: Prepared all plugins
-15	2023-01-03 14:35:00.207+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: Started all plugins
-16	2023-01-03 14:35:00.227+0000 [id=30]	INFO	jenkins.InitReactorRunner$1#onAttained: Augmented all extensions
-17	2023-01-03 14:35:00.926+0000 [id=35]	INFO	h.p.b.g.GlobalTimeOutConfiguration#load: global timeout not set
-18	2023-01-03 14:35:01.596+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: System config loaded
-19	2023-01-03 14:35:01.597+0000 [id=38]	INFO	jenkins.InitReactorRunner$1#onAttained: System config adapted
-20	2023-01-03 14:35:01.626+0000 [id=31]	INFO	jenkins.InitReactorRunner$1#onAttained: Loaded all jobs
-21	2023-01-03 14:35:01.639+0000 [id=32]	INFO	jenkins.InitReactorRunner$1#onAttained: Configuration for all jobs updated
-22	2023-01-03 14:35:01.981+0000 [id=30]	INFO	jenkins.InitReactorRunner$1#onAttained: Completed initialization
-23	2023-01-03 14:35:02.107+0000 [id=23]	INFO	hudson.lifecycle.Lifecycle#onReady: Jenkins is fully up and running</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>注意23行日志</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-未见以下日志消息，必须长时间等待（半小时甚至更久）：
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Jenkins is fully up and running</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>现在，你可以访问 第一次访问Jenkins Web 继续完成Jenkins安装操作</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_第一次访问jenkins_web">4.6. 第一次访问Jenkins Web</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/第一次访问jenkins.png" alt="第一次访问jenkins">
 </div>
 </div>
-<div class="sect3">
-<h4 id="获取初始管理员密码">4.6.1. 获取初始管理员密码</h4>
-<div class="paragraph">
-<p>查看密码</p>
-</div>
-<div class="paragraph">
-<div class="title">位置：内网服务器</div>
-<p>cat /var/lib/jenkins/secrets/initialAdminPassword</p>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>35e10761f3e44cddbac0ecc586c17639</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-每次安装Jenkins生成的密码都不同，本文展示的密码仅作示例用途，请勿直接使用
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_访问jenkins_web">4.6.2. 访问Jenkins Web</h4>
-<div class="paragraph">
-<p>操作位置
-.开发工作机</p>
-</div>
-<div class="paragraph">
-<p>访问Jenkins Web地址
-<a href="http://jenkins.sjx.com:8282" class="bare">http://jenkins.sjx.com:8282</a></p>
-</div>
-<div class="paragraph">
-<p>注意端口是 8282，具体设置见 设置Jenkins启动参数</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_解锁jenkins">4.6.3. 解锁Jenkins</h4>
-<div class="paragraph">
-<p>输入 <a href="#获取初始管理员密码">获取初始管理员密码</a> 看到的密码，解锁Jenkins</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/解锁jenkins.png" alt="解锁jenkins">
-</div>
-</div>
 <div style="page-break-after: always;"></div>
-</div>
 </div>
 </div>
 </div>
@@ -2398,8 +2136,9 @@ EOF</code></pre>
 <div class="listingblock">
 <div class="title">生成密钥对</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#一路回车直到生成
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f keyname</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/.ssh
+#一路回车直到生成
+ssh-keygen -t rsa -b 4096 -C "chengzenghuan2018@gmail.com" -f ~/.ssh/keyname</code></pre>
 </div>
 </div>
 <div class="dlist">
@@ -2415,10 +2154,10 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f keyname</code></pre>
 <p>-b 4096 指定密钥长度为4096位，</p>
 </li>
 <li>
-<p>-C "<a href="mailto:your_email@example.com">your_email@example.com</a>" 注释该密钥对相关联的电子邮件地址（公钥文件末尾会出现该注释）</p>
+<p>-C "<a href="mailto:chengzenghuan@github.com">chengzenghuan@github.com</a>" 注释该密钥对相关联的电子邮件地址（公钥文件末尾会出现该注释）</p>
 </li>
 <li>
-<p>-f ~/.ssh/mk 指定密钥文件的名称和路径。</p>
+<p>-f ~/.ssh/keyname 指定密钥文件的名称和路径。</p>
 </li>
 <li>
 <p>-N "" 指定空密码</p>
@@ -2427,6 +2166,30 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f keyname</code></pre>
 </div>
 </dd>
 </dl>
+</div>
+<div class="paragraph">
+<p>将公钥keyname.pub添加到github</p>
+</div>
+<div class="listingblock">
+<div class="title">配置ssh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; ~/.ssh/config
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/keyname
+    IdentitiesOnly yes
+EOF
+
+#测试是否成功添加
+ssh -T git@github.com</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>Hi xxxxx! You've successfully authenticated, but GitHub does not provide shell access.</pre>
+</div>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -4242,28 +4005,28 @@ if __name__ == '__main__':
 <div class="sect2">
 <h3 id="_troubleshoot_2">17.1. troubleshoot</h3>
 <div class="paragraph">
-<p>Q:Failed to find catalog entry: Invalid argument</p>
+<p>Q1:Failed to find catalog entry: Invalid argument</p>
 </div>
 <div class="listingblock">
-<div class="title">A:</div>
+<div class="title">A1:</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">journalctl --update-catalog</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Q:MongoDB loads but breaks, returning status=14</p>
+<p>Q2:MongoDB loads but breaks, returning status=14</p>
 </div>
 <div class="listingblock">
-<div class="title">A:也许不在此路径，先查看是否存在该文件</div>
+<div class="title">A2:也许不在此路径，先查看是否存在该文件</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rm -rf /tmp/mongodb-27017.sock</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Q:arch linux 没有声音</p>
+<p>Q3:arch linux 没有声音</p>
 </div>
 <div class="listingblock">
-<div class="title">A:安装音频驱动包</div>
+<div class="title">A3:安装音频驱动包</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -S sof-firmware
 sudo pacman -S alsa-ucm-conf
@@ -4271,13 +4034,13 @@ reboot</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Q:error: Refusing to undefine while domain managed save image exists</p>
+<p>Q4:error: Refusing to undefine while domain managed save image exists</p>
 </div>
 <div class="paragraph">
-<p>Q:错误： 域管理的保存映像存在时拒绝取消定义</p>
+<p>Q4:错误： 域管理的保存映像存在时拒绝取消定义</p>
 </div>
 <div class="listingblock">
-<div class="title">A:</div>
+<div class="title">A4:</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">virsh managedsave-remove win7</code></pre>
 </div>
@@ -4286,18 +4049,27 @@ reboot</code></pre>
 <p>Q:Failed to start OpenSSH Daemon</p>
 </div>
 <div class="listingblock">
-<div class="title">A:检查配置文件帮助排错</div>
+<div class="title">A4:检查配置文件帮助排错</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sshd -t</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Q:jdk-openjdk and jre-openjdk are in conflict</p>
+<p>Q5:jdk-openjdk and jre-openjdk are in conflict</p>
 </div>
 <div class="listingblock">
-<div class="title">A:</div>
+<div class="title">A5:</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo pacman -Sy jre-openjdk</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Q6:vmware 看不到共享文件夹</p>
+</div>
+<div class="listingblock">
+<div class="title">A6:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vmhgfs-fuse /mnt/hgfs</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -5467,6 +5239,15 @@ gpgkey=https://mirrors.aliyun.com/centos-stream/RPM-GPG-KEY-CentOS-Official</pre
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum makecache &amp;&amp; yum update</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_yum常用命令">22.2. yum常用命令</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#通过命令查找该命令由什么软件提供
+yum whatprovides 命令</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -6666,6 +6447,49 @@ Content-Length: 131</pre>
 <img src="images/minikube_install_01.png" alt="minikube install 01">
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_k8s">28.2. k8s</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>环境准备</p>
+<div class="ulist">
+<ul>
+<li>
+<p>2 CPUs</p>
+</li>
+<li>
+<p>2GB 内存</p>
+</li>
+<li>
+<p>20GB 可用磁盘空间</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">在 Linux 系统中安装 kubectl</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">添加 Kubernetes 的 yum 仓库。如果你想使用 v1.29 之外的 Kubernetes 版本， 将下面命令中的 v1.29 替换为所需的次要版本。
+
+# 这会覆盖 /etc/yum.repos.d/kubernetes.repo 中现存的所有配置
+cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+EOF
+
+sudo yum install -y kubectl
+
+验证 kubectl 配置</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6813,6 +6637,117 @@ java -version</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kvm">32. kvm</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_kvm虚拟机使用usb">32.1. kvm虚拟机使用usb</h3>
+<div class="listingblock">
+<div class="title">查看usb的vendor 和product</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">lsusb</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 002: ID 30fa:0400  USB OPTICAL MOUSE
+Bus 003 Device 003: ID 30c9:0069 Luxvisions Innotech Limited HP Wide Vision HD Camera
+Bus 003 Device 004: ID 8087:0033 Intel Corp. AX211 Bluetooth
+Bus 004 Device 001: ID 03f0:1617 Linux Foundation 3.0 root hub</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>将一下内容添加到虚拟机.xml文件的"devices" block
+&lt;hostdev mode='subsystem' type='usb'&gt;
+  &lt;source startupPolicy='optional'&gt;
+    &lt;vendor id='0x03f0'/&gt;
+    &lt;product id='0x1617'/&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;</p>
+</div>
+<div class="paragraph">
+<p>然后</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">virsh undefine 虚拟机名字
+virsh define 虚拟机.xml</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_开机自动执行脚本">33. 开机自动执行脚本</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_方法一修改_etcrc_drc_local_文件">33.1. 方法一：修改 /etc/rc.d/rc.local 文件</h3>
+<div class="paragraph">
+<p>/etc/rc.d/rc.local 文件会在 Linux 系统各项服务都启动完毕之后再被运行。所以你想要自己的脚本在开机后被运行的话，可以将自己脚本路径加到该文件里。</p>
+</div>
+<div class="paragraph">
+<p>但是，首先需要确认你有运行这个文件的权限。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加执行权限
+chmod +x /etc/rc.d/rc.local
+
+#测试脚本auto_run_script.sh：在家目录下写入日期
+cat &lt;&lt;EOF &gt; /root/auto_run_script.sh
+#!/bin/bash
+date &gt;&gt; /root/test.txt
+EOF
+
+#赋予可执行权限：
+chmod +x /root/auto_run_script.sh
+
+#将auto_run_script.sh追加到/etc/rc.d/rc.local
+cat &lt;&lt;EOF &gt;&gt; /etc/rc.d/rc.local
+/root/auto_run_script.sh
+EOF
+
+接下来，我们就可以试试效果了。直接重启系统就可以了：
+
+$ sudo reboot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重启之后，就会在家目录下看到脚本执行的结果了。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat /root/test.txt</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_方法二使用_crontab">33.2. 方法二：使用 crontab</h3>
+<div class="paragraph">
+<p>crontab 是 Linux 下的计划任务，当时间达到我们设定的时间时，可以自动触发某些脚本的运行。
+我们可以自己设置计划任务时间，然后编写对应的脚本。但是，有个特殊的任务，叫作 @reboot ，我们其实也可以直接从它的字面意义看出来，这个任务就是在系统重启之后自动运行某个脚本。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">crontab -e</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#输入需要执行的脚本位置
+@reboot /root/auto_run_script.sh
+----</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -6820,7 +6755,7 @@ java -version</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-08 17:36:48 +0800
+Last updated 2023-12-21 14:33:11 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
