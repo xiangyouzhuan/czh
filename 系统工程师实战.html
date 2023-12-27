@@ -1017,13 +1017,17 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_minikube">28. minikube</a>
 <ul class="sectlevel2">
 <li><a href="#_minikube安装">28.1. minikube安装</a></li>
-<li><a href="#_k8s">28.2. k8s</a></li>
+<li><a href="#_k8s">28.2. k8s</a>
+<ul class="sectlevel3">
+<li><a href="#_常用命令_2">28.2.1. 常用命令</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_docker">29. Docker</a>
 <ul class="sectlevel2">
 <li><a href="#_docker安装">29.1. Docker安装</a></li>
-<li><a href="#_常用命令_2">29.2. 常用命令</a></li>
+<li><a href="#_常用命令_3">29.2. 常用命令</a></li>
 </ul>
 </li>
 <li><a href="#_nginx">30. Nginx</a>
@@ -6450,47 +6454,69 @@ Content-Length: 131</pre>
 </div>
 <div class="sect2">
 <h3 id="_k8s">28.2. k8s</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>环境准备</p>
-<div class="ulist">
-<ul>
-<li>
-<p>2 CPUs</p>
-</li>
-<li>
-<p>2GB 内存</p>
-</li>
-<li>
-<p>20GB 可用磁盘空间</p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_常用命令_2">28.2.1. 常用命令</h4>
+<div class="listingblock">
+<div class="title">常用命令</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#创建deployment
+kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+#列出deployments
+kubectl get deployments
+
+#创建proxy创建一个代理，将通信转发到集群范围内的专用网络中
+kubectl proxy
+
+#查看正在运行的pods
+kubectl get pods
+
+#查看pod中的container和image相关信息
+kubectl describe pods
+
+#查看pod日志
+kubectl logs "$POD_NAME"
+
+#列出环境变量
+kubectl exec "$POD_NAME" -- env
+
+#进入pod中的容器
+kubectl exec -ti $POD_NAME -- bash
+
+#拓展deployment副本到4个副本
+kubectl scale deployments/kubernetes-bootcamp --replicas=4
+
+#缩减deployment副本到2个副本
+kubectl scale deployments/kubernetes-bootcamp --replicas=2</code></pre>
 </div>
-</li>
-</ul>
 </div>
 <div class="listingblock">
-<div class="title">在 Linux 系统中安装 kubectl</div>
+<div class="title">更新</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">添加 Kubernetes 的 yum 仓库。如果你想使用 v1.29 之外的 Kubernetes 版本， 将下面命令中的 v1.29 替换为所需的次要版本。
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#列出已有pods
+kubectl get pods
 
-# 这会覆盖 /etc/yum.repos.d/kubernetes.repo 中现存的所有配置
-cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
-enabled=1
-gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
-EOF
+#查看应用程序的当前image版本
+kubectl describe pods
 
-sudo yum install -y kubectl
+#将应用程序的镜像更新到version 2(该命令通知deployment为您的应用程序使用不同的image并启动滚动更新)
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
 
-验证 kubectl 配置</code></pre>
+#检查新 Pod 的状态，并查看旧Pod终止
+kubectl get pods
+
+#验证更新
+kubectl rollout status deployments/kubernetes-bootcamp
+
+#查看应用程序的当前镜像版本
+kubectl describe pods
+
+#将deployment回滚到上一个工作版本
+kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
@@ -6554,7 +6580,7 @@ For more examples and ideas, visit:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_常用命令_2">29.2. 常用命令</h3>
+<h3 id="_常用命令_3">29.2. 常用命令</h3>
 <div class="listingblock">
 <div class="title">常用命令</div>
 <div class="content">
@@ -6664,7 +6690,7 @@ Bus 004 Device 001: ID 03f0:1617 Linux Foundation 3.0 root hub</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>将一下内容添加到虚拟机.xml文件的"devices" block</p>
+<p>将以下内容添加到虚拟机.xml文件的"devices" block</p>
 </div>
 <div class="listingblock">
 <div class="content">
