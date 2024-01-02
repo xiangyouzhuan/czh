@@ -1032,8 +1032,8 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_nginx">30. Nginx</a>
 <ul class="sectlevel2">
-<li><a href="#_proxy">30.1. proxy</a></li>
-<li><a href="#_tryfile">30.2. tryfile</a></li>
+<li><a href="#_proxy_pass">30.1. proxy_pass</a></li>
+<li><a href="#_try_files">30.2. try_files</a></li>
 <li><a href="#_rewrite">30.3. rewrite</a></li>
 <li><a href="#_return">30.4. return</a></li>
 </ul>
@@ -6612,7 +6612,11 @@ docker logs --tail 3 [containerID/containerNAME]</code></pre>
 <h2 id="_nginx">30. Nginx</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_proxy">30.1. proxy</h3>
+<h3 id="_proxy_pass">30.1. proxy_pass</h3>
+<div class="paragraph">
+<p>官方文档
+<a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass" class="bare">http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass</a></p>
+</div>
 <div class="paragraph">
 <p>添加本地域名解析</p>
 </div>
@@ -6655,9 +6659,11 @@ server {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tryfile">30.2. tryfile</h3>
+<h3 id="_try_files">30.2. try_files</h3>
 <div class="paragraph">
-<p>添加本地域名解析</p>
+<p>官方文档
+<a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files" class="bare">http://nginx.org/en/docs/http/ngx_http_core_module.html#try_files</a>
+添加本地域名解析</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6711,12 +6717,19 @@ server {
 <div class="paragraph">
 <p>浏览器访问 <a href="http://test.nginx.com/images/123.pn" class="bare">http://test.nginx.com/images/123.pn</a></p>
 </div>
-<div class="exampleblock">
-<div class="content">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>将依次访问http://test.nginx.com/images/123.pn，123.pn不存在，则按照try_files中的顺序，访问http://test.nginx.com/images/123.pn/依然不存在，最后访问http://test.nginx.com/images/index.html</p>
 </div>
-</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>页面将自动跳转到百度首页</p>
@@ -6725,7 +6738,8 @@ server {
 <div class="sect2">
 <h3 id="_rewrite">30.3. rewrite</h3>
 <div class="paragraph">
-<p><a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite">rewrite官方文档</a></p>
+<p>官方文档
+<a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite" class="bare">http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite</a></p>
 </div>
 <div class="paragraph">
 <p>添加本地域名解析</p>
@@ -6784,8 +6798,13 @@ server {
 <div class="paragraph">
 <p>任何以“/”开头的uri都将自动跳转</p>
 </div>
-<div class="exampleblock">
-<div class="content">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>语法 rewrite regex replacement [flag];</p>
 </div>
@@ -6802,11 +6821,17 @@ server {
 </li>
 </ul>
 </div>
-</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_return">30.4. return</h3>
+<div class="paragraph">
+<p>官方文档
+<a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#return" class="bare">http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#return</a></p>
+</div>
 <div class="paragraph">
 <p>添加本地域名解析</p>
 </div>
