@@ -1032,7 +1032,8 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_nginx">30. Nginx</a>
 <ul class="sectlevel2">
-<li><a href="#_请求转发">30.1. 请求转发</a></li>
+<li><a href="#_proxy">30.1. proxy</a></li>
+<li><a href="#_return">30.2. return</a></li>
 </ul>
 </li>
 <li><a href="#_java">31. java</a>
@@ -6584,14 +6585,21 @@ For more examples and ideas, visit:
 <div class="listingblock">
 <div class="title">常用命令</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#构建镜像并指定镜像名称和标29-Docker签
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#构建镜像并指定镜像名称和标签
 docker build -t testdemo:v1 .
 
 #创建容器
 docker run -d --privileged -p 8000(宿主机端口):8080(容器内端口) --name testdemo testdemo:v1
 
 #进入容器
-docker exec -it containerID /bin/bash</code></pre>
+docker exec -it [containerID/containerNAME] /bin/bash
+
+#查看日志
+docker logs [containerID/containerNAME]
+#日志持续输出到控制台
+docker logs -f [containerID/containerNAME]
+#输出日志末尾3行
+docker logs --tail 3 [containerID/containerNAME]</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -6602,7 +6610,7 @@ docker exec -it containerID /bin/bash</code></pre>
 <h2 id="_nginx">30. Nginx</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_请求转发">30.1. 请求转发</h3>
+<h3 id="_proxy">30.1. proxy</h3>
 <div class="paragraph">
 <p>添加本地域名解析</p>
 </div>
@@ -6638,10 +6646,188 @@ server {
 </div>
 </div>
 <div class="paragraph">
-<p>浏览器访问 [<a href="http://test.testdemo.com" class="bare">http://test.testdemo.com</a>]</p>
+<p>浏览器访问 [<a href="http://test.nginx.com" class="bare">http://test.nginx.com</a>]</p>
 </div>
 <div class="paragraph">
+<p>页面将自动跳转到百度首页
+=== tryfile</p>
+</div>
+<div class="paragraph">
+<p>添加本地域名解析</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; /etc/hosts
+127.0.0.1 test.testdemo.com
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在/data/images/目录下存放一张图片123.png</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/nginx/nginx.conf
+
+#添加一个server模块测试
+server {
+        location /images/ {
+            root /data;
+            try_files $uri  $uri/  /images/index.html;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重载nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nginx -t &amp;&amp; nginx -s reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>浏览器访问 <a href="http://test.nginx.com/images/123.png" class="bare">http://test.nginx.com/images/123.png</a></p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>因为uri:123.png存在，可正常访问资源，此时完整的url是
+<a href="http://test.nginx.com/images/123.png" class="bare">http://test.nginx.com/images/123.png</a></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>浏览器访问 <a href="http://test.nginx.com/images/123.pn" class="bare">http://test.nginx.com/images/123.pn</a></p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>将依次访问http://test.nginx.com/images/123.pn，123.pn不存在，则按照try_files中的顺序，访问http://test.nginx.com/images/123.pn/依然不存在，最后访问http://test.nginx.com/images/index.html</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>页面将自动跳转到百度首页
+=== rewrite
+<a href="http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite">rewrite官方文档</a></p>
+</div>
+<div class="paragraph">
+<p>添加本地域名解析</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; /etc/hosts
+127.0.0.1 test.testdemo.com
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/nginx/nginx.conf
+
+#添加一个server模块 测试
+server {
+        location / {
+            rewrite ^/(.*) http://www.baidu.com;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重载nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nginx -t &amp;&amp; nginx -s reload</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>浏览器访问 <a href="http://test.testdemo.com" class="bare">http://test.testdemo.com</a></p>
+<div class="ulist">
+<ul>
+<li>
 <p>页面将自动跳转到百度首页</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>浏览器访问 <a href="http://test.testdemo.com/data/images/123.png" class="bare">http://test.testdemo.com/data/images/123.png</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>页面也自动跳转到百度首页</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>任何以“/”开头的uri都将自动跳转</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>语法 rewrite regex replacement [flag];</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>regex是匹配uri的正则表达式</p>
+</li>
+<li>
+<p>replacement是需要替换成的uri</p>
+</li>
+<li>
+<p>flag可替换为[last/break/redirect/permanent]</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return">30.2. return</h3>
+<div class="paragraph">
+<p>添加本地域名解析</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; /etc/hosts
+127.0.0.1 test.testdemo.com
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/nginx/nginx.conf
+
+#添加一个server模块测试
+server {
+        location / {
+            root /data/images/;
+            return 200;
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>重载nginx</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nginx -t &amp;&amp; nginx -s reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>浏览器访问 <a href="http://test.nginx.com/123.png" class="bare">http://test.nginx.com/123.png</a></p>
+</div>
+<div class="paragraph">
+<p>页面将返回200状态码</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
