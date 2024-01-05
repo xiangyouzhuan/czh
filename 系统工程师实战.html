@@ -1067,6 +1067,16 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_方法二使用_crontab">33.2. 方法二：使用 crontab</a></li>
 </ul>
 </li>
+<li><a href="#_Misc_chapter">34. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">34.1. Chrome</a>
+<ul class="sectlevel3">
+<li><a href="#_安装_proxy_switchyomega_扩展">34.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">34.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -7203,14 +7213,54 @@ $ sudo reboot</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">34. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">34.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">34.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<div class="paragraph">
+<p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<p>google-chrome-stable --proxy-server="socks5://192.168.1.5:1080"</p>
+</dd>
+<dt class="hdlist1">Windows</dt>
+<dd>
+<p><code>Google Chrome</code> 快捷方式的属性中，追加程序运行参数，得到 <code>"C:\xxxx\chrome.exe" --proxy-server="socks5://192.168.1.5:1080"</code></p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>然后，安装扩展 <a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif?hl=zh-CN">Proxy SwitchyOmega</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_switchyomega实现自动代理切换">34.1.2. SwitchyOmega实现自动代理切换</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference: <a href="https://www.itfanr.cc/2019/09/04/autoproxy-by-shadowsocks-and-switchyomega/" class="bare">https://www.itfanr.cc/2019/09/04/autoproxy-by-shadowsocks-and-switchyomega/</a></p>
+</li>
+</ul>
+</div>
 <div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-04 17:53:07 +0800
+Last updated 2024-01-05 11:32:14 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
