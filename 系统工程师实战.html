@@ -831,10 +831,11 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_访问jenkins">4.5. 访问jenkins</a></li>
 </ul>
 </li>
-<li><a href="#_linux无密码登陆">5. Linux无密码登陆</a>
+<li><a href="#_ssh">5. ssh</a>
 <ul class="sectlevel2">
 <li><a href="#_无密码登录">5.1. 无密码登录</a></li>
 <li><a href="#_ssh密钥对克隆git仓库">5.2. ssh密钥对克隆git仓库</a></li>
+<li><a href="#_cmd无法识别ssh">5.3. cmd无法识别ssh</a></li>
 </ul>
 </li>
 <li><a href="#_prometheus">6. prometheus</a>
@@ -1038,11 +1039,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_return">30.4. return</a></li>
 </ul>
 </li>
-<li><a href="#_java">31. java</a>
-<ul class="sectlevel2">
-<li><a href="#_java安装">31.1. java安装</a></li>
-</ul>
-</li>
+<li><a href="#_java">31. java</a></li>
 <li><a href="#_kvm">32. kvm</a>
 <ul class="sectlevel2">
 <li><a href="#_kvm虚拟机使用usb">32.1. kvm虚拟机使用usb</a></li>
@@ -2105,7 +2102,7 @@ firewall-cmd --zone=public --add-service=http --permanent</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_linux无密码登陆">5. Linux无密码登陆</h2>
+<h2 id="_ssh">5. ssh</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_无密码登录">5.1. 无密码登录</h3>
@@ -2197,6 +2194,35 @@ ssh -T git@github.com</code></pre>
 <div class="content">
 <pre>Hi xxxxx! You've successfully authenticated, but GitHub does not provide shell access.</pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cmd无法识别ssh">5.3. cmd无法识别ssh</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：Windows10</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>配置环境变量时，误操作导致cmd中无法使用ssh命令</p>
+</div>
+<div class="paragraph">
+<p>添加环境变量即可解决。</p>
+</div>
+<div class="paragraph">
+<p>此电脑&#8594;右键&#8594;属性&#8594;关于&#8594;高级系统设置&#8594;高级&#8594;环境变量</p>
+</div>
+<div class="paragraph">
+<p>在系统变量Path中添加  <code>C:\Windows\System32\OpenSSH;</code></p>
+</div>
+<div class="paragraph">
+<p>添加前：<code>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</code></p>
+</div>
+<div class="paragraph">
+<p>添加后：<code>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+C:\Windows\System32\OpenSSH;</code></p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -6862,20 +6888,10 @@ server {
 <div class="sect1">
 <h2 id="_java">31. java</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_java安装">31.1. java安装</h3>
-<div class="listingblock">
-<div class="title">java8</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java8
-yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel java-1.8.0-openjdk-headless
-
-#查看当前java环境
-java -version</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in book/31-java/java.asc - include::sections/java安装配置.asc[]</p>
 </div>
 <div style="page-break-after: always;"></div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -6996,7 +7012,7 @@ $ sudo reboot</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-21 14:33:11 +0800
+Last updated 2024-01-04 17:53:07 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
