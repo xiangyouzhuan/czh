@@ -1039,7 +1039,23 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_return">30.4. return</a></li>
 </ul>
 </li>
-<li><a href="#_java">31. java</a></li>
+<li><a href="#_java">31. java</a>
+<ul class="sectlevel2">
+<li><a href="#_java安装">31.1. java安装</a>
+<ul class="sectlevel3">
+<li><a href="#_linuxcentos_stream9">31.1.1. linux(centos-stream9)</a></li>
+<li><a href="#_windows10">31.1.2. windows10</a></li>
+</ul>
+</li>
+<li><a href="#_gradle换源">31.2. gradle换源</a></li>
+<li><a href="#_maven换源">31.3. maven换源</a>
+<ul class="sectlevel3">
+<li><a href="#_方法一">31.3.1. 方法一：</a></li>
+<li><a href="#_方法二">31.3.2. 方法二：</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#_kvm">32. kvm</a>
 <ul class="sectlevel2">
 <li><a href="#_kvm虚拟机使用usb">32.1. kvm虚拟机使用usb</a></li>
@@ -6888,10 +6904,188 @@ server {
 <div class="sect1">
 <h2 id="_java">31. java</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_java安装">31.1. java安装</h3>
+<div class="sect3">
+<h4 id="_linuxcentos_stream9">31.1.1. linux(centos-stream9)</h4>
+<div class="listingblock">
+<div class="title">java8</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java8
+yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel java-1.8.0-openjdk-headless
+
+#查看当前java环境
+java -version</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">java11</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java11
+yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless
+
+#查看当前java环境
+java -version</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">java17</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java17
+yum install -y install java-17-openjdk java-17-openjdk-devel
+
+#查看当前java环境
+java -version</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_windows10">31.1.2. windows10</h4>
 <div class="paragraph">
-<p>Unresolved directive in book/31-java/java.asc - include::sections/java安装配置.asc[]</p>
+<p>一、下载jdk,下载地址：https://www.oracle.com/java/technologies/downloads/， windows 下载.msi格式。</p>
+</div>
+<div class="paragraph">
+<p>二、点击安装包安装到对应目录。</p>
+</div>
+<div class="paragraph">
+<p>三、 配置环境变量：</p>
+</div>
+<div class="paragraph">
+<p>在 "系统变量" 中设置 3 项属性，JAVA_HOME、PATH、CLASSPATH(大小写无所谓),若已存在则点击"编辑"，不存在则点击"新建"。</p>
+</div>
+<div class="paragraph">
+<p>此电脑&#8594;右键&#8594;属性&#8594;关于&#8594;高级系统设置&#8594;高级&#8594;环境变量</p>
+</div>
+<div class="listingblock">
+<div class="title">变量设置参数如下：</div>
+<div class="content">
+<pre>变量名：JAVA17
+变量值：C:\Program Files (x86)\Java\jdk17        // 要根据自己的实际路径配置
+变量名：JAVA_HOME
+变量值：%JAVA17%
+变量名：CLASSPATH
+变量值：.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;         //记得前面有个"."
+变量名：Path
+变量值：%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>四、 测试JDK是否安装成功</p>
+</div>
+<div class="paragraph">
+<p>1、"开始"&#8594;"运行"，键入"cmd"</p>
+</div>
+<div class="paragraph">
+<p>2、键入命令: java -version、java、javac 几个命令，出现信息，说明环境变量配置成功；</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_gradle换源">31.2. gradle换源</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference: <a href="https://www.cnblogs.com/bluestorm/p/14761482.html" class="bare">https://www.cnblogs.com/bluestorm/p/14761482.html</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>项目目录&#8594;gradle&#8594;wrapper&#8594;gradle-wrapper.properties</p>
+</div>
+<div class="paragraph">
+<p>更改 <code>distributionUrl</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>可选url:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>腾讯云: <a href="https://mirrors.cloud.tencent.com/gradle/" class="bare">https://mirrors.cloud.tencent.com/gradle/</a></p>
+</li>
+<li>
+<p>阿里云gradle配置：
+<a href="https://maven.aliyun.com/mvn/guide" class="bare">https://maven.aliyun.com/mvn/guide</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>更改后：
+<code>distributionUrl=https\://mirrors.cloud.tencent.com/gradle/gradle-xx-xx</code> ①</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>①处根据自身选择合适版本</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_maven换源">31.3. maven换源</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference: <a href="https://blog.csdn.net/mnmiaoyi/article/details/124216887" class="bare">https://blog.csdn.net/mnmiaoyi/article/details/124216887</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_方法一">31.3.1. 方法一：</h4>
+<div class="paragraph">
+<p>项目目录/.mvn/wrapper/maven-wrapper.properties</p>
+</div>
+<div class="paragraph">
+<p>更改 <code>distributionUrl</code> 和 <code>wrapperUrl</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>distributionUrl=https://maven.aliyun.com/repository/central/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
+wrapperUrl=https://maven.aliyun.com/repository/central/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar
+
+# distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
+# wrapperUrl=https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_方法二">31.3.2. 方法二：</h4>
+<div class="paragraph">
+<p>参考阿里云: <a href="https://developer.aliyun.com/mvn/guide" class="bare">https://developer.aliyun.com/mvn/guide</a></p>
+</div>
+<div class="paragraph">
+<p>参考腾讯云: <a href="https://mirrors.tencent.com/help/maven.html" class="bare">https://mirrors.tencent.com/help/maven.html</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>settings.xml路径可使用everything搜索：
+参考路径：
+D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\settings.xml</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
