@@ -1067,12 +1067,17 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_方法二使用_crontab">33.2. 方法二：使用 crontab</a></li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">34. 杂项</a>
+<li><a href="#_gost">34. gost</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">34.1. Chrome</a>
+<li><a href="#_隧道搭建安装配置">34.1. 隧道搭建安装配置</a></li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">35. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">35.1. Chrome</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">34.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">34.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_安装_proxy_switchyomega_扩展">35.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">35.1.2. SwitchyOmega实现自动代理切换</a></li>
 </ul>
 </li>
 </ul>
@@ -7241,12 +7246,207 @@ $ sudo reboot</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">34. 杂项</h2>
+<h2 id="_gost">34. gost</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">34.1. Chrome</h3>
+<h3 id="_隧道搭建安装配置">34.1. 隧道搭建安装配置</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：centos-stream 9</p>
+</li>
+<li>
+<p>内存：2G</p>
+</li>
+<li>
+<p>cpu: 2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>1.国外服务器安装gost</p>
+</div>
+<div class="listingblock">
+<div class="title">安装GOST</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
+wget https://github.com/go-gost/gost/releases/download/v3.0.0-rc6/gost_3.0.0-rc6_linux_amd64v3.tar.gz -O gost_3.0.0-rc6_linux_amd64v3.tar.gz
+tar xf gost_3.0.0-rc6_linux_amd64v3.tar.gz -C /usr/local/bin
+ls -l /usr/local/bin/gost
+
+gost -h</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+老旧CPU使用 gost_3.0.0-rc6_linux_amd64.tar.gz 代替（不带v3标识）
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>2.国外服务器隧道搭建</p>
+</div>
+<div class="listingblock">
+<div class="title">创建系统服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /etc/gost.yaml
+services:
+- name: gost-relay-service
+  addr: :35462
+  handler:
+    type: relay
+    auth:
+      username:
+      password: eethi6ohjuuQueen3omu
+  listener:
+    type: tls
+
+log:
+  level: info
+  format: text
+  output: /var/log/gost/error.log
+  rotation:
+    maxSize: 100
+    maxAge: 4
+    maxBackups: 3
+    localTime: true
+    compress: true
+EOF
+
+cat &lt;&lt; EOF &gt; /usr/lib/systemd/system/gost.service
+[Unit]
+Description=GO Simple Tunnel
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/gost -C /etc/gost.yaml
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable gost
+systemctl start gost
+systemctl status gost</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>在本例中</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">IP地址</dt>
+<dd>
+<p>47.242.55.180</p>
+</dd>
+<dt class="hdlist1">隧道协议</dt>
+<dd>
+<p>Relay</p>
+</dd>
+<dt class="hdlist1">数据通道</dt>
+<dd>
+<p>TLS</p>
+</dd>
+<dt class="hdlist1">隧道端口</dt>
+<dd>
+<p>35462</p>
+</dd>
+<dt class="hdlist1">隧道密码</dt>
+<dd>
+<p>eethi6ohjuuQueen3omu</p>
+</dd>
+</dl>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>3.在落地客户端(本地虚拟机)安装GOST</p>
+</div>
+<div class="paragraph">
+<p>由于本地虚拟机访问github很慢，所以直接将国外服务器上的文件传输到本地</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
+scp root@47.242.55.180:~/gost_3.0.0-rc6_linux_amd64v3.tar.gz .</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">创建系统服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /usr/lib/systemd/system/gost.service
+[Unit]
+Description=GO Simple Tunnel
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/gost -F=relay+tls://:eethi6ohjuuQueen3omu@47.242.55.180:35462
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable gost
+systemctl start gost
+systemctl status gost</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">隧道一级跳板</dt>
+<dd>
+<p>47.242.55.180</p>
+</dd>
+<dt class="hdlist1">IP地址</dt>
+<dd>
+<p>0.0.0.0/127.0.0.1</p>
+</dd>
+<dt class="hdlist1">隧道协议</dt>
+<dd>
+<p>Socks5</p>
+</dd>
+<dt class="hdlist1">隧道端口</dt>
+<dd>
+<p>1080</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>在chrome浏览器安装SwitchyOmega，并新建情景模式，配置代理协议如下</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/gost_01.png" alt="gost 01">
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">35. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">35.1. Chrome</h3>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">34.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_安装_proxy_switchyomega_扩展">35.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -7267,7 +7467,7 @@ $ sudo reboot</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">34.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">35.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7284,7 +7484,7 @@ $ sudo reboot</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-05 11:32:14 +0800
+Last updated 2024-01-12 11:13:13 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
