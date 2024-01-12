@@ -1067,7 +1067,13 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_方法二使用_crontab">33.2. 方法二：使用 crontab</a></li>
 </ul>
 </li>
-<li><a href="#_gost">34. gost</a></li>
+<li><a href="#_gost">34. gost</a>
+<ul class="sectlevel2">
+<li><a href="#_隧道搭建安装配置环境">34.1. 隧道搭建安装配置环境</a></li>
+<li><a href="#_国外服务器">34.2. 国外服务器</a></li>
+<li><a href="#_落地客户端">34.3. 落地客户端</a></li>
+</ul>
+</li>
 <li><a href="#_Misc_chapter">35. 杂项</a>
 <ul class="sectlevel2">
 <li><a href="#_chrome">35.1. Chrome</a>
@@ -7244,6 +7250,8 @@ $ sudo reboot</code></pre>
 <div class="sect1">
 <h2 id="_gost">34. gost</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_隧道搭建安装配置环境">34.1. 隧道搭建安装配置环境</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7257,6 +7265,9 @@ $ sudo reboot</code></pre>
 </li>
 </ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_国外服务器">34.2. 国外服务器</h3>
 <div class="paragraph">
 <p>1.国外服务器安装gost</p>
 </div>
@@ -7369,8 +7380,11 @@ systemctl status gost</code></pre>
 </tr>
 </table>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_落地客户端">34.3. 落地客户端</h3>
 <div class="paragraph">
-<p>3.在落地客户端(本地虚拟机)安装GOST</p>
+<p>1.在落地客户端(本地虚拟机)安装GOST</p>
 </div>
 <div class="paragraph">
 <p>由于本地虚拟机访问github很慢，所以直接将国外服务器上的文件传输到本地</p>
@@ -7380,6 +7394,9 @@ systemctl status gost</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
 scp root@47.242.55.180:~/gost_3.0.0-rc6_linux_amd64v3.tar.gz .</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>2.创建系统服务</p>
 </div>
 <div class="listingblock">
 <div class="title">创建系统服务</div>
@@ -7423,7 +7440,7 @@ systemctl status gost</code></pre>
 </dl>
 </div>
 <div class="paragraph">
-<p>在chrome浏览器安装SwitchyOmega，并新建情景模式，配置代理协议如下</p>
+<p>在chrome浏览器安装SwitchyOmega插件，并新建情景模式，配置代理协议如下</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -7431,6 +7448,7 @@ systemctl status gost</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
