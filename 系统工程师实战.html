@@ -7320,7 +7320,9 @@ systemctl start vsftpd.service</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#查看FTP服务监听的端口
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装net-tools
+yum install -y net-tools
+#查看FTP服务监听的端口
 netstat -antup | grep ftp</code></pre>
 </div>
 </div>
@@ -7347,7 +7349,6 @@ adduser ftptest
 
 #运行以下命令，修改ftptest用户的密码。
 passwd ftptest
-运行命令后，根据提示输入密码，并完成二次确认。
 
 #创建一个供FTP服务使用的文件目录。本示例以/var/ftp/test为例。
 mkdir /var/ftp/test
@@ -7442,16 +7443,9 @@ pasv_max_port=50010</pre>
 <h4 id="_步骤三新增防火墙规则">34.1.3. 步骤三：新增防火墙规则</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">YOURPORT=21
-PERM="--permanent"
-SERV="$PERM --service=vsftpd"
-
-firewall-cmd $PERM --new-service=vsftpd
-firewall-cmd $SERV --set-short="vsftpd ports"
-firewall-cmd $SERV --set-description="vsftpd port exceptions"
-firewall-cmd $SERV --add-port=$YOURPORT/tcp
-firewall-cmd $PERM --add-service=vsftpd
-firewall-cmd --zone=public --add-service=http --permanent</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">firewall-cmd --zone=public --add-port=21/tcp --permanent
+firewall-cmd --zone=public --add-port=50000-50010/tcp --permanent
+firewall-cmd --reload</code></pre>
 </div>
 </div>
 </div>
