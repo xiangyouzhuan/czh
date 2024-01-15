@@ -6948,7 +6948,7 @@ java -version</code></pre>
 <div class="title">java17</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java17
-yum install -y install java-17-openjdk java-17-openjdk-devel
+yum install -y java-17-openjdk java-17-openjdk-devel java-11-openjdk-headless
 
 #查看当前java环境
 java -version</code></pre>
@@ -7457,7 +7457,7 @@ After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/gost -F=relay+tls://:eethi6ohjuuQueen3omu@47.242.55.180:35462
+ExecStart=/usr/local/bin/gost -L=socks5://:1080 -F=relay+tls://:eethi6ohjuuQueen3omu@47.242.55.180:35462
 
 [Install]
 WantedBy=multi-user.target
