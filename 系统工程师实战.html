@@ -1047,11 +1047,12 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_windows10">31.1.2. windows10</a></li>
 </ul>
 </li>
-<li><a href="#_gradle换源">31.2. gradle换源</a></li>
-<li><a href="#_maven换源">31.3. maven换源</a>
+<li><a href="#_java环境设置">31.2. java环境设置</a></li>
+<li><a href="#_gradle换源">31.3. gradle换源</a></li>
+<li><a href="#_maven换源">31.4. maven换源</a>
 <ul class="sectlevel3">
-<li><a href="#_方法一">31.3.1. 方法一：</a></li>
-<li><a href="#_方法二">31.3.2. 方法二：</a></li>
+<li><a href="#_方法一">31.4.1. 方法一：</a></li>
+<li><a href="#_方法二">31.4.2. 方法二：</a></li>
 </ul>
 </li>
 </ul>
@@ -6618,6 +6619,7 @@ kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+sudo systemctl enable docker
 sudo systemctl start docker
 #运行hello-world image测试是否已经正确安装docker
 sudo docker run hello-world</code></pre>
@@ -7009,7 +7011,47 @@ java -version</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_gradle换源">31.2. gradle换源</h3>
+<h3 id="_java环境设置">31.2. java环境设置</h3>
+<div class="paragraph">
+<p>如果您从CentOS官方存储库安装了多个版本的Java，则可以使用 <code>alternatives</code> 来切换它们。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@dlp ~]# alternatives --config java
+
+There are 3 programs which provide 'java'.
+
+  Selection    Command
+-----------------------------------------------
+   1           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el9.x86_64/jre/bin/java)
+*+ 2           java-11-openjdk.x86_64 (/usr/lib/jvm/java-11-openjdk-11.0.15.0.10-1.el9.x86_64/bin/java)
+   3           java-17-openjdk.x86_64 (/usr/lib/jvm/java-17-openjdk-17.0.3.0.7-1.el9.x86_64/bin/java)
+
+Enter to keep the current selection[+], or type selection number: 3
+
+[root@dlp ~]# alternatives --config javac
+
+There are 3 programs which provide 'javac'.
+
+  Selection    Command
+-----------------------------------------------
+   1           java-1.8.0-openjdk.x86_64 (/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el9.x86_64/bin/javac)
+*+ 2           java-11-openjdk.x86_64 (/usr/lib/jvm/java-11-openjdk-11.0.15.0.10-1.el9.x86_64/bin/javac)
+   3           java-17-openjdk.x86_64 (/usr/lib/jvm/java-17-openjdk-17.0.3.0.7-1.el9.x86_64/bin/javac)
+
+Enter to keep the current selection[+], or type selection number: 3
+
+[root@dlp ~]# java --version
+openjdk 17.0.3 2022-04-19 LTS
+OpenJDK Runtime Environment 21.9 (build 17.0.3+7-LTS)
+OpenJDK 64-Bit Server VM 21.9 (build 17.0.3+7-LTS, mixed mode, sharing)
+[root@dlp ~]# javac --version
+javac 17.0.3</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_gradle换源">31.3. gradle换源</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7089,7 +7131,7 @@ Starting a Gradle Daemon, 1 busy and 1 stopped Daemons could not be reused, use 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_maven换源">31.3. maven换源</h3>
+<h3 id="_maven换源">31.4. maven换源</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7098,7 +7140,7 @@ Starting a Gradle Daemon, 1 busy and 1 stopped Daemons could not be reused, use 
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_方法一">31.3.1. 方法一：</h4>
+<h4 id="_方法一">31.4.1. 方法一：</h4>
 <div class="paragraph">
 <p>项目目录/.mvn/wrapper/maven-wrapper.properties</p>
 </div>
@@ -7116,7 +7158,7 @@ wrapperUrl=https://maven.aliyun.com/repository/central/io/takari/maven-wrapper/0
 </div>
 </div>
 <div class="sect3">
-<h4 id="_方法二">31.3.2. 方法二：</h4>
+<h4 id="_方法二">31.4.2. 方法二：</h4>
 <div class="paragraph">
 <p>参考阿里云: <a href="https://developer.aliyun.com/mvn/guide" class="bare">https://developer.aliyun.com/mvn/guide</a></p>
 </div>
