@@ -6617,7 +6617,7 @@ kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo systemctl enable docker
 sudo systemctl start docker
