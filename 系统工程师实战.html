@@ -2216,8 +2216,17 @@ ssh-keygen -t rsa -b 4096 -C "chengzenghuan2018@gmail.com" -f ~/.ssh/keyname</co
 </dd>
 </dl>
 </div>
-<div class="paragraph">
-<p>将公钥keyname.pub添加到github</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+将公钥keyname.pub添加到github后再执行之后的操作
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="title">配置ssh</div>
@@ -2230,6 +2239,7 @@ Host github.com
     IdentitiesOnly yes
 EOF
 
+
 #测试是否成功添加
 ssh -T git@github.com</code></pre>
 </div>
@@ -2239,6 +2249,56 @@ ssh -T git@github.com</code></pre>
 <div class="content">
 <pre>Hi xxxxx! You've successfully authenticated, but GitHub does not provide shell access.</pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>如果报错：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ssh: connect to host github.com port 22: Connection refused</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>则使用GitHub的443端口————执行以下命令以更改~/.ssh/config文件：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt; ~/.ssh/config
+Host github.com
+    HostName ssh.github.com
+    Port 443
+    User git
+    IdentityFile ~/.ssh/keyname
+    IdentitiesOnly yes
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>再次测试是否成功添加</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh -T git@github.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>成功后，终端输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Hi xxxxx! You've successfully authenticated, but GitHub does not provide shell access.</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
