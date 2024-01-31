@@ -843,7 +843,6 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_downloading_prometheus">6.1. Downloading Prometheus</a></li>
 <li><a href="#_configuring_prometheus">6.2. Configuring Prometheus</a></li>
 <li><a href="#_starting_prometheus">6.3. Starting Prometheus</a></li>
-<li><a href="#_安装mysql_exporter">6.4. 安装mysql exporter</a></li>
 </ul>
 </li>
 <li><a href="#_zabbix">7. Zabbix</a>
@@ -1092,6 +1091,12 @@ p { margin-bottom: 1.25rem; }
 <ul class="sectlevel3">
 <li><a href="#_安装_proxy_switchyomega_扩展">36.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
 <li><a href="#_switchyomega实现自动代理切换">36.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">36.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux">36.2.1. linux</a></li>
+<li><a href="#_windows">36.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -2338,11 +2343,16 @@ C:\Windows\System32\OpenSSH;</code></p>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_downloading_prometheus">6.1. Downloading Prometheus</h3>
+<div class="paragraph">
+<p>Reference： <a href="https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets" class="bare">https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets</a>
+下载地址： <a href="https://prometheus.io/download/#prometheus" class="bare">https://prometheus.io/download/#prometheus</a></p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/prometheus/releases/download/v2.46.0/prometheus-2.46.0.linux-amd64.tar.gz
-tar xvfz prometheus-*.tar.gz
-cd prometheus-*</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
+wget https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
+tar -zxvf prometheus-2.49.1.linux-amd64.tar.gz -C /opt/
+cd /opt/prometheus-*</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2357,7 +2367,7 @@ cd prometheus-*</code></pre>
 <div class="sect2">
 <h3 id="_configuring_prometheus">6.2. Configuring Prometheus</h3>
 <div class="paragraph">
-<p>省略不做，详细解释查看
+<p>在本quick start中省略不做，若有需要请查看
 <a href="https://prometheus.io/docs/introduction/first_steps/">官方教程</a></p>
 </div>
 </div>
@@ -2365,89 +2375,24 @@ cd prometheus-*</code></pre>
 <h3 id="_starting_prometheus">6.3. Starting Prometheus</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd prometheus-*
-./prometheus --config.file=prometheus.yml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./prometheus --config.file=prometheus.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>访问
-<a href="http://localhost:9090" class="bare">http://localhost:9090</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_安装mysql_exporter">6.4. 安装mysql exporter</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.0/mysqld_exporter-0.15.0.linux-amd64.tar.gz
-tar xvfz mysqld_exporter-0.15.0.linux-amd64.tar.gz</code></pre>
-</div>
+<p>访问 <a href="http://&lt;部署prometheus的主机ip&gt;:9090" class="bare">http://&lt;部署prometheus的主机ip&gt;:9090</a></p>
 </div>
 <div class="listingblock">
-<div class="title">得到解压的文件</div>
+<div class="title">常用命令</div>
 <div class="content">
-<pre>[pr@zabbix Download]$ ls
-mysqld_exporter-0.15.0.linux-amd64         prometheus-2.46.0.linux-amd64
-mysqld_exporter-0.15.0.linux-amd64.tar.gz  prometheus-2.46.0.linux-amd64.tar.gz</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd mysqld_exporter-0.15.0.linux-amd64</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#重载prometheus配置文件
+kill -s SIGHUP `pgrep -f prometheus`
+
+#关闭prometheus
+kill -s SIGTERM `pgrep -f prometheus`</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>root登陆数据库</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql -uroot -ppassword</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>创建用户</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#更改密码策略，否则简单密码password不可用
-mysql&gt;SET GLOBAL validate_password.policy = 0;
-mysql&gt;CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'password' WITH MAX_USER_CONNECTIONS 3;
-mysql&gt;GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
-mysql&gt;quit;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>创建编辑文件.my.cnf</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo &lt;&lt; EOF &gt; .my.cnf
-[client]
-user=exporter
-password=password
-EOF</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>进入prometheus-2.46.0.linux-amd64目录下</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd prometheus-2.46.0.linux-amd64/</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo &lt;&lt; EOF &gt;&gt; prometheus.yml
-  - job_name: "mysqld"
-    static_configs:
-    - targets: ["localhost:9104"]
-EOF
-./mysqld_exporter --config.my-cnf=.my.cnf</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>官网地址
-<a href="https://prometheus.io/download/#mysqld_exporter" class="bare">https://prometheus.io/download/#mysqld_exporter</a></p>
+<p>Unresolved directive in book/06-prometheus/prometheus.asc - include::sections/02-mysqlExporter.asc[]</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -7867,6 +7812,116 @@ systemctl status gost</code></pre>
 <p>Reference: <a href="https://www.itfanr.cc/2019/09/04/autoproxy-by-shadowsocks-and-switchyomega/" class="bare">https://www.itfanr.cc/2019/09/04/autoproxy-by-shadowsocks-and-switchyomega/</a></p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_辨别虚拟机物理机">36.2. 辨别虚拟机物理机</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://developer.aliyun.com/article/249564" class="bare">https://developer.aliyun.com/article/249564</a></p>
+</li>
+<li>
+<p><a href="https://unix.stackexchange.com/questions/89714/easy-way-to-determine-the-virtualization-technology-of-a-linux-machine" class="bare">https://unix.stackexchange.com/questions/89714/easy-way-to-determine-the-virtualization-technology-of-a-linux-machine</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_linux">36.2.1. linux</h4>
+<div class="listingblock">
+<div class="title">VMware Workstation</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode -s system-product-name
+VMware Virtual Platform</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">VirtualBox</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode -s system-product-name
+VirtualBox</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Qemu with KVM</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode -s system-product-name
+KVM</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Qemu (emulated)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode -s system-product-name
+Bochs</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Microsoft VirtualPC</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode | egrep -i 'manufacturer|product'
+Manufacturer: Microsoft Corporation
+Product Name: Virtual Machine</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Virtuozzo</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode
+/dev/mem: Permission denied</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Xen</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">root@router:~# dmidecode | grep -i domU
+Product Name: HVM domU</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在裸机上，这会返回计算机或主板型号的标识。</p>
+</div>
+<div class="paragraph">
+<p>如果您无权运行 dmidecode 那么您可以使用：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls -1 /dev/disk/by-id/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
+<div class="content">
+<pre>[root@host-7-129 ~]# ls -1 /dev/disk/by-id/
+ata-QEMU_DVD-ROM_QM00003
+ata-QEMU_HARDDISK_QM00001
+ata-QEMU_HARDDISK_QM00001-part1
+ata-QEMU_HARDDISK_QM00002
+ata-QEMU_HARDDISK_QM00002-part1
+scsi-SATA_QEMU_HARDDISK_QM00001
+scsi-SATA_QEMU_HARDDISK_QM00001-part1
+scsi-SATA_QEMU_HARDDISK_QM00002
+scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_windows">36.2.2. windows</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果System Model：后面含有Virutal就是虚拟机，其他都是物理机</p>
 </div>
 <div style="page-break-after: always;"></div>
 <div style="page-break-after: always;"></div>
