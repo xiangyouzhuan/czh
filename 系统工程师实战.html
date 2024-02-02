@@ -2537,16 +2537,16 @@ sudo systemctl status node_exporter</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>在prometheus主机上操作
-.为被添加的node设置域名解析</p>
+<p>在prometheus主机上操作</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
+<div class="title">为被添加的node设置域名解析</div>
 <div class="content">
-<pre>cat &lt;&lt;EOF &gt;&gt;/etc/hosts
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt;/etc/hosts
 xxx.xxx.xxx.xxx githubio
-EOF</pre>
+EOF</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
