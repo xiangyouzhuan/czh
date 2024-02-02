@@ -845,7 +845,8 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#NODE_EXPORTER">6.3. node_exporter</a></li>
 <li><a href="#_node_exporter_systemctl">6.4. node_exporter-systemctl</a></li>
 <li><a href="#_prometheus获取node_exporter数据">6.5. Prometheus获取node_exporter数据</a></li>
-<li><a href="#_安装mysql_exporter">6.6. 安装mysql exporter</a></li>
+<li><a href="#_prometheussql">6.6. prometheusSql</a></li>
+<li><a href="#_安装mysql_exporter">6.7. 安装mysql exporter</a></li>
 </ul>
 </li>
 <li><a href="#_zabbix">7. Zabbix</a>
@@ -2526,24 +2527,17 @@ sudo systemctl status node_exporter</code></pre>
 </ul>
 </div>
 <div class="listingblock">
-<div class="title">复制node_exporter.crt到prometheus主机</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">scp root@node_exporter:~/prometheus-tls/node_exporter.crt /opt/prometheus-2.49.1.linux-amd64</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>在prometheus主机上操作</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
 <div class="title">为被添加的node设置域名解析</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;&gt;/etc/hosts
 xxx.xxx.xxx.xxx githubio
 EOF</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">复制node_exporter.crt到prometheus主机</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">scp root@node_exporter:~/prometheus-tls/node_exporter.crt /opt/prometheus-2.49.1.linux-amd64</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -2636,7 +2630,22 @@ Status&#8594;Targets</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_安装mysql_exporter">6.6. 安装mysql exporter</h3>
+<h3 id="_prometheussql">6.6. prometheusSql</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#cpu使用率
+(1 - sum(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (instance) / sum(rate(node_cpu_seconds_total[1m])) by (instance) ) * 100
+
+#内存占用大小
+node_memory_MemTotal_bytes{instance="githubio:9100", job="node_exporter-githubio"} - node_memory_MemFree_bytes{instance="githubio:9100", job="node_exporter-githubio"} - node_memory_Cached_bytes{instance="githubio:9100", job="node_exporter-githubio"} - node_memory_Buffers_bytes{instance="githubio:9100", job="node_exporter-githubio"}
+
+#硬盘占用情况
+node_filesystem_size_bytes{instance="githubio:9100", job="node_exporter-githubio", device!~"vmhgfs-fuse"} - node_filesystem_avail_bytes{instance="githubio:9100", job="node_exporter-githubio"}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装mysql_exporter">6.7. 安装mysql exporter</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.0/mysqld_exporter-0.15.0.linux-amd64.tar.gz
