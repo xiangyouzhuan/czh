@@ -844,9 +844,9 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_configuring_prometheus">6.2. Configuring Prometheus</a></li>
 <li><a href="#_starting_prometheus">6.3. Starting Prometheus</a></li>
 <li><a href="#_prometheus_systemctl">6.4. prometheus-systemctl</a></li>
-<li><a href="#_node_exporter">6.5. node_exporter</a></li>
-<li><a href="#_node_exporterb_systemctl">6.6. node_exporterb-systemctl</a></li>
-<li><a href="#_prometheus_使用_tls">6.7. Prometheus 使用 TLS</a></li>
+<li><a href="#NODE_EXPORTER">6.5. node_exporter</a></li>
+<li><a href="#_node_exporter_systemctl">6.6. node_exporter-systemctl</a></li>
+<li><a href="#_prometheus获取node_exporter数据">6.7. Prometheus获取node_exporter数据</a></li>
 <li><a href="#_安装mysql_exporter">6.8. 安装mysql exporter</a></li>
 </ul>
 </li>
@@ -2400,7 +2400,7 @@ kill -s SIGTERM `pgrep -f prometheus`</code></pre>
 <div class="sect2">
 <h3 id="_prometheus_systemctl">6.4. prometheus-systemctl</h3>
 <div class="paragraph">
-<p>将prometheus添加到系统服务</p>
+<p>将prometheus添加到系统服务,便于用systemctl管理</p>
 </div>
 <div class="listingblock">
 <div class="title">服务配置文件</div>
@@ -2432,7 +2432,7 @@ sudo systemctl reload prometheus.service</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_node_exporter">6.5. node_exporter</h3>
+<h3 id="NODE_EXPORTER">6.5. node_exporter</h3>
 <div class="paragraph">
 <p>node_exporter下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
 </div>
@@ -2446,19 +2446,19 @@ cd /opt/node_exporter-*.*</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">生成ssl证书</div>
+<div class="title">生成tls证书</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
 mkdir -p prometheus-tls
 cd prometheus-tls
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost" -addext "subjectAltName = DNS:localhost"
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost" -addext "subjectAltName = DNS:node1"
 cp *  /opt/node_exporter-*.*</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">编写配置文件</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;/opt/node_exporter-*.*/config.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;/opt/node_exporter-1.7.0.linux-amd64/config.yaml
 tls_server_config:
   cert_file: node_exporter.crt
   key_file: node_exporter.key
@@ -2469,7 +2469,7 @@ EOF</code></pre>
 <div class="title">启动node_exporter</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /opt/node_exporter-*.*
-./node_exporter --web.listen-address 127.0.0.1:9100 --web.config.file=config.yaml</code></pre>
+./node_exporter --web.config.file=config.yaml</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -2485,7 +2485,10 @@ ts=2024-01-31T09:01:28.677Z caller=tls_config.go:310 level=info msg="TLS is enab
 </div>
 </div>
 <div class="sect2">
-<h3 id="_node_exporterb_systemctl">6.6. node_exporterb-systemctl</h3>
+<h3 id="_node_exporter_systemctl">6.6. node_exporter-systemctl</h3>
+<div class="paragraph">
+<p>将node_exporter添加到系统服务,便于用systemctl管理</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; /usr/lib/systemd/system/node_exporter.service
@@ -2494,7 +2497,7 @@ Description = node_exporter server daemon
 
 [Service]
 Type = simple
-ExecStart = /opt/node_exporter-*.*/node_exporter --web.config.file=/opt/node_exporter-*.*/config.yaml
+ExecStart = /opt/node_exporter-1.7.0.linux-amd64/node_exporter --web.config.file=/opt/node_exporter-1.7.0.linux-amd64/config.yaml
 
 [Install]
 WantedBy=multi-user.target
@@ -2508,21 +2511,61 @@ EOF</code></pre>
 sudo systemctl daemon-reload
 
 sudo systemctl start node_exporter
-sudo systemctl enable node_exporter</code></pre>
+sudo systemctl enable node_exporter
+sudo systemctl status node_exporter</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_prometheus_使用_tls">6.7. Prometheus 使用 TLS</h3>
+<h3 id="_prometheus获取node_exporter数据">6.7. Prometheus获取node_exporter数据</h3>
+<div class="paragraph">
+<p>添加上上步<a href="#NODE_EXPORTER">node_exporter</a>生成的node_exporter.crt到prometheus所在目录</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>在node_exporter主机上操作
+.复制node_exporter.crt到prometheus主机</p>
+</li>
+</ul>
+</div>
 <div class="listingblock">
-<div class="title">添加node_exporter.crt到prometheus所在目录</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /opt/prometheus-2.49.1.linux-amd64/
-cp ~/prometheus-tls/node_exporter.crt .</code></pre>
+<pre>scp ~/prometheus-tls/node_exporter.crt root@prometheus:/opt/prometheus-2.49.1.linux-amd64</pre>
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>在prometheus主机上操作
+.为被添加的node设置域名解析</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
-<div class="title">修改prometheus.yml</div>
+<div class="content">
+<pre>cat &lt;&lt;EOF &gt;&gt;/etc/hosts
+xxx.xxx.xxx.xxx githubio
+EOF</pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+设置域名解析必须做，否则会无法获取node_exporter信息
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>添加以下配置信息到/opt/prometheus-2.49.1.linux-amd64/prometheus.yml</p>
+</div>
+<div class="listingblock">
+<div class="title">prometheus.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF&gt; /opt/prometheus-2.49.1.linux-amd64/prometheus.yml
 global:
@@ -2550,10 +2593,33 @@ scrape_configs:
     tls_config:
       ca_file: node_exporter.crt
     static_configs:
-    - targets: ['localhost:9100']
+    - targets: ['githubio:9100']
 
 EOF</code></pre>
 </div>
+</div>
+<div class="listingblock">
+<div class="title">此部分配置信息就是关于被添加node_exporter的</div>
+<div class="content">
+<pre>- job_name: 'node_exporter'
+    scheme: https
+    tls_config:
+      ca_file: node_exporter.crt
+    static_configs:
+    - targets: ['githubio:9100']</pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<code>- targets: ['githubio:9100']</code> 这里必须使用前面配置好的域名 <code>githubio</code>，不能用ip
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="title">重载prometheus配置文件</div>
