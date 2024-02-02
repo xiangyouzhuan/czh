@@ -2350,7 +2350,7 @@ C:\Windows\System32\OpenSSH;</code></p>
 <p>Reference： <a href="https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets" class="bare">https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets</a></p>
 </div>
 <div class="paragraph">
-<p>下载地址： <a href="https://prometheus.io/download/#prometheus" class="bare">https://prometheus.io/download/#prometheus</a></p>
+<p>手动下载地址： <a href="https://prometheus.io/download/#prometheus" class="bare">https://prometheus.io/download/#prometheus</a></p>
 </div>
 <div class="listingblock">
 <div class="title">Download Prometheus</div>
@@ -2431,7 +2431,7 @@ sudo systemctl reload prometheus.service</code></pre>
 <div class="sect2">
 <h3 id="NODE_EXPORTER">6.3. node_exporter</h3>
 <div class="paragraph">
-<p>node_exporter下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
+<p>node_exporter手动下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
 </div>
 <div class="listingblock">
 <div class="title">下载node_exporter</div>
@@ -2448,7 +2448,7 @@ cd /opt/node_exporter-*.*</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
 mkdir -p prometheus-tls
 cd prometheus-tls
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost" -addext "subjectAltName = DNS:node1"
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost" -addext "subjectAltName = DNS:githubio"
 cp *  /opt/node_exporter-*.*</code></pre>
 </div>
 </div>
@@ -2484,7 +2484,7 @@ ts=2024-01-31T09:01:28.677Z caller=tls_config.go:310 level=info msg="TLS is enab
 <div class="sect2">
 <h3 id="_node_exporter_systemctl">6.4. node_exporter-systemctl</h3>
 <div class="paragraph">
-<p>将node_exporter添加到系统服务,便于用systemctl管理</p>
+<p>Ctrl-C停止程序，将node_exporter添加到系统服务,便于用systemctl管理</p>
 </div>
 <div class="listingblock">
 <div class="content">
