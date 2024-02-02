@@ -2524,14 +2524,14 @@ sudo systemctl status node_exporter</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>在node_exporter主机上操作
-.复制node_exporter.crt到prometheus主机</p>
+<p>在node_exporter主机上操作</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
+<div class="title">复制node_exporter.crt到prometheus主机</div>
 <div class="content">
-<pre>scp ~/prometheus-tls/node_exporter.crt root@prometheus:/opt/prometheus-2.49.1.linux-amd64</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">scp ~/prometheus-tls/node_exporter.crt root@prometheus:/opt/prometheus-2.49.1.linux-amd64</code></pre>
 </div>
 </div>
 <div class="ulist">
