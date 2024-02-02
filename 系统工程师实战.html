@@ -840,14 +840,12 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_prometheus">6. prometheus</a>
 <ul class="sectlevel2">
-<li><a href="#_downloading_prometheus">6.1. Downloading Prometheus</a></li>
-<li><a href="#_configuring_prometheus">6.2. Configuring Prometheus</a></li>
-<li><a href="#_starting_prometheus">6.3. Starting Prometheus</a></li>
-<li><a href="#_prometheus_systemctl">6.4. prometheus-systemctl</a></li>
-<li><a href="#NODE_EXPORTER">6.5. node_exporter</a></li>
-<li><a href="#_node_exporter_systemctl">6.6. node_exporter-systemctl</a></li>
-<li><a href="#_prometheus获取node_exporter数据">6.7. Prometheus获取node_exporter数据</a></li>
-<li><a href="#_安装mysql_exporter">6.8. 安装mysql exporter</a></li>
+<li><a href="#_prometheus_quickstart">6.1. Prometheus quickstart</a></li>
+<li><a href="#_prometheus_systemctl">6.2. prometheus-systemctl</a></li>
+<li><a href="#NODE_EXPORTER">6.3. node_exporter</a></li>
+<li><a href="#_node_exporter_systemctl">6.4. node_exporter-systemctl</a></li>
+<li><a href="#_prometheus获取node_exporter数据">6.5. Prometheus获取node_exporter数据</a></li>
+<li><a href="#_安装mysql_exporter">6.6. 安装mysql exporter</a></li>
 </ul>
 </li>
 <li><a href="#_zabbix">7. Zabbix</a>
@@ -2347,12 +2345,15 @@ C:\Windows\System32\OpenSSH;</code></p>
 <h2 id="_prometheus">6. prometheus</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_downloading_prometheus">6.1. Downloading Prometheus</h3>
+<h3 id="_prometheus_quickstart">6.1. Prometheus quickstart</h3>
 <div class="paragraph">
-<p>Reference： <a href="https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets" class="bare">https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets</a>
-下载地址： <a href="https://prometheus.io/download/#prometheus" class="bare">https://prometheus.io/download/#prometheus</a></p>
+<p>Reference： <a href="https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets" class="bare">https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets</a></p>
+</div>
+<div class="paragraph">
+<p>下载地址： <a href="https://prometheus.io/download/#prometheus" class="bare">https://prometheus.io/download/#prometheus</a></p>
 </div>
 <div class="listingblock">
+<div class="title">Download Prometheus</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
 wget https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
@@ -2368,17 +2369,13 @@ cd /opt/prometheus-*</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./prometheus --help</code></pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_configuring_prometheus">6.2. Configuring Prometheus</h3>
 <div class="paragraph">
+<div class="title">Configuring Prometheus</div>
 <p>在本quick start中省略不做，若有需要请查看
 <a href="https://prometheus.io/docs/introduction/first_steps/">官方教程</a></p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_starting_prometheus">6.3. Starting Prometheus</h3>
 <div class="listingblock">
+<div class="title">Starting Prometheus</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./prometheus --config.file=prometheus.yml</code></pre>
 </div>
@@ -2398,7 +2395,7 @@ kill -s SIGTERM `pgrep -f prometheus`</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_prometheus_systemctl">6.4. prometheus-systemctl</h3>
+<h3 id="_prometheus_systemctl">6.2. prometheus-systemctl</h3>
 <div class="paragraph">
 <p>将prometheus添加到系统服务,便于用systemctl管理</p>
 </div>
@@ -2432,7 +2429,7 @@ sudo systemctl reload prometheus.service</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="NODE_EXPORTER">6.5. node_exporter</h3>
+<h3 id="NODE_EXPORTER">6.3. node_exporter</h3>
 <div class="paragraph">
 <p>node_exporter下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
 </div>
@@ -2485,7 +2482,7 @@ ts=2024-01-31T09:01:28.677Z caller=tls_config.go:310 level=info msg="TLS is enab
 </div>
 </div>
 <div class="sect2">
-<h3 id="_node_exporter_systemctl">6.6. node_exporter-systemctl</h3>
+<h3 id="_node_exporter_systemctl">6.4. node_exporter-systemctl</h3>
 <div class="paragraph">
 <p>将node_exporter添加到系统服务,便于用systemctl管理</p>
 </div>
@@ -2517,7 +2514,7 @@ sudo systemctl status node_exporter</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_prometheus获取node_exporter数据">6.7. Prometheus获取node_exporter数据</h3>
+<h3 id="_prometheus获取node_exporter数据">6.5. Prometheus获取node_exporter数据</h3>
 <div class="paragraph">
 <p>添加上上步<a href="#NODE_EXPORTER">node_exporter</a>生成的node_exporter.crt到prometheus所在目录</p>
 </div>
@@ -2639,7 +2636,7 @@ Status&#8594;Targets</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_安装mysql_exporter">6.8. 安装mysql exporter</h3>
+<h3 id="_安装mysql_exporter">6.6. 安装mysql exporter</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.0/mysqld_exporter-0.15.0.linux-amd64.tar.gz
