@@ -2435,6 +2435,17 @@ EOF</code></pre>
 <div class="paragraph">
 <p>访问 <a href="http://&lt;部署prometheus的主机ip&gt;:9090" class="bare">http://&lt;部署prometheus的主机ip&gt;:9090</a></p>
 </div>
+<div class="paragraph">
+<p>在搜索框中输入</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">prometheus_target_interval_length_seconds</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>点击‘Execute’，正常情况应该返回许多不同的时间序列</p>
+</div>
 <div class="listingblock">
 <div class="title">常用命令</div>
 <div class="content">
@@ -2484,7 +2495,8 @@ sudo systemctl reload prometheus.service</code></pre>
 <div class="sect2">
 <h3 id="NODE_EXPORTER">6.3. node_exporter</h3>
 <div class="paragraph">
-<p>node_exporter浏览器下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
+<p>Reference: <a href="https://prometheus.io/docs/guides/node-exporter/" class="bare">https://prometheus.io/docs/guides/node-exporter/</a>
+node_exporter浏览器下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
 </div>
 <div class="listingblock">
 <div class="title">下载node_exporter</div>
@@ -2506,7 +2518,7 @@ cd prometheus-tls
 
 #"subjectAltName = DNS:githubio"中的githubio是需要部署node_exproter的主机的域名
 #需要在prometheus所在主机的/etc/hosts中添加部署了node_exproter的主机的域名解析，下文中会提到
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter1.key -out node_exporter1.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost" -addext "subjectAltName = DNS:node_exporter1"
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter1.key -out node_exporter1.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost"
 
 cp *  /opt/node_exporter-*.*</code></pre>
 </div>
@@ -2574,9 +2586,6 @@ sudo systemctl status node_exporter</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_prometheus获取node_exporter数据">6.5. Prometheus获取node_exporter数据</h3>
-<div class="paragraph">
-<p>添加上上步<a href="#NODE_EXPORTER">node_exporter</a>生成的node_exporter.crt到prometheus所在目录</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
@@ -2603,12 +2612,6 @@ EOF</code></pre>
 </td>
 </tr>
 </table>
-</div>
-<div class="listingblock">
-<div class="title">复制node_exporter.crt到prometheus主机</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">scp root@node_exporter1:~/prometheus-tls/node_exporter1.crt /opt/prometheus-2.49.1.linux-amd64</code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>添加以下配置信息到/opt/prometheus-2.49.1.linux-amd64/prometheus.yml</p>
@@ -2638,26 +2641,11 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: 'node_exporter'
-    scheme: https
-    tls_config:
-      ca_file: node_exporter1.crt
     static_configs:
     - targets: ['node_exporter1:9100']
 
 EOF</code></pre>
 </div>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<code>- targets: ['node_exporter1:9100']</code> 这里必须使用前面配置好的域名 <code>node_exporter1</code>，不能用ip
-</td>
-</tr>
-</table>
 </div>
 <div class="listingblock">
 <div class="title">重载prometheus配置文件</div>
