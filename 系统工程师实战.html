@@ -1094,18 +1094,33 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_落地客户端">36.2. 落地客户端</a></li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">37. 杂项</a>
+<li><a href="#_network">37. network</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">37.1. Chrome</a>
+<li><a href="#_ip_addr">37.1. ip addr</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">37.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">37.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_增加ip">37.1.1. 增加ip</a></li>
+<li><a href="#_删除指定ip">37.1.2. 删除指定ip</a></li>
+<li><a href="#_给网卡起别名">37.1.3. 给网卡起别名</a></li>
+<li><a href="#_删除别名">37.1.4. 删除别名</a></li>
+<li><a href="#_更改ip和网关">37.1.5. 更改ip和网关</a></li>
 </ul>
 </li>
-<li><a href="#_辨别虚拟机物理机">37.2. 辨别虚拟机物理机</a>
+<li><a href="#_动态ip">37.2. 动态ip</a></li>
+<li><a href="#_静态ip">37.3. 静态ip</a></li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">38. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">38.1. Chrome</a>
 <ul class="sectlevel3">
-<li><a href="#_linux">37.2.1. linux</a></li>
-<li><a href="#_windows">37.2.2. windows</a></li>
+<li><a href="#_安装_proxy_switchyomega_扩展">38.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">38.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">38.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux">38.2.1. linux</a></li>
+<li><a href="#_windows">38.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -2353,8 +2368,12 @@ C:\Windows\System32\OpenSSH;</code></p>
 <div class="paragraph">
 <p>在本例中需要两个虚拟机，分别安装prometheus和node_exporter</p>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>在两台虚拟机中均执行以下命令</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="title">系统环境配置</div>
@@ -2365,11 +2384,21 @@ C:\Windows\System32\OpenSSH;</code></p>
 yum install -y chrony
 systemctl enable chronyd
 systemctl start chronyd
-systemctl status chronyd</code></pre>
+systemctl status chronyd
+#关闭防火墙
+systemctl stop firewalld
+systemctl disable firewalld</code></pre>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_prometheus_2">6.1. Prometheus</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>在准备安装Prometheus的主机上执行以下操作</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Reference： <a href="https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets" class="bare">https://prometheus.io/docs/prometheus/latest/getting_started/#starting-up-some-sample-targets</a></p>
 </div>
@@ -2499,9 +2528,18 @@ sudo systemctl reload prometheus.service</code></pre>
 </div>
 <div class="sect2">
 <h3 id="NODE_EXPORTER">6.3. node_exporter</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>在准备安装node_exporter的主机上执行以下操作</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
-<p>Reference: <a href="https://prometheus.io/docs/guides/node-exporter/" class="bare">https://prometheus.io/docs/guides/node-exporter/</a>
-node_exporter浏览器下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
+<p>Reference: <a href="https://prometheus.io/docs/guides/node-exporter/" class="bare">https://prometheus.io/docs/guides/node-exporter/</a></p>
+</div>
+<div class="paragraph">
+<p>node_exporter浏览器下载地址： <a href="https://prometheus.io/download/#node_exporter" class="bare">https://prometheus.io/download/#node_exporter</a></p>
 </div>
 <div class="listingblock">
 <div class="title">下载node_exporter</div>
@@ -2513,36 +2551,10 @@ cd /opt/node_exporter-*.*</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">生成tls证书</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
-
-mkdir -p prometheus-tls
-
-cd prometheus-tls
-
-#"subjectAltName = DNS:githubio"中的githubio是需要部署node_exproter的主机的域名
-#需要在prometheus所在主机的/etc/hosts中添加部署了node_exproter的主机的域名解析，下文中会提到
-openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter1.key -out node_exporter1.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=Moelove.info/CN=localhost"
-
-cp *  /opt/node_exporter-*.*</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">写配置文件</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt;/opt/node_exporter-1.7.0.linux-amd64/config.yaml
-tls_server_config:
-  cert_file: node_exporter1.crt
-  key_file: node_exporter1.key
-EOF</code></pre>
-</div>
-</div>
-<div class="listingblock">
 <div class="title">启动node_exporter</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /opt/node_exporter-*.*
-./node_exporter --web.config.file=config.yaml</code></pre>
+./node_exporter</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -2570,7 +2582,7 @@ Description = node_exporter server daemon
 
 [Service]
 Type = simple
-ExecStart = /opt/node_exporter-1.7.0.linux-amd64/node_exporter --web.config.file=/opt/node_exporter-1.7.0.linux-amd64/config.yaml
+ExecStart = /opt/node_exporter-1.7.0.linux-amd64/node_exporter
 
 [Install]
 WantedBy=multi-user.target
@@ -2795,7 +2807,6 @@ sudo yum install -y https://dl.grafana.com/enterprise/release/grafana-enterprise
 sudo yum install -y grafana-enterprise-10.3.1-1.x86_64.rpm
 sudo systemctl daemon-reload
 sudo systemctl start grafana-server
-sudo systemctl status grafana-server
 sudo systemctl status grafana-server
 sudo systemctl enable grafana-server.service</code></pre>
 </div>
@@ -8216,12 +8227,149 @@ systemctl status gost</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">37. 杂项</h2>
+<h2 id="_network">37. network</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">37.1. Chrome</h3>
+<h3 id="_ip_addr">37.1. ip addr</h3>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">37.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_增加ip">37.1.1. 增加ip</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#比如给eth0增加一个172.25.21.1/24 地址
+ip addr add 172.25.21.1/24 dev eth0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_删除指定ip">37.1.2. 删除指定ip</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ip addr del 172.25.21.1 dev eth0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_给网卡起别名">37.1.3. 给网卡起别名</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#起别名相当于给网卡多绑定了一个ip
+ip addr add 172.25.21.1/32 dev eth0 label eth0:1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_删除别名">37.1.4. 删除别名</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ip addr del 172.25.21.1/32 dev eth0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_更改ip和网关">37.1.5. 更改ip和网关</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#编辑文件
+vim /etc/NetworkManager/system-connections/ens160.nmconnection
+#重启NetworkManager生效
+systemctl restart NetworkManager</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_动态ip">37.2. 动态ip</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：centos-stream 9</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#启用DHCP
+nmcli connection modify "ens160" ipv4.method auto
+#启用配置文件
+nmcli connection up "ens160"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_静态ip">37.3. 静态ip</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：centos-stream 9</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">列出 NetworkManager 连接配置文件：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nmcli connection show</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre># nmcli connection show
+NAME                UUID                                  TYPE      DEVICE
+ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>ens160</code> 是连接配置文件的文件名,不同主机可能不同</p>
+</div>
+<div class="listingblock">
+<div class="title">设置静态 IPv4 地址、网络掩码、默认网关、DNS 服务器和搜索域</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nmcli connection modify "ens160" ipv4.method manual ipv4.addresses 192.168.182.10/24 ipv4.gateway 192.168.182.2 ipv4.dns 61.139.2.69</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><code>192.168.182.10</code> 是最终设置成的ip地址。</p>
+</li>
+<li>
+<p><code>192.168.182.2</code> 是网关，如果不知道如何设置，可以执行 <code>ip route</code> 查看当前网关. 输出中的 <code>default via 192.168.182.2 dev&#8230;&#8203;.</code> 中 <code>192.168.182.2</code> 即为当前网关</p>
+</li>
+<li>
+<p><code>cat /etc/resolv.conf</code> 查看当前使用的dns的ip</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>启用配置文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nmcli connection up "ens160"</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">38. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">38.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">38.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -8242,7 +8390,7 @@ systemctl status gost</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">37.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">38.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -8253,7 +8401,7 @@ systemctl status gost</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_辨别虚拟机物理机">37.2. 辨别虚拟机物理机</h3>
+<h3 id="_辨别虚拟机物理机">38.2. 辨别虚拟机物理机</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8272,7 +8420,7 @@ systemctl status gost</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_linux">37.2.1. linux</h4>
+<h4 id="_linux">38.2.1. linux</h4>
 <div class="listingblock">
 <div class="title">VMware Workstation</div>
 <div class="content">
@@ -8351,7 +8499,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_windows">37.2.2. windows</h4>
+<h4 id="_windows">38.2.2. windows</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
@@ -8369,7 +8517,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-20 11:27:07 +0800
+Last updated 2024-02-22 14:29:28 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
