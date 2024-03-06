@@ -1109,18 +1109,42 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_静态ip">37.3. 静态ip</a></li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">38. 杂项</a>
+<li><a href="#_chrony_chapter">38. chrony</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">38.1. Chrome</a>
+<li><a href="#_安装配置_2">38.1. 安装配置</a></li>
+<li><a href="#_使用方法">38.2. 使用方法</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">38.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">38.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_关闭_firewalld防火墙">38.2.1. 关闭 firewalld防火墙???</a></li>
+<li><a href="#_设置时区">38.2.2. 设置时区</a></li>
+<li><a href="#_配置chrony">38.2.3. 配置chrony</a></li>
 </ul>
 </li>
-<li><a href="#_辨别虚拟机物理机">38.2. 辨别虚拟机物理机</a>
+</ul>
+</li>
+<li><a href="#_TOTP_chapter">39. TOTP</a>
+<ul class="sectlevel2">
+<li><a href="#_安装_google_authenticator">39.1. 安装 Google Authenticator：</a></li>
+<li><a href="#_生成密钥并配置_google_authenticator">39.2. 生成密钥并配置 Google Authenticator：</a></li>
+<li><a href="#_安装_pam_模块">39.3. 安装 PAM 模块：</a></li>
+<li><a href="#_备份重要文件">39.4. 备份重要文件：</a></li>
+<li><a href="#_配置_pam">39.5. 配置 PAM:</a></li>
+<li><a href="#_重启_ssh_服务">39.6. 重启 SSH 服务：</a></li>
+<li><a href="#_启用_ssh_配置">39.7. 启用 SSH 配置：</a></li>
+<li><a href="#_测试配置">39.8. 测试配置：</a></li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">40. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">40.1. Chrome</a>
 <ul class="sectlevel3">
-<li><a href="#_linux">38.2.1. linux</a></li>
-<li><a href="#_windows">38.2.2. windows</a></li>
+<li><a href="#_安装_proxy_switchyomega_扩展">40.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">40.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">40.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux">40.2.1. linux</a></li>
+<li><a href="#_windows">40.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -8364,12 +8388,246 @@ ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">38. 杂项</h2>
+<h2 id="_chrony_chapter">38. chrony</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">38.1. Chrome</h3>
+<h3 id="_安装配置_2">38.1. 安装配置</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装chrony
+yum install -y chrony
+
+#启动chrony服务
+systemctl start chronyd
+
+#设置开机自启
+systemctl enable chronyd
+
+#查看chrony服务状态
+systemctl status chronyd</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_使用方法">38.2. 使用方法</h3>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">38.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_关闭_firewalld防火墙">38.2.1. 关闭 firewalld防火墙???</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_设置时区">38.2.2. 设置时区</h4>
+<div class="listingblock">
+<div class="title">查看时区</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看在亚洲S开头的上海可用时区</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl list-timezones |  grep  -E "Asia/S.*"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">设置当前系统为上海时区</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl set-timezone "Asia/Shanghai"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">手动同步系统时钟</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">chronyc -a makestep</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查看时间同步源</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">chronyc sources -v</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_配置chrony">38.2.3. 配置chrony</h4>
+<div class="listingblock">
+<div class="title">配置阿里云的ntp服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/chrony.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>阿里云ntp服务器文档： <a href="https://help.aliyun.com/document_detail/92704.html" class="bare">https://help.aliyun.com/document_detail/92704.html</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>//注释掉默认的四个ntp服务器，因为该服务器同步时间略慢
+#server 0.centos.pool.ntp.org iburst
+#server 1.centos.pool.ntp.org iburst
+#server 2.centos.pool.ntp.org iburst
+#server 3.centos.pool.ntp.org iburst
+
+/**
+ * 格式为：server 服务器ip地址 iburst
+ * 添加阿里云的ntp服务器，可以多写几个ntp服务器，防止第一个服务器宕机，备用的其他ntp服务器可以继续进行时间同步
+ * ip地址为服务器ip地址，iburst代表的是快速同步时间
+ **/
+server ntp1.aliyun.com iburst
+server ntp2.aliyun.com iburst
+server ntp3.aliyun.com iburst</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">重启chrony服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">//重启chrony服务
+systemctl restart chronyd
+
+// 查看chrony服务状态
+systemctl status chronyd</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果想要修改系统时间，需要先关闭NTP时间同步服务，再去修改系统时间，最后再开启NTP时间同步服务，步骤如下：</p>
+</div>
+<div class="listingblock">
+<div class="title">1、关闭NTP时间同步服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl set-ntp flase</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">2、修改系统时间</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl set-time "2021-08-15 15:30:20"
+
+#当然也可以修改其中一部分，如修改年月日
+timedatectl set-time "2021-08-15"
+
+# 或者时分秒
+timedatectl set-time "15:30:20"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">3、开启NTP时间同步服务</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">timedatectl set-ntp true</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_TOTP_chapter">39. TOTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>基于 CentOS 7</strong></p>
+</div>
+<div class="paragraph">
+<p>以下是一个可用的双因素认证进行登录 Linux 的配置教程，使用 Google Authenticator 进行基于时间的一次性密码（TOTP）认证：</p>
+</div>
+<div class="listingblock">
+<div class="title">添加epel源</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装_google_authenticator">39.1. 安装 Google Authenticator：</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install google-authenticator</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_生成密钥并配置_google_authenticator">39.2. 生成密钥并配置 Google Authenticator：</h3>
+<div class="paragraph">
+<p>运行以下命令生成密钥，并按照提示进行配置：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">google-authenticator</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>此命令将提示您生成密钥、二维码以及备用验证码，以便将其添加到 Google Authenticator 应用程序中。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装_pam_模块">39.3. 安装 PAM 模块：</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install pam-devel</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_备份重要文件">39.4. 备份重要文件：</h3>
+<div class="paragraph">
+<p>在进行任何更改之前，请务必备份 /etc/pam.d/sshd 和 /etc/ssh/sshd_config 文件，以防配置错误导致无法登录。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp /etc/pam.d/sshd /etc/pam.d/sshd.bak
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_配置_pam">39.5. 配置 PAM:</h3>
+<div class="paragraph">
+<p>编辑 /etc/pam.d/sshd 文件（用于 SSH 登录），在文件末尾添加以下行：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">auth required pam_google_authenticator.so</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>或者，如果您希望所有登录方式都需要双因素认证，您可以编辑 /etc/pam.d/login 文件。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_重启_ssh_服务">39.6. 重启 SSH 服务：</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl restart sshd</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_启用_ssh_配置">39.7. 启用 SSH 配置：</h3>
+<div class="paragraph">
+<p>编辑 SSH 配置文件 /etc/ssh/sshd_config，确保以下设置启用了身份验证因子：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ChallengeResponseAuthentication yes
+UsePAM yes</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_测试配置">39.8. 测试配置：</h3>
+<div class="paragraph">
+<p>重新启动 SSH 服务后，尝试使用 SSH 登录到您的系统。您应该首先输入用户名和密码，然后系统应提示您输入 Google Authenticator 应用程序中生成的验证码。Google Authenticator在手机应用商店下载</p>
+</div>
+<div class="paragraph">
+<p>以上步骤将使您的 Linux 系统启用双因素认证，要求用户在登录时提供用户名、密码以及 Google Authenticator 生成的验证码。请确保您对系统的配置和安全性有充分的了解，并在生产环境之前进行测试。</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">40. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">40.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">40.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -8390,7 +8648,7 @@ ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">38.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">40.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -8401,7 +8659,7 @@ ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_辨别虚拟机物理机">38.2. 辨别虚拟机物理机</h3>
+<h3 id="_辨别虚拟机物理机">40.2. 辨别虚拟机物理机</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8420,7 +8678,7 @@ ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_linux">38.2.1. linux</h4>
+<h4 id="_linux">40.2.1. linux</h4>
 <div class="listingblock">
 <div class="title">VMware Workstation</div>
 <div class="content">
@@ -8499,7 +8757,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_windows">38.2.2. windows</h4>
+<h4 id="_windows">40.2.2. windows</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
@@ -8517,7 +8775,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-22 14:29:28 +0800
+Last updated 2024-03-06 17:03:19 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
