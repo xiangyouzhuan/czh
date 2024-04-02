@@ -1051,12 +1051,6 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_java环境切换">32.2. java环境切换</a></li>
 <li><a href="#_gradle换源">32.3. gradle换源</a></li>
-<li><a href="#_maven换源">32.4. maven换源</a>
-<ul class="sectlevel3">
-<li><a href="#_方法一">32.4.1. 方法一：</a></li>
-<li><a href="#_方法二">32.4.2. 方法二：</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a href="#_kvm">33. kvm</a>
@@ -1101,6 +1095,12 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_动态ip">37.2. 动态ip</a></li>
 <li><a href="#_静态ip">37.3. 静态ip</a></li>
+<li><a href="#_iftop">37.4. iftop</a>
+<ul class="sectlevel3">
+<li><a href="#_iftop安装">37.4.1. iftop安装</a></li>
+<li><a href="#_iftop使用">37.4.2. iftop使用</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_chrony_chapter">38. chrony</a>
@@ -1138,18 +1138,34 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_使用实例">41.2. 使用实例</a></li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">42. 杂项</a>
+<li><a href="#_Maven_chapter">42. Maven</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">42.1. Chrome</a>
+<li><a href="#_安装配置_4">42.1. 安装配置</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">42.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">42.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_安装maven">42.1.1. 安装maven</a></li>
+<li><a href="#_全局源">42.1.2. 全局源</a></li>
+<li><a href="#_项目换源">42.1.3. 项目换源</a></li>
 </ul>
 </li>
-<li><a href="#_辨别虚拟机物理机">42.2. 辨别虚拟机物理机</a>
+<li><a href="#_使用方法_2">42.2. 使用方法</a>
 <ul class="sectlevel3">
-<li><a href="#_linux_2">42.2.1. linux</a></li>
-<li><a href="#_windows_2">42.2.2. windows</a></li>
+<li><a href="#_build_lifecycle">42.2.1. Build Lifecycle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">43. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">43.1. Chrome</a>
+<ul class="sectlevel3">
+<li><a href="#_安装_proxy_switchyomega_扩展">43.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">43.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">43.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux_2">43.2.1. linux</a></li>
+<li><a href="#_windows_2">43.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -7373,60 +7389,7 @@ Starting a Gradle Daemon, 1 busy and 1 stopped Daemons could not be reused, use 
 .....</pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_maven换源">32.4. maven换源</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Reference: <a href="https://blog.csdn.net/mnmiaoyi/article/details/124216887" class="bare">https://blog.csdn.net/mnmiaoyi/article/details/124216887</a></p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_方法一">32.4.1. 方法一：</h4>
-<div class="paragraph">
-<p>项目目录/.mvn/wrapper/maven-wrapper.properties</p>
-</div>
-<div class="paragraph">
-<p>更改 <code>distributionUrl</code> 和 <code>wrapperUrl</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>distributionUrl=https://maven.aliyun.com/repository/central/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
-wrapperUrl=https://maven.aliyun.com/repository/central/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar
-
-# distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
-# wrapperUrl=https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_方法二">32.4.2. 方法二：</h4>
-<div class="paragraph">
-<p>参考阿里云: <a href="https://developer.aliyun.com/mvn/guide" class="bare">https://developer.aliyun.com/mvn/guide</a></p>
-</div>
-<div class="paragraph">
-<p>参考腾讯云: <a href="https://mirrors.tencent.com/help/maven.html" class="bare">https://mirrors.tencent.com/help/maven.html</a></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>settings.xml路径可使用everything搜索：
-参考路径：
-D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\settings.xml</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div style="page-break-after: always;"></div>
-</div>
 </div>
 </div>
 </div>
@@ -8150,7 +8113,87 @@ ens160  a5eb6490-cc20-3668-81f8-0314a27f3f75  ethernet  enp1s0</pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nmcli connection up "ens160"</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_iftop">37.4. iftop</h3>
+<div class="sect3">
+<h4 id="_iftop安装">37.4.1. iftop安装</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
+yum install -y iftop</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_iftop使用">37.4.2. iftop使用</h4>
+<div class="paragraph">
+<p>iftop</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/iftop.png" alt="iftop">
+</div>
+</div>
+<div class="paragraph">
+<p>中间的&#8656; &#8658;这两个左右箭头，表示的是流量的方向。
+TX：发送流量
+RX：接收流量
+TOTAL：总流量
+Cumm：运行iftop到目前时间的总流量
+peak：流量峰值
+rates：分别表示过去 2s 10s 40s 的平均流量</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">相关参数</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>-i: 设定监测的网卡，如：# iftop -i eth1</p>
+</li>
+<li>
+<p>-n: 使host信息默认直接都显示IP，如：# iftop -n</p>
+</li>
+<li>
+<p>-F: 显示特定网段的进出流量，如# iftop -F 10.10.1.0/24或# iftop -F 10.10.1.0/255.255.255.0</p>
+</li>
+<li>
+<p>-P: 使host信息及端口信息默认就都显示</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">iftop界面的操作命令</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>S: 是否显示本机的端口信息</p>
+</li>
+<li>
+<p>D: 是否显示远端目标主机的端口信息</p>
+</li>
+<li>
+<p>t: 显示格式为2行/1行/只显示发送流量/只显示接收流量</p>
+</li>
+<li>
+<p>n: 显示本机的IP或主机名</p>
+</li>
+<li>
+<p>h: 帮助</p>
+</li>
+<li>
+<p>q: 退出监控</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
@@ -8482,7 +8525,7 @@ getent group</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>-a：代表归档模式，它保留符号链接、权限、时间戳等</p>
+<p>-a：代表归档模式，它保留符号链接、权限、时间戳、目录结构等</p>
 </li>
 <li>
 <p>-v：代表详细模式，显示更多的输出信息</p>
@@ -8562,12 +8605,243 @@ getent group</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">42. 杂项</h2>
+<h2 id="_Maven_chapter">42. Maven</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">42.1. Chrome</h3>
+<h3 id="_安装配置_4">42.1. 安装配置</h3>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">42.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_安装maven">42.1.1. 安装maven</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Maven 3.9.6</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Apache Maven 的安装是一个简单的过程，只需解压文件并将含有 <code>mvn</code> 命令的bin目录添加到 PATH 即可。</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">System Requirements</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>JDK JDK8以上</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="title">下载maven二进制文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -O /root/test/apache-maven-3.9.6-bin.tar.gz</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>或者浏览器下载，下载地址：https://maven.apache.org/download.cgi</p>
+</div>
+<div class="listingblock">
+<div class="title">解压到指定目录</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tar xzvf /root/test/apache-maven-3.9.6-bin.tar.gz -C /root/</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">将解压得到的目录apache-maven-3.9.6中的bin目录添加到PATH环境变量中</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt;&gt; /root/.bashrc
+export PATH="/usr/local/apache-maven-3.9.6/bin:\$PATH"
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>加载配置文件</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source /root/.bashrc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>测试是否可以正常使用Maven</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn -v</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>输出应该类似于如下内容</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Apache Maven 3.9.6 (bc0240f3c744dd6b6ec2920b3cd08dcc295161ae)
+Maven home: /usr/local/apache-maven-3.9.6
+Java version: 17.0.6, vendor: Red Hat, Inc., runtime: /usr/lib/jvm/java-17-openjdk-17.0.6.0.10-3.el9.x86_64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.14.0-391.el9.x86_64", arch: "amd64", family: "unix"</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_全局源">42.1.2. 全局源</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt; ~/.m2/settings.xml
+&lt;settings&gt;
+  &lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;aliyun&lt;/id&gt;
+      &lt;name&gt;Aliyun Central&lt;/name&gt;
+        &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+&lt;/settings&gt;
+EOF</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_项目换源">42.1.3. 项目换源</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Reference: <a href="https://blog.csdn.net/mnmiaoyi/article/details/124216887" class="bare">https://blog.csdn.net/mnmiaoyi/article/details/124216887</a></p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_方法一">方法一：</h5>
+<div class="paragraph">
+<p>项目目录/.mvn/wrapper/maven-wrapper.properties</p>
+</div>
+<div class="paragraph">
+<p>更改 <code>distributionUrl</code> 和 <code>wrapperUrl</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>distributionUrl=https://maven.aliyun.com/repository/central/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
+wrapperUrl=https://maven.aliyun.com/repository/central/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar
+
+# distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
+# wrapperUrl=https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_方法二">方法二：</h5>
+<div class="paragraph">
+<p>参考阿里云: <a href="https://developer.aliyun.com/mvn/guide" class="bare">https://developer.aliyun.com/mvn/guide</a></p>
+</div>
+<div class="paragraph">
+<p>参考腾讯云: <a href="https://mirrors.tencent.com/help/maven.html" class="bare">https://mirrors.tencent.com/help/maven.html</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>settings.xml路径可使用everything搜索：
+参考路径：
+D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\settings.xml</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_使用方法_2">42.2. 使用方法</h3>
+<div class="sect3">
+<h4 id="_build_lifecycle">42.2.1. Build Lifecycle</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">mvn clean</dt>
+<dd>
+<p>清除</p>
+</dd>
+<dt class="hdlist1">mvn compile</dt>
+<dd>
+<p>编译，compile the source code of the project</p>
+</dd>
+<dt class="hdlist1">mvn validate</dt>
+<dd>
+<p>验证mvn配置，validate the project is correct and all necessary information is available</p>
+</dd>
+<dt class="hdlist1">mvn test</dt>
+<dd>
+<p>运行单元测试，test the compiled source code using a suitable unit testing framework. These tests should not require the code be packaged or deployed</p>
+</dd>
+<dt class="hdlist1">mvn verify</dt>
+<dd>
+<p>验证编译后的程序，run any checks on results of integration tests to ensure quality criteria are met</p>
+</dd>
+<dt class="hdlist1">mvn install</dt>
+<dd>
+<p>安装应用到maven目录，install the package into the local repository, for use as a dependency in other projects locally</p>
+</dd>
+<dt class="hdlist1">mvn deploy</dt>
+<dd>
+<p>编译，done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.</p>
+</dd>
+<dt class="hdlist1">mvn package</dt>
+<dd>
+<p>打包，take the compiled code and package it in its distributable format, such as a JAR.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html" class="bare">https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">mvn compile war:war</dt>
+<dd>
+<p>Build a WAR file.</p>
+</dd>
+<dt class="hdlist1">mvn war:exploded</dt>
+<dd>
+<p>Create an exploded webapp in a specified directory.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><a href="https://maven.apache.org/plugins/maven-war-plugin/plugin-info.html" class="bare">https://maven.apache.org/plugins/maven-war-plugin/plugin-info.html</a></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">启动springboot</dt>
+<dd>
+<p>mvn spring-boot:run</p>
+</dd>
+<dt class="hdlist1">使用Java启动jar包</dt>
+<dd>
+<p>java -jar target/accessing-data-jpa-0.0.1-SNAPSHOT.jar</p>
+</dd>
+</dl>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">43. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">43.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">43.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -8588,7 +8862,7 @@ getent group</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">42.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">43.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -8599,7 +8873,7 @@ getent group</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_辨别虚拟机物理机">42.2. 辨别虚拟机物理机</h3>
+<h3 id="_辨别虚拟机物理机">43.2. 辨别虚拟机物理机</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8618,7 +8892,7 @@ getent group</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_linux_2">42.2.1. linux</h4>
+<h4 id="_linux_2">43.2.1. linux</h4>
 <div class="listingblock">
 <div class="title">VMware Workstation</div>
 <div class="content">
@@ -8697,7 +8971,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_windows_2">42.2.2. windows</h4>
+<h4 id="_windows_2">43.2.2. windows</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
@@ -8715,7 +8989,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-11 10:37:29 +0800
+Last updated 2024-03-13 14:24:27 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
