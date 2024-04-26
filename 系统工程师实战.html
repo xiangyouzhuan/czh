@@ -1159,18 +1159,50 @@ p { margin-bottom: 1.25rem; }
 </li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">43. 杂项</a>
+<li><a href="#_grep_sed_awk_chapter">43. grep,sed,awk</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">43.1. Chrome</a>
+<li><a href="#_grep">43.1. grep</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">43.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">43.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_常用选项">43.1.1. 常用选项::</a></li>
 </ul>
 </li>
-<li><a href="#_辨别虚拟机物理机">43.2. 辨别虚拟机物理机</a>
+<li><a href="#_sed">43.2. sed</a></li>
+</ul>
+</li>
+<li><a href="#_mysql_chapter">44. mysql</a>
+<ul class="sectlevel2">
+<li><a href="#_常用命令_4">44.1. 常用命令</a>
 <ul class="sectlevel3">
-<li><a href="#_linux_3">43.2.1. linux</a></li>
-<li><a href="#_windows_3">43.2.2. windows</a></li>
+<li><a href="#_创建并使用数据库">44.1.1. 创建并使用数据库</a></li>
+<li><a href="#_创建表">44.1.2. 创建表</a></li>
+<li><a href="#_将数据装入表中">44.1.3. 将数据装入表中</a></li>
+</ul>
+</li>
+<li><a href="#_从表中检索信息">44.2. 从表中检索信息</a></li>
+</ul>
+</li>
+<li><a href="#_epel_chapter">45. epel</a>
+<ul class="sectlevel2">
+<li><a href="#_epel换源">45.1. epel换源</a>
+<ul class="sectlevel3">
+<li><a href="#_备份">45.1.1. 备份</a></li>
+<li><a href="#_下载新repo">45.1.2. 下载新repo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">46. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">46.1. Chrome</a>
+<ul class="sectlevel3">
+<li><a href="#_安装_proxy_switchyomega_扩展">46.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">46.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">46.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux_3">46.2.1. linux</a></li>
+<li><a href="#_windows_3">46.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -8924,12 +8956,414 @@ D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\setti
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">43. 杂项</h2>
+<h2 id="_grep_sed_awk_chapter">43. grep,sed,awk</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">43.1. Chrome</h3>
+<h3 id="_grep">43.1. grep</h3>
+<div class="paragraph">
+<p>grep全称是Global Regular Expression Print</p>
+</div>
+<div class="paragraph">
+<p>搜索成功，则返回0，如果搜索不成功，则返回1，如果搜索的文件不存在，则返回2</p>
+</div>
+<div class="paragraph">
+<p>egrep = grep -E</p>
+</div>
+<div class="paragraph">
+<p>语法</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">grep [OPTION...] PATTERNS [FILE...]</code></pre>
+</div>
+</div>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">43.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_常用选项">43.1.1. 常用选项::</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>-i：忽略大小写进行匹配。</p>
+</li>
+<li>
+<p>-v：反向查找，只打印不匹配的行。</p>
+</li>
+<li>
+<p>-n：显示匹配行的行号。</p>
+</li>
+<li>
+<p>-r：递归查找子目录中的文件。</p>
+</li>
+<li>
+<p>-l：只打印匹配的文件名。</p>
+</li>
+<li>
+<p>-c：只打印匹配的行数。</p>
+</li>
+<li>
+<p>-e：实现多个选项间的逻辑or 关系</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sed">43.2. sed</h3>
+<div class="paragraph">
+<p>sed 主要用来自动编辑一个或多个文件</p>
+</div>
+<div class="paragraph">
+<p>语法
+sed [options] 'command' file(s)</p>
+</div>
+<div class="paragraph">
+<p>sed [options] -f scriptfile file(s)</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mysql_chapter">44. mysql</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_常用命令_4">44.1. 常用命令</h3>
+<div class="paragraph">
+<p>可以自己登录到自己的mysql账户创建数据库，也可以让超级管理员创建好数据库之后，超级管理员再设置权限，让你直接使用。</p>
+</div>
+<div class="sect3">
+<h4 id="_创建并使用数据库">44.1.1. 创建并使用数据库</h4>
+<div class="listingblock">
+<div class="title">找出服务器上当前存在什么数据库：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">SHOW DATABASES;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">创建数据库menagerie</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">CREATE DATABASE menagerie;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">选择数据库</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">USE menagerie;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_创建表">44.1.2. 创建表</h4>
+<div class="listingblock">
+<div class="title">查看表</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">SHOW TABLES;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">创建表pet,存储宠物信息，包含名字、主人、种类，性别、出生和死亡日期。</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">CREATE TABLE pet (
+    name VARCHAR(20),
+    owner VARCHAR(20),
+    species VARCHAR(20),
+    sex CHAR(1),
+    birth DATE,
+    death DATE);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">验证你的表是按你期望的方式创建，使用DESCRIBE语句：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">DESCRIBE pet;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_将数据装入表中">44.1.3. 将数据装入表中</h4>
+<div class="paragraph">
+<p>创建表后，需要填入内容。通过LOAD DATA和INSERT语句可以完成该任务。
+假定你的宠物记录如下：</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owner</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">species</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">birth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">death</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fluffy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Harold</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1993-02-04</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Claws</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gwen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1994-03-17</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Buffy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Harold</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1989-05-13</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fang</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Benny</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1990-08-27</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bowser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diane</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1979-08-31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1995-07-29</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chirpy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gwen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bird</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">f</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1998-09-11</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whistler</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gwen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bird</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1997-12-09</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Slim</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Benny</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">snake</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1996-04-29</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>因为你是从一个空表开始的，填充它的一个简易方法是创建一个文本文件，每个动物各一行，然后用一个语句将文件的内容装载到表中。</p>
+</div>
+<div class="paragraph">
+<p>你可以创建一个文本文件“pet.txt”，每行包含一个记录，用定位符(tab)把值分开，并且以CREATE TABLE语句中列出的列次序给出。对于丢失的值(例如未知的性别，或仍然活着的动物的死亡日期)，你可以使用NULL值。为了在你的文本文件中表示这些内容，使用\N（反斜线，字母N）。例如，Whistler鸟的记录应为(这里值之间的空白是一个定位符)：</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owner</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">species</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">birth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">death</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whistler</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gwen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bird</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\N</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1997-12-09</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\N</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">此命令是追加到数据库后面</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">LOAD DATA LOCAL INFILE '/root/pet.txt' INTO TABLE pet;</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>如果遇到以下问题：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>`Loading local data is disabled; this must be enabled on both the
+client and server side`</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">先退出当前登录</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">\q</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">登录MySQL Server，通常是root为超级管理员</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql -u root -p</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">设置local_infile参数为1</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">SET GLOBAL local_infile=1;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">再退出当前登录</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">\q</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">使用参数&#8212;&#8203;local-infile=1登录对应用户user。</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql --local-infile=1 -u root -p</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">之后再执行</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">LOAD DATA LOCAL INFILE '/root/pet.txt' INTO TABLE pet;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>请注意如果用Windows中的编辑器（使用\r\n做为行的结束符）创建文件，应使用：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql&gt; LOAD DATA LOCAL INFILE '/root/pet.txt' INTO TABLE pet
+     LINES TERMINATED BY '\r\n';</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>如果想要一次增加一个新记录，可以使用INSERT语句。最简单的形式是，提供每一列的值，其顺序与CREATE TABLE语句中列的顺序相同。假定Diane把一只新仓鼠命名为Puffball，你可以使用下面的INSERT语句添加一条新记录：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mysql&gt; INSERT INTO pet
+       VALUES ('Puffball','Diane','hamster','f','1999-03-30',NULL);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_从表中检索信息">44.2. 从表中检索信息</h3>
+<div class="paragraph">
+<p>选择所有数据</p>
+</div>
+<div class="paragraph">
+<p>mysql&gt; SELECT * FROM pet;</p>
+</div>
+<div class="paragraph">
+<p>选择特殊行
+mysql&gt; SELECT * FROM pet WHERE name = 'Bowser';</p>
+</div>
+<div class="paragraph">
+<p>mysql中文官网： <a href="https://www.mysqlzh.com/doc/27/45.html" class="bare">https://www.mysqlzh.com/doc/27/45.html</a></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_epel_chapter">45. epel</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_epel换源">45.1. epel换源</h3>
+<div class="sect3">
+<h4 id="_备份">45.1.1. 备份</h4>
+<div class="listingblock">
+<div class="title">备份(如有配置其他epel源)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
+mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_下载新repo">45.1.2. 下载新repo</h4>
+<div class="listingblock">
+<div class="title">epel(RHEL 8)(RHEL 9)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装epel配置包
+yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+
+#将repo配置中的地址替换为阿里云镜像站地址
+sed -i 's|^#baseurl=https://download.example/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">epel(RHEL 7)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装epel配置包
+wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>官方主页： <a href="https://fedoraproject.org/wiki/EPEL" class="bare">https://fedoraproject.org/wiki/EPEL</a></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">46. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">46.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">46.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -8950,7 +9384,7 @@ D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\setti
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">43.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">46.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -8961,7 +9395,7 @@ D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\setti
 </div>
 </div>
 <div class="sect2">
-<h3 id="_辨别虚拟机物理机">43.2. 辨别虚拟机物理机</h3>
+<h3 id="_辨别虚拟机物理机">46.2. 辨别虚拟机物理机</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -8980,7 +9414,7 @@ D:\Installations\IDEA\IntelliJ IDEA 2023.3.2\plugins\maven\lib\maven3\conf\setti
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_linux_3">43.2.1. linux</h4>
+<h4 id="_linux_3">46.2.1. linux</h4>
 <div class="listingblock">
 <div class="title">VMware Workstation</div>
 <div class="content">
@@ -9059,7 +9493,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_windows_3">43.2.2. windows</h4>
+<h4 id="_windows_3">46.2.2. windows</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
@@ -9077,7 +9511,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-13 14:24:27 +0800
+Last updated 2024-04-11 15:24:13 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
