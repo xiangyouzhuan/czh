@@ -782,29 +782,15 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_gitlab">3. GitLab</a>
 <ul class="sectlevel2">
-<li><a href="#_新增gitlab_yum仓库">3.1. 新增GitLab Yum仓库</a>
+<li><a href="#_centos8">3.1. CentOS8</a>
 <ul class="sectlevel3">
-<li><a href="#_添加yum仓库">3.1.1. 添加Yum仓库</a></li>
-<li><a href="#_列出gitlab的仓库列表">3.1.2. 列出GitLab的仓库列表</a></li>
-<li><a href="#_查看可用的gitlab软件包">3.1.3. 查看可用的GitLab软件包</a></li>
-<li><a href="#_默认禁用gitlab仓库">3.1.4. 默认禁用GitLab仓库</a></li>
+<li><a href="#_新增gitlab_yum仓库">3.1.1. 新增GitLab Yum仓库</a></li>
+<li><a href="#_安装gitlab软件包">3.1.2. 安装GitLab软件包</a></li>
+<li><a href="#_查看gitlab服务状态">3.1.3. 查看GitLab服务状态</a></li>
+<li><a href="#_为gitlab新增防火墙规则">3.1.4. 为GitLab新增防火墙规则</a></li>
 </ul>
 </li>
-<li><a href="#_安装gitlab软件包">3.2. 安装GitLab软件包</a>
-<ul class="sectlevel3">
-<li><a href="#_安装gitlab依赖">3.2.1. 安装GitLab依赖</a></li>
-<li><a href="#_预设gitlab运行参数">3.2.2. 预设GitLab运行参数</a></li>
-<li><a href="#_手动安装gitlab">3.2.3. 手动安装GitLab</a></li>
-</ul>
-</li>
-<li><a href="#_查看gitlab服务状态">3.3. 查看GitLab服务状态</a>
-<ul class="sectlevel3">
-<li><a href="#_查看gitlab的系统服务状态">3.3.1. 查看GitLab的系统服务状态</a></li>
-<li><a href="#_查看gitlab的所有组件状态">3.3.2. 查看GitLab的所有组件状态</a></li>
-<li><a href="#_查看gitlab默认http端口">3.3.3. 查看GitLab默认HTTP端口</a></li>
-</ul>
-</li>
-<li><a href="#_为gitlab新增防火墙规则">3.4. 为GitLab新增防火墙规则</a></li>
+<li><a href="#_centos_stream_9">3.2. CentOS-stream-9</a></li>
 </ul>
 </li>
 <li><a href="#_jenkins">4. Jenkins</a>
@@ -1106,6 +1092,13 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_iftop使用">37.4.2. iftop使用</a></li>
 </ul>
 </li>
+<li><a href="#_nc">37.5. nc</a>
+<ul class="sectlevel3">
+<li><a href="#_nc安装">37.5.1. nc安装</a></li>
+<li><a href="#_iftop使用_2">37.5.2. iftop使用</a></li>
+<li><a href="#_常用命令_3">37.5.3. 常用命令</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_chrony_chapter">38. chrony</a>
@@ -1134,7 +1127,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_用户和组管理_chapter">40. 用户和组管理</a>
 <ul class="sectlevel2">
-<li><a href="#_常用命令_3">40.1. 常用命令</a></li>
+<li><a href="#_常用命令_4">40.1. 常用命令</a></li>
 </ul>
 </li>
 <li><a href="#_rsync_chapter">41. rsync</a>
@@ -1171,7 +1164,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_mysql_chapter">44. mysql</a>
 <ul class="sectlevel2">
-<li><a href="#_常用命令_4">44.1. 常用命令</a>
+<li><a href="#_常用命令_5">44.1. 常用命令</a>
 <ul class="sectlevel3">
 <li><a href="#_创建并使用数据库">44.1.1. 创建并使用数据库</a></li>
 <li><a href="#_创建表">44.1.2. 创建表</a></li>
@@ -1633,17 +1626,19 @@ $ git push origin master</code></pre>
 <h2 id="_gitlab">3. GitLab</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_新增gitlab_yum仓库">3.1. 新增GitLab Yum仓库</h3>
+<h3 id="_centos8">3.1. CentOS8</h3>
 <div class="sect3">
-<h4 id="_添加yum仓库">3.1.1. 添加Yum仓库</h4>
+<h4 id="_新增gitlab_yum仓库">3.1.1. 新增GitLab Yum仓库</h4>
+<div class="sect4">
+<h5 id="_添加yum仓库">添加Yum仓库</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_列出gitlab的仓库列表">3.1.2. 列出GitLab的仓库列表</h4>
+<div class="sect4">
+<h5 id="_列出gitlab的仓库列表">列出GitLab的仓库列表</h5>
 <div class="paragraph">
 <p>执行一下命令</p>
 </div>
@@ -1662,8 +1657,8 @@ $ git push origin master</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_查看可用的gitlab软件包">3.1.3. 查看可用的GitLab软件包</h4>
+<div class="sect4">
+<h5 id="_查看可用的gitlab软件包">查看可用的GitLab软件包</h5>
 <div class="paragraph">
 <p>列出软件包列表</p>
 </div>
@@ -1718,8 +1713,8 @@ Description : GitLab Community Edition (including NGINX, Postgres, Redis)</pre>
 <p>GitLab的软件包比较大，安装过程时间较长</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_默认禁用gitlab仓库">3.1.4. 默认禁用GitLab仓库</h4>
+<div class="sect4">
+<h5 id="_默认禁用gitlab仓库">默认禁用GitLab仓库</h5>
 <div class="paragraph">
 <p>按需单独启用GitLab仓库
 GitLab仓库（服务器位于国外）经常无法访问或者速度慢，影响Yum使用，默认禁用之</p>
@@ -1741,10 +1736,10 @@ GitLab仓库（服务器位于国外）经常无法访问或者速度慢，影�
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_安装gitlab软件包">3.2. 安装GitLab软件包</h3>
 <div class="sect3">
-<h4 id="_安装gitlab依赖">3.2.1. 安装GitLab依赖</h4>
+<h4 id="_安装gitlab软件包">3.1.2. 安装GitLab软件包</h4>
+<div class="sect4">
+<h5 id="_安装gitlab依赖">安装GitLab依赖</h5>
 <div class="paragraph">
 <p>运行 gitlab-ctl 命令时，会出现警告：</p>
 </div>
@@ -1765,8 +1760,8 @@ GitLab仓库（服务器位于国外）经常无法访问或者速度慢，影�
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_预设gitlab运行参数">3.2.2. 预设GitLab运行参数</h4>
+<div class="sect4">
+<h5 id="_预设gitlab运行参数">预设GitLab运行参数</h5>
 <div class="paragraph">
 <p>预设GitLab访问URL</p>
 </div>
@@ -1809,8 +1804,8 @@ GitLab默认密码：QJQCM3fAFXKYpYUeSL5e</pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_手动安装gitlab">3.2.3. 手动安装GitLab</h4>
+<div class="sect4">
+<h5 id="_手动安装gitlab">手动安装GitLab</h5>
 <div class="paragraph">
 <p>打印GitLab软件包URL</p>
 </div>
@@ -1891,14 +1886,14 @@ Resolving Dependencies
 
 Dependencies Resolved
 
-==============================================================================================
+=============================================================================================================================
  Package        Arch        Version              Repository                               Size
-==============================================================================================
+=============================================================================================================================
 Installing:
  gitlab-ce      x86_64      15.6.3-ce.0.el7      /gitlab-ce-15.6.3-ce.0.el7.x86_64      2.4 G
 
 Transaction Summary
-==============================================================================================
+=============================================================================================================================
 Install  1 Package
 
 Total size: 2.4 G
@@ -1910,10 +1905,10 @@ Installed size: 2.4 G
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_查看gitlab服务状态">3.3. 查看GitLab服务状态</h3>
 <div class="sect3">
-<h4 id="_查看gitlab的系统服务状态">3.3.1. 查看GitLab的系统服务状态</h4>
+<h4 id="_查看gitlab服务状态">3.1.3. 查看GitLab服务状态</h4>
+<div class="sect4">
+<h5 id="_查看gitlab的系统服务状态">查看GitLab的系统服务状态</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl status gitlab-runsvdir</code></pre>
@@ -1945,8 +1940,8 @@ Jan 14 00:30:42 lan_server systemd[1]: Started GitLab Runit supervision process.
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_查看gitlab的所有组件状态">3.3.2. 查看GitLab的所有组件状态</h4>
+<div class="sect4">
+<h5 id="_查看gitlab的所有组件状态">查看GitLab的所有组件状态</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitlab-ctl status</code></pre>
@@ -1975,8 +1970,8 @@ run: sidekiq: (pid 11303) 39952s; run: log: (pid 11320) 39950s</pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_查看gitlab默认http端口">3.3.3. 查看GitLab默认HTTP端口</h4>
+<div class="sect4">
+<h5 id="_查看gitlab默认http端口">查看GitLab默认HTTP端口</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gitlab-ctl show-config 2&gt;/dev/null | grep '"external-url":'</code></pre>
@@ -1995,8 +1990,8 @@ run: sidekiq: (pid 11303) 39952s; run: log: (pid 11320) 39950s</pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_为gitlab新增防火墙规则">3.4. 为GitLab新增防火墙规则</h3>
+<div class="sect3">
+<h4 id="_为gitlab新增防火墙规则">3.1.4. 为GitLab新增防火墙规则</h4>
 <div class="paragraph">
 <p>1.增加防火墙放行规则</p>
 </div>
@@ -2057,6 +2052,140 @@ GITLAB运行端口注意和 预设GitLab访问URL 的端口保持一致</p>
 <p>放行的规则中必须有 GITLAB_8181 服务
 现在，可以去试一试 第一次访问GitLab Web
 访问 <a href="http://gitlab.sjx.com:8181" class="bare">http://gitlab.sjx.com:8181</a> ，完成第一次登录操作</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_centos_stream_9">3.2. CentOS-stream-9</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>版本：</p>
+</li>
+<li>
+<p>操作系统：</p>
+</li>
+<li>
+<p>架构：</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>reference: <a href="https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3" class="bare">https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">添加gitlab仓库
+curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+
+
+安装
+EXTERNAL_URL="http://gitlab.czh.com"
+sudo yum install gitlab-ce-16.9.6-ce.0.el9.x86_64</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> Running scriptlet: gitlab-ce-16.9.6-ce.0.el9.x86_64                                                           217/221
+  Installing       : gitlab-ce-16.9.6-ce.0.el9.x86_64                                                           217/221
+  Running scriptlet: gitlab-ce-16.9.6-ce.0.el9.x86_64                                                           217/221
+  Cleanup          : glibc-2.34-88.el9.x86_64                                                                   218/221
+  Cleanup          : glibc-langpack-en-2.34-88.el9.x86_64                                                       219/221
+  Cleanup          : glibc-gconv-extra-2.34-88.el9.x86_64                                                       220/221
+  Running scriptlet: glibc-gconv-extra-2.34-88.el9.x86_64                                                       220/221
+  Cleanup          : glibc-common-2.34-88.el9.x86_64                                                            221/221
+  Running scriptlet: gitlab-ce-16.9.6-ce.0.el9.x86_64                                                           221/221
+It looks like GitLab has not been configured yet; skipping the upgrade script.
+
+       *.                  *.
+      ***                 ***
+     *****               *****
+    .******             *******
+    ********            ********
+   ,,,,,,,,,***********,,,,,,,,,
+  ,,,,,,,,,,,*********,,,,,,,,,,,
+  .,,,,,,,,,,,*******,,,,,,,,,,,,
+      ,,,,,,,,,*****,,,,,,,,,.
+         ,,,,,,,****,,,,,,
+            .,,,***,,,,
+                ,*,.
+
+
+
+     _______ __  __          __
+    / ____(_) /_/ /   ____ _/ /_
+   / / __/ / __/ /   / __ `/ __ \
+  / /_/ / / /_/ /___/ /_/ / /_/ /
+  \____/_/\__/_____/\__,_/_.___/
+
+
+Thank you for installing GitLab!
+GitLab was unable to detect a valid hostname for your instance.
+Please configure a URL for your GitLab instance by setting `external_url`
+configuration in /etc/gitlab/gitlab.rb file.
+Then, you can start your GitLab instance by running the following command:
+  sudo gitlab-ctl reconfigure
+
+For a comprehensive list of configuration options please see the Omnibus GitLab readme
+https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md
+
+Help us improve the installation experience, let us know how we did with a 1 minute survey:
+https://gitlab.fra1.qualtrics.com/jfe/form/SV_6kVqZANThUQ1bZb?installation=omnibus&amp;release=16-9
+...
+...
+ python3-setuptools-53.0.0-12.el9.noarch                     qt5-srpm-macros-5.15.9-1.el9.noarch
+  redhat-rpm-config-207-1.el9.noarch                          rust-srpm-macros-17-4.el9.noarch
+  sombok-2.4.0-16.el9.x86_64                                  systemtap-sdt-devel-5.0-4.el9.x86_64
+  zip-3.0-35.el9.x86_64
+
+Complete!</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>设置external_url</p>
+</div>
+<div class="paragraph">
+<p>如果需要获取获取全面的配置选项列表，请参阅 Omnibus GitLab 的readme <a href="https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md" class="bare">https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md</a></p>
+</div>
+<div class="paragraph">
+<p>sudo gitlab-ctl reconfigure</p>
+</div>
+<div class="paragraph">
+<p>配置本地域名解析
+安装gitlab的主机IP  gitlab.czh.com</p>
+</div>
+<div class="paragraph">
+<p>浏览器输入访问 <a href="http://gitlab.czh.com" class="bare">http://gitlab.czh.com</a></p>
+</div>
+<div class="paragraph">
+<p>默认用户 root</p>
+</div>
+<div class="paragraph">
+<p>默认密码：
+cat /etc/gitlab/initial_root_password | egrep '^Password'</p>
+</div>
+<div class="paragraph">
+<p>输出</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Password: OhnSC43bG/FivMIySa/rF1tweMHi8RxbgMdZd0QDn84=</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+如果密码未生效，根据/etc/gitlab/initial_root_password中的指引操作
+</td>
+</tr>
+</table>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -8312,6 +8441,36 @@ rates：分别表示过去 2s 10s 40s 的平均流量</p>
 </dd>
 </dl>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nc">37.5. nc</h3>
+<div class="sect3">
+<h4 id="_nc安装">37.5.1. nc安装</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
+yum install -y netcat</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_iftop使用_2">37.5.2. iftop使用</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nc --help</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_常用命令_3">37.5.3. 常用命令</h4>
+<div class="listingblock">
+<div class="title">扫描端口</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#检查 example.com 的 80 端口是否开放。
+nc -zv nc -zv example.com 80</code></pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -8555,7 +8714,7 @@ UsePAM yes</code></pre>
 <h2 id="_用户和组管理_chapter">40. 用户和组管理</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_常用命令_3">40.1. 常用命令</h3>
+<h3 id="_常用命令_4">40.1. 常用命令</h3>
 <div class="paragraph">
 <p>将一个用户添加到用户组中，千万不能直接用：
 usermod -G groupA 这样做会使你离开其他用户组，仅仅做为 这个用户组 groupA 的成员。</p>
@@ -9026,7 +9185,7 @@ sed [options] 'command' file(s)</p>
 <h2 id="_mysql_chapter">44. mysql</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_常用命令_4">44.1. 常用命令</h3>
+<h3 id="_常用命令_5">44.1. 常用命令</h3>
 <div class="paragraph">
 <p>可以自己登录到自己的mysql账户创建数据库，也可以让超级管理员创建好数据库之后，超级管理员再设置权限，让你直接使用。</p>
 </div>
