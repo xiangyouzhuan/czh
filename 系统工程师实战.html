@@ -1092,11 +1092,10 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_iftop使用">37.4.2. iftop使用</a></li>
 </ul>
 </li>
-<li><a href="#_nc">37.5. nc</a>
+<li><a href="#_netcat">37.5. netcat</a>
 <ul class="sectlevel3">
-<li><a href="#_nc安装">37.5.1. nc安装</a></li>
-<li><a href="#_iftop使用_2">37.5.2. iftop使用</a></li>
-<li><a href="#_常用命令_3">37.5.3. 常用命令</a></li>
+<li><a href="#_netcat安装">37.5.1. netcat安装</a></li>
+<li><a href="#_常用命令_3">37.5.2. 常用命令</a></li>
 </ul>
 </li>
 </ul>
@@ -8444,9 +8443,9 @@ rates：分别表示过去 2s 10s 40s 的平均流量</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_nc">37.5. nc</h3>
+<h3 id="_netcat">37.5. netcat</h3>
 <div class="sect3">
-<h4 id="_nc安装">37.5.1. nc安装</h4>
+<h4 id="_netcat安装">37.5.1. netcat安装</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum install -y epel-release
@@ -8455,21 +8454,23 @@ yum install -y netcat</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_iftop使用_2">37.5.2. iftop使用</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nc --help</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_常用命令_3">37.5.3. 常用命令</h4>
+<h4 id="_常用命令_3">37.5.2. 常用命令</h4>
 <div class="listingblock">
 <div class="title">扫描端口</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#检查 example.com 的 80 端口是否开放。
-nc -zv nc -zv example.com 80</code></pre>
+nc -zv example.com 80</code></pre>
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>-z  Zero-I/O mode，零输入输出模式，常用于端口扫描。</p>
+</li>
+<li>
+<p>-v  Verbose mode，显示详细信息</p>
+</li>
+</ul>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
