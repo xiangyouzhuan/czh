@@ -8459,7 +8459,10 @@ yum install -y netcat</code></pre>
 <div class="title">扫描端口</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#检查 example.com 的 80 端口是否开放。
-nc -zv example.com 80</code></pre>
+nc -zv example.com 80
+
+#检查 example.com 的1-100端口开放情况。
+nc -zv -w2 example.com 1-100</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -8469,6 +8472,9 @@ nc -zv example.com 80</code></pre>
 </li>
 <li>
 <p>-v  Verbose mode，显示详细信息</p>
+</li>
+<li>
+<p>-w  连接超时的时间，也是网络操作信息读取的超时时间（-w2即设置时间为2秒）</p>
 </li>
 </ul>
 </div>
