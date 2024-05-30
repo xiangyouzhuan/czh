@@ -2657,15 +2657,11 @@ C:\Windows\System32\OpenSSH;</code></p>
 <ul>
 <li>
 <p>操作系统：centos7</p>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>修改SSH服务端配置文件（sshd_config） ，加速登录速度、设置连接保持等</p>
-</li>
-</ol>
-</div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>1.修改SSH服务端配置文件（sshd_config） ，加速登录速度、设置连接保持等</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2681,24 +2677,16 @@ sed -i "s/#ClientAliveInterval 0/ClientAliveInterval 30/" /etc/ssh/sshd_config
 sed -i "s/#ClientAliveCountMax 3/ClientAliveCountMax 10/" /etc/ssh/sshd_config</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>重载SSH服务端配置</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>2.重载SSH服务端配置</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl reload sshd</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>退出当前Shell，重新登录SSH后，新配置生效</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>3.退出当前Shell，重新登录SSH后，新配置生效</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
