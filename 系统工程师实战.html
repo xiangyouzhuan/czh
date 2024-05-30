@@ -827,6 +827,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_ssh密钥对克隆git仓库">5.2. ssh密钥对克隆git仓库</a></li>
 <li><a href="#_cmd无法识别ssh">5.3. cmd无法识别ssh</a></li>
+<li><a href="#_ssh连接优化">5.4. ssh连接优化</a></li>
 </ul>
 </li>
 <li><a href="#_prometheus">6. prometheus</a>
@@ -2648,6 +2649,56 @@ EOF</code></pre>
 <div class="paragraph">
 <p>添加后：<code>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
 C:\Windows\System32\OpenSSH;</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ssh连接优化">5.4. ssh连接优化</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>操作系统：centos7</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>修改SSH服务端配置文件（sshd_config） ，加速登录速度、设置连接保持等</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># SSH连接时，服务端会将客户端IP反向解析为域名，导致登录过程缓慢
+sed -i "s/#UseDNS yes/UseDNS no/" /etc/ssh/sshd_config
+sed -i "s/GSSAPIAuthentication yes/GSSAPIAuthentication no/" /etc/ssh/sshd_config
+sed -i "s/GSSAPICleanupCredentials yes/GSSAPICleanupCredentials no/" /etc/ssh/sshd_config
+# 登录失败最大尝试次数
+sed -i "s/#MaxAuthTries 6/MaxAuthTries 10/" /etc/ssh/sshd_config
+# 连接保持：服务端每隔N秒发送一次请求给客户端，客户端响应后完成一次连接保持检查
+sed -i "s/#ClientAliveInterval 0/ClientAliveInterval 30/" /etc/ssh/sshd_config
+# 连接保持最大重试次数：服务端发出请求后，超过N次没有收到客户端响应，服务端则断开客户端连接
+sed -i "s/#ClientAliveCountMax 3/ClientAliveCountMax 10/" /etc/ssh/sshd_config</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>重载SSH服务端配置</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>systemctl reload sshd</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>退出当前Shell，重新登录SSH后，新配置生效</p>
+</li>
+</ol>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
