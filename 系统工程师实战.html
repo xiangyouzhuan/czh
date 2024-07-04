@@ -1184,18 +1184,36 @@ p { margin-bottom: 1.25rem; }
 </li>
 </ul>
 </li>
-<li><a href="#_Misc_chapter">46. 杂项</a>
+<li><a href="#_rpm_chapter">46. rpm</a>
 <ul class="sectlevel2">
-<li><a href="#_chrome">46.1. Chrome</a>
+<li><a href="#_rpm">46.1. rpm</a>
 <ul class="sectlevel3">
-<li><a href="#_安装_proxy_switchyomega_扩展">46.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
-<li><a href="#_switchyomega实现自动代理切换">46.1.2. SwitchyOmega实现自动代理切换</a></li>
+<li><a href="#_第三方rpm包地址">46.1.1. 第三方rpm包地址</a></li>
+<li><a href="#_rpm_常用命令">46.1.2. rpm 常用命令</a></li>
 </ul>
 </li>
-<li><a href="#_辨别虚拟机物理机">46.2. 辨别虚拟机物理机</a>
+</ul>
+</li>
+<li><a href="#_basicInformation_chapter">47. 电脑基本信息查看</a>
+<ul class="sectlevel2">
+<li><a href="#_硬件信息">47.1. 硬件信息</a></li>
+<li><a href="#_软件信息">47.2. 软件信息</a></li>
+<li><a href="#_网络配置">47.3. 网络配置</a></li>
+<li><a href="#_系统日志和监控">47.4. 系统日志和监控</a></li>
+</ul>
+</li>
+<li><a href="#_Misc_chapter">48. 杂项</a>
+<ul class="sectlevel2">
+<li><a href="#_chrome">48.1. Chrome</a>
 <ul class="sectlevel3">
-<li><a href="#_linux_3">46.2.1. linux</a></li>
-<li><a href="#_windows_3">46.2.2. windows</a></li>
+<li><a href="#_安装_proxy_switchyomega_扩展">48.1.1. 安装 Proxy SwitchyOmega 扩展</a></li>
+<li><a href="#_switchyomega实现自动代理切换">48.1.2. SwitchyOmega实现自动代理切换</a></li>
+</ul>
+</li>
+<li><a href="#_辨别虚拟机物理机">48.2. 辨别虚拟机物理机</a>
+<ul class="sectlevel3">
+<li><a href="#_linux_3">48.2.1. linux</a></li>
+<li><a href="#_windows_3">48.2.2. windows</a></li>
 </ul>
 </li>
 </ul>
@@ -9563,12 +9581,311 @@ wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo</
 </div>
 </div>
 <div class="sect1">
-<h2 id="_Misc_chapter">46. 杂项</h2>
+<h2 id="_rpm_chapter">46. rpm</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_chrome">46.1. Chrome</h3>
+<h3 id="_rpm">46.1. rpm</h3>
 <div class="sect3">
-<h4 id="_安装_proxy_switchyomega_扩展">46.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
+<h4 id="_第三方rpm包地址">46.1.1. 第三方rpm包地址</h4>
+<div class="paragraph">
+<p><a href="https://pkgs.org/" class="bare">https://pkgs.org/</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://rpmfind.net/linux/RPM/" class="bare">https://rpmfind.net/linux/RPM/</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rpm_常用命令">46.1.2. rpm 常用命令</h4>
+<div class="listingblock">
+<div class="title">安装rpm软件包</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -ivh xxxx.rpm
+#或者
+rpm -Uvh xxxx.rpm</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>-i install</p>
+</li>
+<li>
+<p>-U upgrade</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">卸载软件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -e &lt;packagename&gt;
+#或者
+rpm -e --nodeps &lt;packagename&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>-e erase (uninstall) package</p>
+</li>
+<li>
+<p>--nodeps 不验证包的依赖关系。--nodeps 选项的作用是强制卸载指定的软件包，即使该软件包可能是其他软件包的依赖。</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">列出已安装的包</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -qa</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">查询文件属于哪个包</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -qf /usr/sbin/sshd</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">列出包中的文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -ql openssh-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">列出包中的配置文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -qc openssh-server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">列出包中文件的状态</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -qs openssh-server</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basicInformation_chapter">47. 电脑基本信息查看</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_硬件信息">47.1. 硬件信息</h3>
+<div class="listingblock">
+<div class="title">cpu信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">lscpu
+#或
+cat /proc/cpuinfo</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注型号、核心数、线程数、频率等
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">内存信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">free -h
+#或
+cat /proc/meminfo</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注总内存、可用内存等。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">存储信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">lsblk、df -h、fdisk -l
+#或
+parted -l</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注硬盘型号、容量、分区情况、挂载点等。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">网络信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ip a
+ifconfig
+lspci | grep -i net
+#或
+ethtool</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注网卡型号、IP 地址、MAC 地址、网络配置等。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">主板和 BIOS/UEFI 信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dmidecode | grep -A 9 "System Information"
+#或
+dmidecode | grep -A 26 "BIOS Information"</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注主板型号、BIOS/UEFI 版本等。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_软件信息">47.2. 软件信息</h3>
+<div class="listingblock">
+<div class="title">操作系统信息</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">uname -a
+lsb_release -a
+cat /etc/os-release</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+发行版名称、版本号、内核版本等。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">已安装的软件包</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rpm -qa</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注关键软件和服务的版本信息。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">服务和进程</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl list-units --type=service
+#或
+ps aux</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+关注当前运行的服务、启动服务的状态等。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_网络配置">47.3. 网络配置</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_系统日志和监控">47.4. 系统日志和监控</h3>
+<div class="paragraph">
+<p>用户和权限</p>
+</div>
+<div class="paragraph">
+<p>安全配置</p>
+</div>
+<div class="paragraph">
+<p>备份和恢复</p>
+</div>
+<div class="paragraph">
+<p>自动化和脚本</p>
+</div>
+<div class="paragraph">
+<p>性能和负载</p>
+</div>
+<div class="paragraph">
+<p>网络性能</p>
+</div>
+<div class="paragraph">
+<p>系统配置和参数</p>
+</div>
+<div class="paragraph">
+<p>安全和访问控制</p>
+</div>
+<div class="paragraph">
+<p>容器和虚拟化</p>
+</div>
+<div class="paragraph">
+<p>环境配置和依赖</p>
+</div>
+<div class="paragraph">
+<p>日志轮转和日志管理是什么</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_Misc_chapter">48. 杂项</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_chrome">48.1. Chrome</h3>
+<div class="sect3">
+<h4 id="_安装_proxy_switchyomega_扩展">48.1.1. 安装 Proxy SwitchyOmega 扩展</h4>
 <div class="paragraph">
 <p>安装 <code>Proxy SwitchyOmega</code> 之前，需要访问Google应用商店，让Chrome挂全局代理：</p>
 </div>
@@ -9589,7 +9906,7 @@ wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo</
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switchyomega实现自动代理切换">46.1.2. SwitchyOmega实现自动代理切换</h4>
+<h4 id="_switchyomega实现自动代理切换">48.1.2. SwitchyOmega实现自动代理切换</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9600,7 +9917,7 @@ wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_辨别虚拟机物理机">46.2. 辨别虚拟机物理机</h3>
+<h3 id="_辨别虚拟机物理机">48.2. 辨别虚拟机物理机</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -9619,7 +9936,7 @@ wget -O /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo</
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_linux_3">46.2.1. linux</h4>
+<h4 id="_linux_3">48.2.1. linux</h4>
 <div class="listingblock">
 <div class="title">VMware Workstation</div>
 <div class="content">
@@ -9698,7 +10015,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_windows_3">46.2.2. windows</h4>
+<h4 id="_windows_3">48.2.2. windows</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Systeminfo | findstr /i "System Model"</code></pre>
@@ -9716,7 +10033,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-11 15:24:13 +0800
+Last updated 2024-06-18 16:15:20 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
