@@ -7676,6 +7676,28 @@ java -version</code></pre>
 </div>
 </div>
 <div class="listingblock">
+<div class="title">java8离线安装</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#官网下载地址(需在网页登录点击手动下载)
+https://download.oracle.com/otn/java/jdk/8u421-b09/d8aa705069af427f9b83e66b34f5e380/jdk-8u421-linux-x64.tar.gz
+
+tar zxvf jdk-8u421-linux-x64.tar.gz
+
+mv jdk1.8.0_421 /usr/local/java
+
+vi /etc/profile
+export JAVA_HOME=/usr/local/java
+export JRE_HOME=/usr/local/java/jre
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME_bin
+export CLASSPATH=.:$JAVA_HOME/lib/jt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+export JAVA_HOME JRE_HOME PATH CLASSPATH
+ulimit -SHn 65535
+
+source /etc/profile
+java -version</code></pre>
+</div>
+</div>
+<div class="listingblock">
 <div class="title">java11</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#安装java11
