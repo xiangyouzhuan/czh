@@ -2084,26 +2084,23 @@ GITLAB运行端口注意和 预设GitLab访问URL 的端口保持一致</p>
 <div class="ulist">
 <ul>
 <li>
-<p>版本：</p>
+<p>版本：16.9.6</p>
 </li>
 <li>
-<p>操作系统：</p>
-</li>
-<li>
-<p>架构：</p>
+<p>操作系统：CentOS-stream-9</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>reference: <a href="https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3" class="bare">https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3</a></p>
+<p>Reference: <a href="https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3" class="bare">https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/9/gitlab-ce-16.9.6-ce.0.el9.x86_64.rpm?page=3</a></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">添加gitlab仓库
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加gitlab仓库
 curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
 
 
-安装
+#安装
 EXTERNAL_URL="http://gitlab.czh.com"
 sudo yum install gitlab-ce-16.9.6-ce.0.el9.x86_64</code></pre>
 </div>
@@ -2168,42 +2165,40 @@ https://gitlab.fra1.qualtrics.com/jfe/form/SV_6kVqZANThUQ1bZb?installation=omnib
 Complete!</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>设置external_url</p>
-</div>
-<div class="paragraph">
-<p>如果需要获取获取全面的配置选项列表，请参阅 Omnibus GitLab 的readme <a href="https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md" class="bare">https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md</a></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo gitlab-ctl reconfigure</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>配置本地域名解析</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+如果需要获取获取全面的配置选项列表，请参阅 Omnibus GitLab 的readme <a href="https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md" class="bare">https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md</a>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">配置本地域名解析</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/hosts</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim /etc/hosts
+
+安装gitlab的主机IP  gitlab.czh.com</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>安装gitlab的主机IP  gitlab.czh.com</p>
 </div>
 <div class="paragraph">
 <p>浏览器输入访问 <a href="http://gitlab.czh.com" class="bare">http://gitlab.czh.com</a></p>
 </div>
 <div class="paragraph">
-<p>默认用户 root</p>
-</div>
-<div class="paragraph">
-<p>默认密码：
-cat /etc/gitlab/initial_root_password | egrep '^Password'</p>
-</div>
-<div class="paragraph">
-<p>输出</p>
+<p><strong>默认用户:</strong> root</p>
 </div>
 <div class="listingblock">
+<div class="title">查看默认密码：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat /etc/gitlab/initial_root_password | egrep '^Password'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出</div>
 <div class="content">
 <pre>Password: OhnSC43bG/FivMIySa/rF1tweMHi8RxbgMdZd0QDn84=</pre>
 </div>
@@ -4941,6 +4936,70 @@ reboot</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vmhgfs-fuse /mnt/hgfs</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p><strong>Q7:Virtual machine reports a "BUG: soft lockup" (or multiple at the same time)</strong>
+.输出如下报错</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>BUG: soft lockup - CPU#6 stuck for 73s! [flush-253:0:1207]
+BUG: soft lockup - CPU#7 stuck for 74s! [processname:15706]
+BUG: soft lockup - CPU#5 stuck for 63s! [processname:25582]
+BUG: soft lockup - CPU#0 stuck for 64s! [proceessname:15789]
+
+--or--
+
+&lt;time&gt; &lt;hostname&gt; kernel: NMI watchdog: BUG: soft lockup - CPU#6 stuck for 25s! [ksoftirqd/6:38]
+&lt;time&gt; &lt;hostname&gt; kernel: NMI watchdog: BUG: soft lockup - CPU#7 stuck for 22s! [ksoftirqd/7:43]
+&lt;time&gt; &lt;hostname&gt; kernel: NMI watchdog: BUG: soft lockup - CPU#7 stuck for 24s! [NetworkManager:945]
+&lt;time&gt; &lt;hostname&gt; kernel: NMI watchdog: BUG: soft lockup - CPU#7 stuck for 22s! [watchdog/7:41]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A7:
+Reference: <a href="https://access.redhat.com/solutions/1503333" class="bare">https://access.redhat.com/solutions/1503333</a></p>
+</div>
+<div class="paragraph">
+<p>1.设置kernel.softlockup_panic变量为0</p>
+</div>
+<div class="listingblock">
+<div class="title">查看当前kernel.softlockup_panic的值</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sysctl kernel.softlockup_panic</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">设置kernel.softlockup_panic的值</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo "kernel.softlockup_panic=0" &gt;&gt; /etc/sysctl.conf
+sysctl -p</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Since RHEL7, this parameter should be set to 0 by default in virtual machines.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">或者，可以增加报告软锁定的时间阈值（最多 60 秒），这可以省略打印这些消息时较短的 vCPU 滞后：</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">echo kernel.watchdog_thresh=30 &gt;&gt; /etc/sysctl.conf
+sysctl -p</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>根本原因：</strong>
+资源不够用，八成是后台开了很多程序，如果可以的话，重启一下电脑吧！关于虚拟机的软锁定，也就是soft lockup , <a href="https://access.redhat.com/articles/5008811" class="bare">https://access.redhat.com/articles/5008811</a> redhat的这篇文章写清楚了原因——“通常，每个 vCPU 都由主机上的一个进程（或线程）表示，由于vCPU只是一个进程，所以会被调度，使它让出cpu时间给其他程序使用，这个时候vCPU运行的所有程序都停了。但请注意，从虚拟机的角度来看，vCPU 正在不间断地运行，即它不知道它已被暂停（重新调度）。”</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -7681,19 +7740,23 @@ java -version</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#官网下载地址(需在网页登录点击手动下载)
 https://download.oracle.com/otn/java/jdk/8u421-b09/d8aa705069af427f9b83e66b34f5e380/jdk-8u421-linux-x64.tar.gz
 
+#解压安装包
 tar zxvf jdk-8u421-linux-x64.tar.gz
 
+#将解压后的文件移动到/usr/local/下，并改名为java
 mv jdk1.8.0_421 /usr/local/java
 
+#编译全局配置文件
 vi /etc/profile
 export JAVA_HOME=/usr/local/java
 export JRE_HOME=/usr/local/java/jre
 export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME_bin
 export CLASSPATH=.:$JAVA_HOME/lib/jt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
-export JAVA_HOME JRE_HOME PATH CLASSPATH
-ulimit -SHn 65535
 
+#执行/etc/profile中所有命令
 source /etc/profile
+
+#查看java版本以验证配置是否生效
 java -version</code></pre>
 </div>
 </div>
@@ -7721,13 +7784,20 @@ java -version</code></pre>
 <div class="sect3">
 <h4 id="_windows10">32.1.2. windows10</h4>
 <div class="paragraph">
-<p>一、下载jdk,下载地址：https://www.oracle.com/java/technologies/downloads/， windows 下载.msi格式。</p>
+<p><strong>一、下载jdk</strong></p>
 </div>
 <div class="paragraph">
-<p>二、点击安装包安装到对应目录。</p>
+<p>下载地址： <a href="https://www.oracle.com/java/technologies/downloads/" class="bare">https://www.oracle.com/java/technologies/downloads/</a>
+下载.msi后缀的文件</p>
 </div>
 <div class="paragraph">
-<p>三、 配置环境变量：</p>
+<p><strong>二、运行安装程序</strong></p>
+</div>
+<div class="paragraph">
+<p>运行安装程序即可</p>
+</div>
+<div class="paragraph">
+<p><strong>三、 配置环境变量：</strong></p>
 </div>
 <div class="paragraph">
 <p>在 "系统变量" 中设置 3 项属性，JAVA_HOME、PATH、CLASSPATH(大小写无所谓),若已存在则点击"编辑"，不存在则点击"新建"。</p>
@@ -7749,13 +7819,13 @@ java -version</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>四、 测试JDK是否安装成功</p>
+<p><strong>四、 测试JDK是否安装成功</strong></p>
 </div>
 <div class="paragraph">
-<p>1、"开始"&#8594;"运行"，键入"cmd"</p>
+<p>"开始"&#8594;"运行"，键入"cmd"</p>
 </div>
 <div class="paragraph">
-<p>2、键入命令: java -version、java、javac 几个命令，出现信息，说明环境变量配置成功；</p>
+<p>键入命令: java -version、java、javac 几个命令，出现信息，说明环境变量配置成功；</p>
 </div>
 </div>
 </div>
