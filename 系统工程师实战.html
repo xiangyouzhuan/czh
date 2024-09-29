@@ -778,6 +778,11 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_用户clonepush">2.1.3. 用户clone/push</a></li>
 </ul>
 </li>
+<li><a href="#_git常用命令">2.2. git常用命令</a>
+<ul class="sectlevel3">
+<li><a href="#_git配置">2.2.1. git配置</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_gitlab">3. GitLab</a>
@@ -922,6 +927,7 @@ p { margin-bottom: 1.25rem; }
 </ul>
 </li>
 <li><a href="#_python版本管理">15.2. Python版本管理</a></li>
+<li><a href="#_pip">15.3. pip</a></li>
 </ul>
 </li>
 <li><a href="#_Terminal_chapter">16. Terminal</a>
@@ -1019,7 +1025,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 </ul>
 </li>
-<li><a href="#_docker">30. Docker</a>
+<li><a href="#_chapter_docker">30. Docker</a>
 <ul class="sectlevel2">
 <li><a href="#_docker安装">30.1. Docker安装</a></li>
 <li><a href="#_常用命令_2">30.2. 常用命令</a></li>
@@ -1027,6 +1033,12 @@ p { margin-bottom: 1.25rem; }
 <ul class="sectlevel3">
 <li><a href="#_配置阿里云docker镜像仓库">30.3.1. 配置阿里云docker镜像仓库</a></li>
 <li><a href="#_使用docker_image_pusher">30.3.2. 使用docker_image_pusher</a></li>
+</ul>
+</li>
+<li><a href="#_代理配置">30.4. 代理配置</a>
+<ul class="sectlevel3">
+<li><a href="#_方法一在配置文件中设置">30.4.1. 方法一：在配置文件中设置</a></li>
+<li><a href="#_方法二配置环境变量">30.4.2. 方法二：配置环境变量</a></li>
 </ul>
 </li>
 </ul>
@@ -1062,7 +1074,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_方法二使用_crontab">34.2. 方法二：使用 crontab</a></li>
 </ul>
 </li>
-<li><a href="#_frp_chapter">35. ftp</a>
+<li><a href="#_ftp_chapter">35. ftp</a>
 <ul class="sectlevel2">
 <li><a href="#_ftp站点搭建">35.1. FTP站点搭建</a>
 <ul class="sectlevel3">
@@ -1105,6 +1117,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_常用命令_3">37.5.2. 常用命令</a></li>
 </ul>
 </li>
+<li><a href="#_端口详情">37.6. 端口详情</a></li>
 </ul>
 </li>
 <li><a href="#_chrony_chapter">38. chrony</a>
@@ -1640,6 +1653,98 @@ $ vim README
 $ git commit -am 'fix for the README file'
 $ git push origin master</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_git常用命令">2.2. git常用命令</h3>
+<div class="sect3">
+<h4 id="_git配置">2.2.1. git配置</h4>
+<div class="paragraph">
+<p>git的配置分为命令行级配置，工作树级别命令、仓库级的配置、用户级（也称为全局级）的配置、系统级的配置
+在这里主要记录仓库级、用户级、系统级三个级别配置的相关命令
+优先级：仓库级&gt;用户级&gt;系统级</p>
+</div>
+<div class="paragraph">
+<p>Reference: <a href="https://git-scm.com/docs/git-config#FILES" class="bare">https://git-scm.com/docs/git-config#FILES</a>
+.仓库级配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#切换到需要配置的仓库下执行
+
+#配置用户名
+git config user.name "用户名"
+
+#配置用户邮箱
+git config user.email "用户邮箱"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">用户级配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#在任何可以执行git命令的地方
+
+#配置用户名
+git config --global user.name "用户名"
+
+#配置用户邮箱
+git config --global user.email "用户邮箱"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">系统级配置</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#在任何可以执行git命令的地方
+
+#配置用户名
+git config --system user.name "用户名"
+
+#配置用户邮箱
+git config --system user.email "用户邮箱"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>还可以使用编辑器如vscode直接编辑配置文件。</p>
+</div>
+<div class="paragraph">
+<p><strong>仓库级配置文件:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>linux:    your_repository/.git/config</p>
+</li>
+<li>
+<p>windows:  your_repository/.git/config</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>用户级配置文件:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>linux:    ~/.gitconfig 或 ~/.config/git/config</p>
+</li>
+<li>
+<p>windows:  C:\Users\你的用户名\.gitconfig</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>系统级配置文件:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>linux:    /etc/gitconfig</p>
+</li>
+<li>
+<p>windows:  安装路径\Git\etc\gitconfig</p>
+</li>
+</ol>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -4626,6 +4731,32 @@ gpip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</code>
 [root@192 workspace]# ln -s /usr/local/python-3.11.5/bin/pip3 /usr/bin/pip</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_pip">15.3. pip</h3>
+<div class="paragraph">
+<p>情况一：在linux上自带的python环境中无法使用pip,提示</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[czh@minikube python_hello]$ pip
+bash: pip: command not found</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>python -m ensurepip
+python -m pip --version</p>
+</div>
+<div class="paragraph">
+<p>安装flask测试一下
+python -m pip install flask
+成功后升级pip
+python -m pip install --upgrade pip</p>
+</div>
+<div class="paragraph">
+<p>执行pip有使用说明书出现即安装成功
+pip</p>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -4999,8 +5130,7 @@ sysctl -p</code></pre>
 </div>
 <div class="paragraph">
 <p><strong>根本原因：</strong>
-资源不够用，八成是后台开了很多程序，如果可以的话，重启一下电脑吧！关于虚拟机的软锁定，也就是soft lockup , <a href="https://access.redhat.com/articles/5008811" class="bare">https://access.redhat.com/articles/5008811</a> redhat的这篇文章写清楚了原因——“通常，每个 vCPU 都由主机上的一个进程（或线程）表示，由于vCPU只是一个进程，所以会被调度，使它让出cpu时间给其他程序使用，这个时候vCPU运行的所有程序都停了。但请注意，从虚拟机的角度来看，vCPU 正在不间断地运行，即它不知道它已被暂停（重新调度）。”
-    如果你查看不了这篇文章的话，尝试一下 <a href="https://developers.redhat.com/blog/2021/02/10/how-to-activate-your-no-cost-red-hat-enterprise-linux-subscription#" class="bare">https://developers.redhat.com/blog/2021/02/10/how-to-activate-your-no-cost-red-hat-enterprise-linux-subscription#</a></p>
+资源不够用，八成是后台开了很多程序，如果可以的话，重启一下电脑吧！关于虚拟机的软锁定，也就是soft lockup , <a href="https://access.redhat.com/articles/5008811" class="bare">https://access.redhat.com/articles/5008811</a> redhat的这篇文章写清楚了原因——“通常，每个 vCPU 都由主机上的一个进程（或线程）表示，由于vCPU只是一个进程，所以会被调度，使它让出cpu时间给其他程序使用，这个时候vCPU运行的所有程序都停了。但请注意，从虚拟机的角度来看，vCPU 正在不间断地运行，即它不知道它已被暂停（重新调度）。”——如果你查看不了这篇文章的话，尝试一下 <a href="https://developers.redhat.com/blog/2021/02/10/how-to-activate-your-no-cost-red-hat-enterprise-linux-subscription#" class="bare">https://developers.redhat.com/blog/2021/02/10/how-to-activate-your-no-cost-red-hat-enterprise-linux-subscription#</a></p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -7002,7 +7132,7 @@ sh filebeat.sh</code></pre>
 <p>2 CPUs</p>
 </li>
 <li>
-<p>2GB 内存</p>
+<p>4GB 内存</p>
 </li>
 <li>
 <p>20GB 可用磁盘空间</p>
@@ -7021,47 +7151,12 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-latest
 sudo rpm -Uvh minikube-latest.x86_64.rpm</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">安装docker</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-sudo systemctl start docker
-#运行hello-world image测试是否已经正确安装docker
-sudo docker run hello-world</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">终端输出</div>
-<div class="content">
-<pre>Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/</pre>
-</div>
-</div>
 <div class="paragraph">
-<p>至此docker已经成功正确安装</p>
+<div class="title">安装docker</div>
+<p>参考本文<a href="#_chapter_docker">Docker</a></p>
 </div>
 <div class="listingblock">
+<div class="title">添加用户</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">adduser czh
 passwd czh
@@ -7233,7 +7328,7 @@ kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_docker">30. Docker</h2>
+<h2 id="_chapter_docker">30. Docker</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_docker安装">30.1. Docker安装</h3>
@@ -7254,11 +7349,25 @@ kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 <div class="title">安装docker</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+#如果你可以直接访问官方网站，那就用下面这个命令
+#sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
 sudo systemctl enable docker
 sudo systemctl start docker
+
+#配置镜像源
+sudo tee /etc/docker/daemon.json &lt;&lt;EOF
+{
+    "registry-mirrors": [
+        "https://docker.m.daocloud.io"
+    ]
+}
+EOF
+#重载配置
+sudo systemctl daemon-reload
+#重启docker
+sudo systemctl restart docker
 #运行hello-world image测试是否已经正确安装docker
 sudo docker run hello-world</code></pre>
 </div>
@@ -7460,6 +7569,52 @@ docker tag &lt;导入的镜像ID&gt; hello-world:latest</code></pre>
 <div class="imageblock">
 <div class="content">
 <img src="images/docker_image_pusher_10.png" alt="docker image pusher 10">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_代理配置">30.4. 代理配置</h3>
+<div class="sect3">
+<h4 id="_方法一在配置文件中设置">30.4.1. 方法一：在配置文件中设置</h4>
+<div class="listingblock">
+<div class="title">配置docker daemon代理</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt;/etc/docker/daemon.json
+{
+  "proxies": {
+    "http-proxy": "http://10.88.33.14:6666",
+    "https-proxy": "http://10.88.33.14:6668",
+    "no-proxy": "127.0.0.0/8,192.168.49.2"
+  }
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>10.88.33.14:6666 这里是你的代理服务器的ip和端口。
+192.168.49.2 是局域网内的一个ip,在此处是作者使用minikube产生的。可根据实际情况添加，这用于指明这个ip不需要代理</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_方法二配置环境变量">30.4.2. 方法二：配置环境变量</h4>
+<div class="listingblock">
+<div class="title">配置环境变量</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export HTTP_PROXY=http://10.88.33.14:6666
+export HTTPS_PROXY=http://10.88.33.14:6668
+export NO_PROXY="192.168.49.2,localhost,127.0.0.1"</code></pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -8068,7 +8223,7 @@ $ sudo reboot</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_frp_chapter">35. ftp</h2>
+<h2 id="_ftp_chapter">35. ftp</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_ftp站点搭建">35.1. FTP站点搭建</h3>
@@ -8792,8 +8947,33 @@ nc -zv -w2 example.com 1-100</code></pre>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_端口详情">37.6. 端口详情</h3>
+<div class="listingblock">
+<div class="title">windows查看端口占用</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#查找所用正在使用的端口
+netstat -ano
+
+#查看被占用端口对应的 PID
+netstat -aon|findstr "8081"
+
+#查看指定 PID 的进程
+tasklist|findstr "9088"
+
+#强制（/F参数）杀死 pid 为 9088 的所有进程包括子进程（/T参数）
+taskkill /T /F /PID 9088</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">linux查看端口占用</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">lsof -i :80</code></pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
