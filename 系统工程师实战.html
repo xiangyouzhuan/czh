@@ -1017,10 +1017,11 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_minikube">29. minikube</a>
 <ul class="sectlevel2">
-<li><a href="#_minikube安装">29.1. minikube安装</a></li>
-<li><a href="#_k8s">29.2. k8s</a>
+<li><a href="#_minikube安装和使用">29.1. minikube安装和使用</a></li>
+<li><a href="#_tekton">29.2. Tekton</a>
 <ul class="sectlevel3">
-<li><a href="#_常用命令">29.2.1. 常用命令</a></li>
+<li><a href="#_安装最新版本tekton_pipelines">29.2.1. 安装最新版本Tekton Pipelines</a></li>
+<li><a href="#_task">29.2.2. task</a></li>
 </ul>
 </li>
 </ul>
@@ -1028,7 +1029,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_chapter_docker">30. Docker</a>
 <ul class="sectlevel2">
 <li><a href="#_docker安装">30.1. Docker安装</a></li>
-<li><a href="#_常用命令_2">30.2. 常用命令</a></li>
+<li><a href="#_常用命令">30.2. 常用命令</a></li>
 <li><a href="#_docker_image_pusher">30.3. docker_image_pusher</a>
 <ul class="sectlevel3">
 <li><a href="#_配置阿里云docker镜像仓库">30.3.1. 配置阿里云docker镜像仓库</a></li>
@@ -1114,7 +1115,7 @@ p { margin-bottom: 1.25rem; }
 <li><a href="#_netcat">37.5. netcat</a>
 <ul class="sectlevel3">
 <li><a href="#_netcat安装">37.5.1. netcat安装</a></li>
-<li><a href="#_常用命令_3">37.5.2. 常用命令</a></li>
+<li><a href="#_常用命令_2">37.5.2. 常用命令</a></li>
 </ul>
 </li>
 <li><a href="#_端口详情">37.6. 端口详情</a></li>
@@ -1146,7 +1147,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_用户和组管理_chapter">40. 用户和组管理</a>
 <ul class="sectlevel2">
-<li><a href="#_常用命令_4">40.1. 常用命令</a></li>
+<li><a href="#_常用命令_3">40.1. 常用命令</a></li>
 </ul>
 </li>
 <li><a href="#_rsync_chapter">41. rsync</a>
@@ -1183,7 +1184,7 @@ p { margin-bottom: 1.25rem; }
 </li>
 <li><a href="#_mysql_chapter">44. mysql</a>
 <ul class="sectlevel2">
-<li><a href="#_常用命令_5">44.1. 常用命令</a>
+<li><a href="#_常用命令_4">44.1. 常用命令</a>
 <ul class="sectlevel3">
 <li><a href="#_创建并使用数据库">44.1.1. 创建并使用数据库</a></li>
 <li><a href="#_创建表">44.1.2. 创建表</a></li>
@@ -7121,7 +7122,7 @@ sh filebeat.sh</code></pre>
 <h2 id="_minikube">29. minikube</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_minikube安装">29.1. minikube安装</h3>
+<h3 id="_minikube安装和使用">29.1. minikube安装和使用</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -7142,8 +7143,10 @@ sh filebeat.sh</code></pre>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>1.安装minikube</p>
+</div>
 <div class="listingblock">
-<div class="title">安装minikube</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir /root/downloads
 cd /root/downloads
@@ -7152,24 +7155,50 @@ sudo rpm -Uvh minikube-latest.x86_64.rpm</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<div class="title">安装docker</div>
+<p>2.安装docker</p>
+</div>
+<div class="paragraph">
 <p>参考本文<a href="#_chapter_docker">Docker</a></p>
 </div>
+<div class="paragraph">
+<p>3.添加用户，并将新用户加入docker用户组</p>
+</div>
 <div class="listingblock">
-<div class="title">添加用户</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">adduser czh
 passwd czh
 echo 'czh   ALL=(ALL) ALL' &gt;&gt; /etc/sudoers
 su czh
-sudo usermod -aG docker $USER &amp;&amp; newgrp docker
+sudo usermod -aG docker $USER &amp;&amp; newgrp docker</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>4.设置环境变量以使用代理</p>
+</div>
+<div class="paragraph">
+<p>你只需要变更HTTP_PROXY、HTTPS_PROXY以及http_proxy、https_proxy环境变量即可，no_proxy不用改。代理服务器以你的代理服务器地址为准。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export HTTP_PROXY=http://10.88.33.166:6666
+export HTTPS_PROXY=http://10.88.33.166:6668
+export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24
 
-#使用docker driver启动集群:
-minikube start --driver=docker</code></pre>
+export http_proxy=http://10.88.33.166:6666
+export https_proxy=http://10.88.33.166:6668
+export no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>5.使用docker driver启动集群:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">minikube start --driver=docker</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">终端输出</div>
+<div class="title">终端输出类似以下内容</div>
 <div class="content">
 <pre>[czh@K8S-1 root]$ minikube start --driver=docker
 😄  minikube v1.31.2 on Centos 9 (kvm/amd64)
@@ -7194,13 +7223,58 @@ minikube start --driver=docker</code></pre>
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>设置docker为默认driver:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#设置docker为默认driver:
-minikube config set driver docker
-
-
-#添加kubectl仓库
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">minikube config set driver docker</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>6.配置minikube内的docker daemon使用代理</p>
+</div>
+<div class="paragraph">
+<p>(1)进入minikube容器</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">minikube ssh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(2)编辑/etc/docker/daemon.json,添加以下代理配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">"proxies":{
+    "http-proxy": "http://10.88.33.166:6666",
+    "https-proxy": "http://10.88.33.166:6668",
+    "no-proxy": "localhost,127.0.0.1,10.96.0.0/12,192.168.59.0/24,192.168.49.0/24,192.168.39.0/24"}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(3)重新启动docker服务</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl restart docker</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(4)退出minikube容器</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ctrl+d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>7.kubectl安装</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#添加kubectl仓库
 cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -7213,15 +7287,62 @@ EOF
 #安装kubectl
 sudo yum install -y kubectl
 
-#创建一个sample,并开放8080端口:
-kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
-kubectl expose deployment hello-minikube --type=NodePort --port=8080
+#拉取镜像，并将镜像load进minikube
+#这一步针对国内不能正常下载k8s镜像的场景，如果网络可以正常访问dockerhub或者配置了代理，可以跳过这一步
+docker pull kicbase/echo-server:1.0
+minikube image load kicbase/echo-server:1.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>8.创建一个pod
+(1)查看当前集群状态</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl cluster-info</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">终端输出</div>
+<div class="content">
+<pre>[czh@localhost ~]$ kubectl cluster-info
+Kubernetes control plane is running at https://192.168.49.2:8443
+CoreDNS is running at https://192.168.49.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
-#查看hello-minikube服务
-kubectl get services hello-minikube
-
-#使用minikube启动一个web browser
-kubectl port-forward service/hello-minikube 7080:8080 --address 0.0.0.0</code></pre>
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(2)查看当前集群中的pods</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(3)创建一个sample,并开放8080端口:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+kubectl expose deployment hello-minikube --type=NodePort --port=8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(4)查看hello-minikube服务</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get services hello-minikube</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(5)使用minikube启动一个web browser</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl port-forward service/hello-minikube 7080:8080 --address 0.0.0.0</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -7251,7 +7372,7 @@ Content-Length: 131</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>浏览器访问http://搭建minikube的主机ip:7080/</p>
+<p>浏览器访问http://搭建minikube的主机ip:7080/  （如果你在虚拟机上运行的话，别忘了关闭虚拟机的防火墙或者配置防火墙规则）</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -7260,66 +7381,114 @@ Content-Length: 131</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_k8s">29.2. k8s</h3>
+<h3 id="_tekton">29.2. Tekton</h3>
 <div class="sect3">
-<h4 id="_常用命令">29.2.1. 常用命令</h4>
+<h4 id="_安装最新版本tekton_pipelines">29.2.1. 安装最新版本Tekton Pipelines</h4>
 <div class="listingblock">
-<div class="title">常用命令</div>
+<div class="title">安装最新版本Tekton Pipelines</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#创建deployment
-kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
-
-#列出deployments
-kubectl get deployments
-
-#创建proxy创建一个代理，将通信转发到集群范围内的专用网络中
-kubectl proxy
-
-#查看正在运行的pods
-kubectl get pods
-
-#查看pod中的container和image相关信息
-kubectl describe pods
-
-#查看pod日志
-kubectl logs "$POD_NAME"
-
-#列出环境变量
-kubectl exec "$POD_NAME" -- env
-
-#进入pod中的容器
-kubectl exec -ti $POD_NAME -- bash
-
-#拓展deployment副本到4个副本
-kubectl scale deployments/kubernetes-bootcamp --replicas=4
-
-#缩减deployment副本到2个副本
-kubectl scale deployments/kubernetes-bootcamp --replicas=2</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">更新</div>
+<div class="title">验证安装</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#列出已有pods
-kubectl get pods
-
-#查看应用程序的当前image版本
-kubectl describe pods
-
-#将应用程序的镜像更新到version 2(该命令通知deployment为您的应用程序使用不同的image并启动滚动更新)
-kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
-
-#检查新 Pod 的状态，并查看旧Pod终止
-kubectl get pods
-
-#验证更新
-kubectl rollout status deployments/kubernetes-bootcamp
-
-#查看应用程序的当前镜像版本
-kubectl describe pods
-
-#将deployment回滚到上一个工作版本
-kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods --namespace tekton-pipelines --watch</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>当输出tekton-pipelines-controller和tekton-pipelines-webhook都为  1/1     Running时即安装成功</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>NAME                                           READY   STATUS              RESTARTS   AGE
+tekton-pipelines-controller-6d989cc968-j57cs   0/1     Pending             0          3s
+tekton-pipelines-webhook-69744499d9-t58s5      0/1     ContainerCreating   0          3s
+tekton-pipelines-controller-6d989cc968-j57cs   0/1     ContainerCreating   0          3s
+tekton-pipelines-controller-6d989cc968-j57cs   0/1     Running             0          5s
+tekton-pipelines-webhook-69744499d9-t58s5      0/1     Running             0          6s
+tekton-pipelines-controller-6d989cc968-j57cs   1/1     Running             0          10s
+tekton-pipelines-webhook-69744499d9-t58s5      1/1     Running</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>按ctrl+c退出监控</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_task">29.2.2. task</h4>
+<div class="paragraph">
+<p>一个task定义了一个或多个step，每个task作为一个pod运行在集群上，并且其中的每一个step运行在各自的container中。</p>
+</div>
+<div class="listingblock">
+<div class="title">1.创建一个名为hello的taskhello-world.yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello
+spec:
+  steps:
+    - name: echo
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Hello World"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">2.将更改应用到集群</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl apply --filename hello-world.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">出现以下输出说明创建成功</div>
+<div class="content">
+<pre>task.tekton.dev/hello created</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">3.定义一个TaskRun对象，用于初始化并运行这个task,再创建一个名为hello-world-run.yaml的文件</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: hello-task-run
+spec:
+  taskRef:
+    name: hello</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">4.将更改应用到集群以运行这个task</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl apply --filename hello-world-run.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">5.验证运行结果</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get taskrun hello-task-run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">此命令的输出显示任务的状态</div>
+<div class="content">
+<pre> NAME                    SUCCEEDED    REASON       STARTTIME   COMPLETIONTIME
+ hello-task-run          True         Succeeded    22h         22h</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">6.查看运行日志</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl logs --selector=tekton.dev/taskRun=hello-task-run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">输出显示以下信息</div>
+<div class="content">
+<pre>Hello World</pre>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -7345,26 +7514,84 @@ kubectl rollout undo deployments/kubernetes-bootcamp</code></pre>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>1.安装yum-utils</p>
+</div>
 <div class="listingblock">
-<div class="title">安装docker</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-#如果你可以直接访问官方网站，那就用下面这个命令
-#sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo systemctl enable docker
-sudo systemctl start docker
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y yum-utils</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2.添加docker软件源</p>
+</div>
+<div class="paragraph">
+<p>如果你可以直接访问官方网站，那就用这个命令添加官方提供的仓库</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>否则用下面这个阿里云镜像仓库</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.安装docker相关的软件包</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-#配置镜像源
-sudo tee /etc/docker/daemon.json &lt;&lt;EOF
+#启动docker,并设置开机自启动docker
+sudo systemctl enable docker
+sudo systemctl start docker</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>4.配置image源</p>
+</div>
+<div class="paragraph">
+<p>如果你有可用的代理服务器，建议配置代理</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF &gt;/etc/docker/daemon.json
+{
+  "proxies": {
+    "http-proxy": "http://10.88.33.166:6666",
+    "https-proxy": "http://10.88.33.166:6668",
+    "no-proxy": "127.0.0.1,localhost"
+  }
+}
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果没有的话，按照以下配置镜像源</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo tee /etc/docker/daemon.json &lt;&lt;EOF
 {
     "registry-mirrors": [
         "https://docker.m.daocloud.io"
     ]
 }
-EOF
-#重载配置
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>5.重启docker</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#重载配置
 sudo systemctl daemon-reload
 #重启docker
 sudo systemctl restart docker
@@ -7402,7 +7629,7 @@ For more examples and ideas, visit:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_常用命令_2">30.2. 常用命令</h3>
+<h3 id="_常用命令">30.2. 常用命令</h3>
 <div class="listingblock">
 <div class="title">常用命令</div>
 <div class="content">
@@ -7588,7 +7815,13 @@ docker tag &lt;导入的镜像ID&gt; hello-world:latest</code></pre>
     "no-proxy": "127.0.0.0/8,192.168.49.2"
   }
 }
-EOF</code></pre>
+EOF
+
+#重启docker
+systemctl restart docker
+
+#运行hello-world镜像，测试代理是否生效
+docker run hello-world</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -8923,7 +9156,7 @@ yum install -y netcat</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_常用命令_3">37.5.2. 常用命令</h4>
+<h4 id="_常用命令_2">37.5.2. 常用命令</h4>
 <div class="listingblock">
 <div class="title">扫描端口</div>
 <div class="content">
@@ -9215,7 +9448,7 @@ UsePAM yes</code></pre>
 <h2 id="_用户和组管理_chapter">40. 用户和组管理</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_常用命令_4">40.1. 常用命令</h3>
+<h3 id="_常用命令_3">40.1. 常用命令</h3>
 <div class="paragraph">
 <p>将一个用户添加到用户组中，千万不能直接用：
 usermod -G groupA 这样做会使你离开其他用户组，仅仅做为 这个用户组 groupA 的成员。</p>
@@ -9686,7 +9919,7 @@ sed [options] 'command' file(s)</p>
 <h2 id="_mysql_chapter">44. mysql</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_常用命令_5">44.1. 常用命令</h3>
+<h3 id="_常用命令_4">44.1. 常用命令</h3>
 <div class="paragraph">
 <p>可以自己登录到自己的mysql账户创建数据库，也可以让超级管理员创建好数据库之后，超级管理员再设置权限，让你直接使用。</p>
 </div>
@@ -10470,7 +10703,7 @@ scsi-SATA_QEMU_HARDDISK_QM00002-part1</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-18 16:15:20 +0800
+Last updated 2024-10-09 17:05:35 +0800
 </div>
 </div>
 <script src="js/highlight.min.js"></script>
